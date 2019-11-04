@@ -1,5 +1,6 @@
 import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
+
 import {
   Image,
   Platform,
@@ -14,6 +15,7 @@ import { MonoText } from '../components/StyledText';
 
 import BasicButton from '../components/BasicButton';
 import SongQueue from '../components/SongQueue';
+import Login from '../components/Login';
 
 export default function HomeScreen() {
   return (
@@ -40,6 +42,7 @@ export default function HomeScreen() {
           <View
             style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
             <MonoText>screens/HomeScreen.js</MonoText>
+            {/* <Login></Login> */}
           </View>
 
           <Text style={styles.getStartedText}>
@@ -116,8 +119,11 @@ function getMoviesFromApiAsync() {
     });
 }
 
+
+// http://localhost:3000/user/1
+
 function getSongsFromApiAsync(){
-  return fetch('http://192.168.0.136:3000/users')
+  return fetch('http://100.83.3.215/song/1')
     .then((response) => response.json())
     .then((responseJson) => {
       console.log(responseJson)
