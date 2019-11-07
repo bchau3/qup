@@ -1,12 +1,12 @@
+const config = require('./config');
 const Pool = require('pg').Pool
-// Move to seperate file outside version control
-// For production environment
+
 const pool = new Pool({
-  user: 'me',
-  host: 'localhost',
-  database: 'qup',
-  password: 'password',
-  port: 5432,
+  user: global.gConfig.database.user,
+  host: global.gConfig.database.host,
+  database: global.gConfig.database.database,
+  password: global.gConfig.database.password,
+  port: global.gConfig.database.port,
 })
 
 // GET (/user/:id)
@@ -53,11 +53,11 @@ const createUser = (request, response) => {
 // Update user with specific id
 const updateUser = (request, response) => {
   const id = parseInt(request.params.id)
-  const { name, email, channel_id } = request.body
+  const { name, email, channel_id, code } = request.body
   
   pool.query(
-    'UPDATE users SET name = $1, email = $2, channel_id = $3 WHERE id = $4',
-    [name, email, channel_id, id],
+    'UPDATE users SET name = $1, email = $2, channel_id = $3, code = $4 WHERE id = $5',
+    [name, email, channel_id, code, id],
     (error, results) => {
       if (error) {
         throw error

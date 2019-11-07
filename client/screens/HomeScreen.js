@@ -14,8 +14,7 @@ import {
 import { MonoText } from '../components/StyledText';
 
 import BasicButton from '../components/BasicButton';
-import SongQueue from '../components/SongQueue';
-import Login from '../components/Login';
+import {server_url} from '../config.js';
 
 export default function HomeScreen() {
   return (
@@ -108,22 +107,8 @@ function handleLearnMorePress() {
   );
 }
 
-function getMoviesFromApiAsync() {
-  return fetch('https://facebook.github.io/react-native/movies.json')
-    .then((response) => response.json())
-    .then((responseJson) => {
-      return responseJson;
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-}
-
-
-// http://localhost:3000/user/1
-
 function getSongsFromApiAsync(){
-  return fetch('http://100.83.3.215/song/1')
+  return fetch({server_url}.server_url+'/song/1')
     .then((response) => response.json())
     .then((responseJson) => {
       console.log(responseJson)
