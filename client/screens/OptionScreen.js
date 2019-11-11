@@ -14,7 +14,8 @@ import { createStackNavigator } from 'react-navigation-stack'
 
 class OptionScreen extends React.Component {
   static navigationOptions = {
-    title: 'OPTION',
+    //title: 'OPTION',
+    header: null
   }
 
   render(){ 

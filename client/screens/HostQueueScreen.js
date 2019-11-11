@@ -14,6 +14,8 @@ import {
 // for screen switch 
 import { createBottomTabNavigator } from 'react-navigation'
 import OptionScreen from './OptionScreen';
+//import SearchBar from 'react-native-search-bar';
+import { SearchBar } from 'react-native-elements';
 
 
 class HostQueueScreen extends React.Component {
@@ -22,47 +24,63 @@ class HostQueueScreen extends React.Component {
     title: 'QUEUE',
   }
 
-  render(){ 
-    const {navigate} = this.props.navigation;
+  render() {
+    const { navigate } = this.props.navigation;
     return (
 
-    <View style={styles.container}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}>
-        <View style={styles.getStartedContainer}> 
-         <Text>!QUEUE!</Text>
-         <Text>TODO:</Text>
-         <Text>1.SHOW QUEUE IS EMPTY</Text>
-         <Text>2.EACH SONG HAS ITS OWN SECTION</Text>
-         <Text>3.ABLE TO SWIPE THE SONG TABS</Text>
-         <Text>3-1.HOST HAS UPVOTE, DOWNVOTW</Text>
-         <Text>4.TAB GIVE OPTIONS TO DELETE ANY SONGS</Text>
-         <Text>5.CURRENT SONG SHOULD HAS A WINDOW AT BOTTOM</Text>
-         <Text>5-1.THE HOST CAN SKIP CURRENT SONG</Text>
+      <View style={styles.container}>
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.contentContainer}>
+          <View style={styles.getStartedContainer}>
+            <Text>!QUEUE!</Text>
+            <Text>TODO:</Text>
+            <Text>1.SHOW QUEUE IS EMPTY</Text>
+            <Text>2.EACH SONG HAS ITS OWN SECTION</Text>
+            <Text>3.ABLE TO SWIPE THE SONG TABS</Text>
+            <Text>3-1.HOST HAS UPVOTE, DOWNVOTW</Text>
+            <Text>4.TAB GIVE OPTIONS TO DELETE ANY SONGS</Text>
+            <Text>5.CURRENT SONG SHOULD HAS A WINDOW AT BOTTOM</Text>
+            <Text>5-1.THE HOST CAN SKIP CURRENT SONG</Text>
 
-        </View>
-      </ScrollView>  
-    </View>
-  );
+          </View>
+        </ScrollView>
+      </View>
+    );
   }
 }
 
-class SearchBar extends React.Component {
-    render(){
-        return (
-        <View style={styles.getStartedContainer}> 
-         <Text>!SEARCH!</Text>
-         <Text>!SEARCH BAR IS HERE!</Text>
-        </View>
+// Class SearchBarF is a screen where search locacls
+// The search bar still under construced
+class SearchBarF extends React.Component {
+
+  state = {
+    search: '',
+  };
+
+  updateSearch = search => {
+    this.setState({ search });
+  };
+
+  render() {
+    return (
+
+      
+      <SearchBar
+        inputStyle={{ backgroundColor: 'black' }}
+        containerStyle={{ backgroundColor: 'white', borderWidth: 1, borderRadius: 5 }}
+        placeholderTextColor={'grey'}
+        placeholder={'SEARCH...'}
+      />
         );
-    }
+  }
 }
 
+// using createBottomTabNavigator, we can create tabs on the bottom of the page to switch screens
 export default createBottomTabNavigator({
-    Home: {screen: HostQueueScreen },
-    SEARCH: {screen: SearchBar},
-    Settings: {screen: OptionScreen},
+  Home: { screen: HostQueueScreen },
+  SEARCH: { screen: SearchBarF },
+  OPTION: { screen: OptionScreen },
 })
 
 const styles = StyleSheet.create({
@@ -72,11 +90,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   getStartedContainer: {
-    fontSize:20,
-    backgroundColor:"white",
+    fontSize: 20,
+    backgroundColor: "white",
     alignItems: 'center',
     marginHorizontal: 0,
-    marginVertical:90
+    marginVertical: 90
   },
   getStartedText: {
     fontSize: 17,

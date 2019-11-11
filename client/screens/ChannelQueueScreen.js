@@ -14,12 +14,18 @@ import {
 // for screen switch 
 import { createBottomTabNavigator } from 'react-navigation'
 import OptionScreen from './OptionScreen';
+import { SearchBar } from 'react-native-elements';
+
+import TabBarIcon from '../components/TabBarIcon'; // for bar icons
 
 
 class ChannelQueueScreen extends React.Component {
 
   static navigationOptions = {
-    title: 'QUEUE',
+    tabBarLabel: 'QUEUE',
+    tabBarIcon: ({ focused }) => (
+      <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
+    ),
   }
 
   render(){ 
@@ -45,19 +51,34 @@ class ChannelQueueScreen extends React.Component {
   }
 }
 
-class SearchBar extends React.Component {
-    render(){
-        return (
-        <View style={styles.getStartedContainer}> 
-         <Text>!SEARCH!</Text>
-         <Text>!SEARCH BAR IS HERE!</Text>
-        </View>
+// Class SearchBarF is a screen where search locacls
+// The search bar still under construced
+class SearchBarF extends React.Component {
+
+  state = {
+    search: '',
+  };
+
+  updateSearch = search => {
+    this.setState({ search });
+  };
+
+  render() {
+    return (
+
+      
+      <SearchBar
+        inputStyle={{ backgroundColor: 'black' }}
+        containerStyle={{ backgroundColor: 'white', borderWidth: 1, borderRadius: 5 }}
+        placeholderTextColor={'grey'}
+        placeholder={'SEARCH...'}
+      />
         );
-    }
+  }
 }
 
 export default createBottomTabNavigator({
-    Settings: {screen: OptionScreen},
+    OPTION: {screen: OptionScreen},
     SEARCH: {screen: SearchBar},
     Home: {screen: ChannelQueueScreen },
 })

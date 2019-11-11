@@ -18,9 +18,10 @@ import ChannelQueueScreen from './ChannelQueueScreen';
 
 class ChannelScreen extends React.Component {
   
-  static navigationOptions = {
-      title: "FIND A CHANNEL TO JOIN",
-  }
+  static navigationOptions = () => ({
+    //header: null,
+    title: "FIND A CHANNEL TO JOIN",
+  });
   
     render() {
     return (
@@ -60,8 +61,10 @@ class ChannelScreen extends React.Component {
 // createStackNavigator + creastAppCOntainer for screen switch
 const RootStack = createStackNavigator(
     {
-      Channel: ChannelScreen,
-      Queue: ChannelQueueScreen,
+      Channel: {screen: ChannelScreen},
+      Queue: {
+        screen: ChannelQueueScreen
+      },
     },
     {
       initialRouteName: 'Channel',

@@ -12,18 +12,64 @@ import {
 } from 'react-native';
 
 // for screen switch 
-import { createAppContainer } from 'react-navigation'
+//import { createAppContainer } from 'react-navigation'
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack'
 
-import SongQueue from '../components/SongQueue';
+//import SongQueue from '../components/SongQueue';
 import LinksScreen from './LinksScreen';
 import ChannelScreen from './ChannelScreen';
+import HostQueueScreen from './HostQueueScreen';
+import ChannelQueueScreen from './ChannelQueueScreen';
 
 
+// HomeScreen
 class HomeScreen extends React.Component {
 
   static navigationOptions = {
     title: 'WELCOME',
+  }
+
+  render() {
+    const { navigate } = this.props.navigation;
+    return (
+
+      <View style={styles.container}>
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.contentContainer}>
+
+
+          <View style={styles.getStartedContainer}>
+
+            <Button title='Create Channel' onPress={() => { navigate('LL') }} />
+            <Button title='Join Channel' onPress={() => { navigate('Channelss') }} />
+
+          </View>
+        </ScrollView>
+      </View>
+    );
+  }
+}
+
+
+
+// having these class in the same file with HomeScreen will solve
+// the issue which we have head bar stacked up
+/* under each class, in static navigationOptions
+      we can design the layout of the page
+      Notice, some of them has property: header: null
+      it means that the header bar where back button localed will be removed on that page
+      In that case, we will use a button with onPress={()=>{this.props.navigation.goBack(null)}}
+      to go back to previous page
+*/
+
+// LLL = LinkScreen
+class LLL extends React.Component {
+
+  static navigationOptions = {
+    title: 'LINK2',
+    header: null,
   }
 
   render(){ 
@@ -37,9 +83,9 @@ class HomeScreen extends React.Component {
         
 
         <View style={styles.getStartedContainer}> 
-         
-          <Button title='Create Channel' onPress={()=>{navigate('Links')}}/>
-          <Button title='Join Channel' onPress={()=>{navigate('Channels')}}/>
+          <Text>!PLEASE LINK YOUR SPOTIFY ACCOUNT!</Text>
+          <Button title='Link Account2' onPress={()=>{navigate('CC')}}/>
+          <Button title='I DONT WANNA2' onPress={()=>{this.props.navigation.goBack(null)}}/>
 
         </View>
       </ScrollView>  
@@ -48,73 +94,90 @@ class HomeScreen extends React.Component {
   }
 }
 
-// createStackNavigator + creastAppCOntainer for screen switches
+// Check = SignIn
+class Check extends React.Component {
+  render() {
+      return (
+          <View style={styles.container}>
+              <ScrollView
+                  style={styles.container}
+                  contentContainerStyle={styles.contentContainer}>
+                  <View style={styles.getStartedContainer}>
+                      <Text>!SIGN ME IN!</Text>
+                      <Button title='SUCCESS' onPress={() => { alert('SUCC IT!!!!! :)'), this.props.navigation.navigate('Host') }} />
+                      <Button title='OOPS NO' onPress={() => { alert('failed to link your account'), this.props.navigation.goBack(null) }} />
+                  </View>
+              </ScrollView>
+          </View>
+      );
+  }
+}
+
+// ChannelSS = ChannelScreen
+class ChannelSS extends React.Component {
+  
+  static navigationOptions = () => ({
+    //header: null,
+    title: "FIND A CHANNEL TO JOIN",
+  });
+  
+    render() {
+    return (
+    <ScrollView style={styles.container}>
+       
+       <View style={styles.getStartedContainer}> 
+         
+          <Button title='THIS IS THIS THE CHANNEL U WANTED :)' onPress={()=>{this.props.navigation.navigate('Queue')}}/>
+
+        </View>
+
+       <Text style={styles.todoText}>
+            TODOS:Find Channels To Join
+        </Text>
+        <Text style={styles.todoText}>
+            1.  enter invitation link? 
+        </Text>
+        <Text style={styles.todoText}>
+            2.  comfirmation of joining the channel
+        </Text>
+        <Text style={styles.todoText}>
+            3.  switch to queue screen  
+        </Text>
+        <Text style={styles.todoText}>
+            4.  button to refresh the channel list  
+        </Text>
+        <Text style={styles.todoText}>
+            5.  if user is banned, show alert 
+        </Text>
+
+
+    </ScrollView>
+  );
+    }
+}
+///////////////////////////////
+
+
+// Used to assign screens to a variable which are used to connect screens
 const RootStack = createStackNavigator(
   {
     Home: HomeScreen,
-    Channels: ChannelScreen,
-    Links: {
-      screen: LinksScreen,
-      navigationOptions: () => ({headerBackTitle: null}),
-    }
+    Channelss: ChannelSS,
+    Links: LinksScreen,
+    LL: LLL,
+    CC: Check,
+    Host: HostQueueScreen,
+    Queue: ChannelQueueScreen,
   },
   {
     initialRouteName: 'Home',
   }
 );
+
 const AppContainer = createAppContainer(RootStack);
 
 export default AppContainer;
 
-/*export default class App extends React.Component {
-  render() {
-    return <AppContainer />;
-  }
-}*/
-
-
-function creation11 (){
-  alert('PLEASE LINK YOUR SPOTIFY ACCOUNT');
-}
-
-function membership11 (){
-  alert('PLEASE SELECTE A CHANNEL TO JOIN');
-}
-
-function handleLearnMorePress() {
-  WebBrowser.openBrowserAsync(
-    'https://docs.expo.io/versions/latest/workflow/development-mode/'
-  );
-}
-
-function getMoviesFromApiAsync() {
-  return fetch('https://facebook.github.io/react-native/movies.json')
-    .then((response) => response.json())
-    .then((responseJson) => {
-      return responseJson;
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-}
-
-function getSongsFromApiAsync(){
-  return fetch('http://192.168.0.136:3000/users')
-    .then((response) => response.json())
-    .then((responseJson) => {
-      console.log(responseJson)
-      return responseJson;
-    })
-    .catch((error) =>{
-      console.error(error);
-    });
-}
-
-function handleHelpPress() {
-  WebBrowser.openBrowserAsync(
-    'https://docs.expo.io/versions/latest/workflow/up-and-running/#cant-see-your-changes'
-  );
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -142,14 +205,14 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginTop: 3,
     marginLeft: -10,
-    backgroundColor:"black",
+    backgroundColor: "black",
   },
   getStartedContainer: {
-    fontSize:20,
-    backgroundColor:"white",
+    fontSize: 20,
+    backgroundColor: "white",
     alignItems: 'center',
     marginHorizontal: 0,
-    marginVertical:90
+    marginVertical: 90
   },
   homeScreenFilename: {
     marginVertical: 7,
@@ -208,9 +271,9 @@ const styles = StyleSheet.create({
     color: '#2e78b7',
   },
   buttonSize: {
-    fontSize:100,
-    width:100,
-    height:100,
+    fontSize: 100,
+    width: 100,
+    height: 100,
     color: '#2e78b7'
   }
 });
