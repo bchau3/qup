@@ -31,7 +31,7 @@ class OptionScreen extends React.Component {
             <Text>!LEAVE CHANNEL!</Text>
             <Text>!CLOSE CHANNEL!</Text>
             <Text>!UNLINK MY ACCOUNT!</Text>
-            {/*<Button title='UNLIK MY ACCOUNT' 
+            {/*<Button title='UNLINK MY ACCOUNT' 
               onPress={()=>{
                 alert('successfully unlinking your account'), 
                 this.props.navigation.goBack(null)}

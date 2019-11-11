@@ -14,10 +14,14 @@ import {
 // for screen switch 
 import { createBottomTabNavigator } from 'react-navigation'
 import OptionScreen from './OptionScreen';
-//import SearchBar from 'react-native-search-bar';
 import { SearchBar } from 'react-native-elements';
 
 
+/* HostQueueScreen:
+ *    Screen shows the song queue that are made for the host only
+ *    It has all functionality of a Channelmate Queue, but with more
+ *    options such as skip song, etc.
+ */
 class HostQueueScreen extends React.Component {
 
   static navigationOptions = {
@@ -50,9 +54,10 @@ class HostQueueScreen extends React.Component {
   }
 }
 
-// Class SearchBarF is a screen where search locacls
-// The search bar still under construced
-class SearchBarF extends React.Component {
+/* SearchBarScreen:
+ *    This screen has a search bar allows user to search a song from Spotify
+ */
+class SearchBarScreen extends React.Component {
 
   state = {
     search: '',
@@ -79,7 +84,7 @@ class SearchBarF extends React.Component {
 // using createBottomTabNavigator, we can create tabs on the bottom of the page to switch screens
 export default createBottomTabNavigator({
   Home: { screen: HostQueueScreen },
-  SEARCH: { screen: SearchBarF },
+  SEARCH: { screen: SearchBarScreen },
   OPTION: { screen: OptionScreen },
 })
 

@@ -12,13 +12,10 @@ import {
 } from 'react-native';
 
 // for screen switch 
-//import { createAppContainer } from 'react-navigation'
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack'
 
-//import SongQueue from '../components/SongQueue';
-import LinksScreen from './LinksScreen';
-import ChannelScreen from './ChannelScreen';
+// import both HostqueueScreen and ChannelQueuScreen
 import HostQueueScreen from './HostQueueScreen';
 import ChannelQueueScreen from './ChannelQueueScreen';
 
@@ -39,11 +36,10 @@ class HomeScreen extends React.Component {
           style={styles.container}
           contentContainerStyle={styles.contentContainer}>
 
-
           <View style={styles.getStartedContainer}>
 
-            <Button title='Create Channel' onPress={() => { navigate('LL') }} />
-            <Button title='Join Channel' onPress={() => { navigate('Channelss') }} />
+            <Button title='Create Channel' onPress={() => { navigate('Links') }} />
+            <Button title='Join Channel' onPress={() => { navigate('Channels') }} />
 
           </View>
         </ScrollView>
@@ -53,9 +49,6 @@ class HomeScreen extends React.Component {
 }
 
 
-
-// having these class in the same file with HomeScreen will solve
-// the issue which we have head bar stacked up
 /* under each class, in static navigationOptions
       we can design the layout of the page
       Notice, some of them has property: header: null
@@ -64,108 +57,121 @@ class HomeScreen extends React.Component {
       to go back to previous page
 */
 
-// LLL = LinkScreen
-class LLL extends React.Component {
+/*
+ * LinksScreen:
+ *    Screen promoteS user to link account to Spotify server.
+ *    When user agrees to link account, switch to SignInScreen.
+ *    When user refused to link account, switch to HomeScreen.
+ */
+class LinksScreen extends React.Component {
 
   static navigationOptions = {
     title: 'LINK2',
     header: null,
   }
 
-  render(){ 
-    const {navigate} = this.props.navigation;
+  render() {
+    const { navigate } = this.props.navigation;
     return (
 
-    <View style={styles.container}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}>
-        
+      <View style={styles.container}>
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.contentContainer}>
 
-        <View style={styles.getStartedContainer}> 
-          <Text>!PLEASE LINK YOUR SPOTIFY ACCOUNT!</Text>
-          <Button title='Link Account2' onPress={()=>{navigate('CC')}}/>
-          <Button title='I DONT WANNA2' onPress={()=>{this.props.navigation.goBack(null)}}/>
 
-        </View>
-      </ScrollView>  
-    </View>
-  );
-  }
-}
+          <View style={styles.getStartedContainer}>
+            <Text>!PLEASE LINK YOUR SPOTIFY ACCOUNT!</Text>
+            <Button title='Link Account' onPress={() => { navigate('SignIn') }} />
+            <Button title='I DONT WANNA' onPress={() => { this.props.navigation.goBack(null) }} />
 
-// Check = SignIn
-class Check extends React.Component {
-  render() {
-      return (
-          <View style={styles.container}>
-              <ScrollView
-                  style={styles.container}
-                  contentContainerStyle={styles.contentContainer}>
-                  <View style={styles.getStartedContainer}>
-                      <Text>!SIGN ME IN!</Text>
-                      <Button title='SUCCESS' onPress={() => { alert('SUCC IT!!!!! :)'), this.props.navigation.navigate('Host') }} />
-                      <Button title='OOPS NO' onPress={() => { alert('failed to link your account'), this.props.navigation.goBack(null) }} />
-                  </View>
-              </ScrollView>
           </View>
-      );
+        </ScrollView>
+      </View>
+    );
   }
 }
 
-// ChannelSS = ChannelScreen
-class ChannelSS extends React.Component {
-  
+/* SignInScreen: 
+ *   Screen where user links account and should automatically switch to HostQueueScreen
+ *   if successful, otherwise return to previous page (LinksScreen)
+ */
+class SignInScreen extends React.Component {
+
+  static navigationOptions = {
+    header: null,
+  }
+  render() {
+    return (
+      <View style={styles.container}>
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.contentContainer}>
+          <View style={styles.getStartedContainer}>
+            <Text>!SIGN ME IN!</Text>
+            <Button title='SUCCESS' onPress={() => { alert('SUCC IT!!!!! :)'), this.props.navigation.navigate('Host') }} />
+            <Button title='OOPS NO' onPress={() => { alert('failed to link your account'), this.props.navigation.goBack(null) }} />
+          </View>
+        </ScrollView>
+      </View>
+    );
+  }
+}
+
+/* ChannelScreen:
+ *    ChannelScreen promote user to enter a invitation code to join an existing channel
+ *    If successful, switch ChannelQueueScreen. Otherwise, ask user to enter code again.
+ *    Having back button for user to go back to home page of the app
+ */
+class ChannelScreen extends React.Component {
+
   static navigationOptions = () => ({
-    //header: null,
+    header: null,
     title: "FIND A CHANNEL TO JOIN",
   });
-  
-    render() {
-    return (
-    <ScrollView style={styles.container}>
-       
-       <View style={styles.getStartedContainer}> 
-         
-          <Button title='THIS IS THIS THE CHANNEL U WANTED :)' onPress={()=>{this.props.navigation.navigate('Queue')}}/>
 
+  render() {
+    return (
+      <ScrollView style={styles.container}>
+
+        <View style={styles.getStartedContainer}>
+
+          <Button title='THIS IS THIS THE CHANNEL U WANTED :)' onPress={() => { this.props.navigation.navigate('Queue') }} />
+          <Button title='Go Back' onPress={() => { this.props.navigation.goBack(null) }} />
         </View>
 
-       <Text style={styles.todoText}>
-            TODOS:Find Channels To Join
+        <Text style={styles.todoText}>
+          TODOS:Find Channels To Join
         </Text>
         <Text style={styles.todoText}>
-            1.  enter invitation link? 
+          1.  enter invitation code?
         </Text>
         <Text style={styles.todoText}>
-            2.  comfirmation of joining the channel
+          2.  comfirmation of joining the channel
         </Text>
         <Text style={styles.todoText}>
-            3.  switch to queue screen  
+          3.  switch to queue screen
         </Text>
         <Text style={styles.todoText}>
-            4.  button to refresh the channel list  
+          4.  button to refresh the channel list
         </Text>
         <Text style={styles.todoText}>
-            5.  if user is banned, show alert 
+          5.  if user is banned, show alert
         </Text>
 
 
-    </ScrollView>
-  );
-    }
+      </ScrollView>
+    );
+  }
 }
-///////////////////////////////
-
 
 // Used to assign screens to a variable which are used to connect screens
-const RootStack = createStackNavigator(
+const ScreenStack = createStackNavigator(
   {
     Home: HomeScreen,
-    Channelss: ChannelSS,
+    Channels: ChannelScreen,
     Links: LinksScreen,
-    LL: LLL,
-    CC: Check,
+    SignIn: SignInScreen,
     Host: HostQueueScreen,
     Queue: ChannelQueueScreen,
   },
@@ -174,7 +180,7 @@ const RootStack = createStackNavigator(
   }
 );
 
-const AppContainer = createAppContainer(RootStack);
+const AppContainer = createAppContainer(ScreenStack);
 
 export default AppContainer;
 
