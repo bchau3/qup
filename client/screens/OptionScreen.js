@@ -14,7 +14,12 @@ import { createStackNavigator } from 'react-navigation-stack'
 
 class OptionScreen extends React.Component {
   static navigationOptions = {
+<<<<<<< HEAD
     title: 'Settings',
+=======
+    //title: 'OPTION',
+    header: null
+>>>>>>> b7d6aad586d05c6fe3aa5a2e76c58217c5707814
   }
 
   render(){ 
@@ -30,7 +35,7 @@ class OptionScreen extends React.Component {
             <Text>!LEAVE CHANNEL!</Text>
             <Text>!CLOSE CHANNEL!</Text>
             <Text>!UNLINK MY ACCOUNT!</Text>
-            {/*<Button title='UNLIK MY ACCOUNT' 
+            {/*<Button title='UNLINK MY ACCOUNT' 
               onPress={()=>{
                 alert('successfully unlinking your account'), 
                 this.props.navigation.goBack(null)}

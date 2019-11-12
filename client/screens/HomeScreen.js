@@ -13,24 +13,26 @@ import {
 } from 'react-native';
 
 // for screen switch 
-import { createAppContainer } from 'react-navigation'
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack'
 
-import SongQueue from '../components/SongQueue';
-import LinksScreen from './LinksScreen';
-import ChannelScreen from './ChannelScreen';
+// import both HostqueueScreen and ChannelQueuScreen
+import HostQueueScreen from './HostQueueScreen';
+import ChannelQueueScreen from './ChannelQueueScreen';
 
 
+// HomeScreen
 class HomeScreen extends React.Component {
 
   static navigationOptions = {
     title: 'Q-Up Login Screen',
   }
 
-  render(){ 
-    const {navigate} = this.props.navigation;
+  render() {
+    const { navigate } = this.props.navigation;
     return (
 
+<<<<<<< HEAD
     <View style={styles.container}>
       <ScrollView
         style={styles.container}
@@ -54,76 +56,167 @@ class HomeScreen extends React.Component {
       </ScrollView>  
     </View>
   );
+=======
+      <View style={styles.container}>
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.contentContainer}>
+
+          <View style={styles.getStartedContainer}>
+
+            <Button title='Create Channel' onPress={() => { navigate('Links') }} />
+            <Button title='Join Channel' onPress={() => { navigate('Channels') }} />
+
+          </View>
+        </ScrollView>
+      </View>
+    );
+>>>>>>> b7d6aad586d05c6fe3aa5a2e76c58217c5707814
   }
 }
 
-// createStackNavigator + creastAppCOntainer for screen switches
-const RootStack = createStackNavigator(
+
+/* under each class, in static navigationOptions
+      we can design the layout of the page
+      Notice, some of them has property: header: null
+      it means that the header bar where back button localed will be removed on that page
+      In that case, we will use a button with onPress={()=>{this.props.navigation.goBack(null)}}
+      to go back to previous page
+*/
+
+/*
+ * LinksScreen:
+ *    Screen promoteS user to link account to Spotify server.
+ *    When user agrees to link account, switch to SignInScreen.
+ *    When user refused to link account, switch to HomeScreen.
+ */
+class LinksScreen extends React.Component {
+
+  static navigationOptions = {
+    title: 'LINK2',
+    header: null,
+  }
+
+  render() {
+    const { navigate } = this.props.navigation;
+    return (
+
+      <View style={styles.container}>
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.contentContainer}>
+
+<<<<<<< HEAD
+function membership11 (){
+  alert('PLEASE SELECT A CHANNEL TO JOIN');
+}
+=======
+>>>>>>> b7d6aad586d05c6fe3aa5a2e76c58217c5707814
+
+          <View style={styles.getStartedContainer}>
+            <Text>!PLEASE LINK YOUR SPOTIFY ACCOUNT!</Text>
+            <Button title='Link Account' onPress={() => { navigate('SignIn') }} />
+            <Button title='I DONT WANNA' onPress={() => { this.props.navigation.goBack(null) }} />
+
+          </View>
+        </ScrollView>
+      </View>
+    );
+  }
+}
+
+/* SignInScreen: 
+ *   Screen where user links account and should automatically switch to HostQueueScreen
+ *   if successful, otherwise return to previous page (LinksScreen)
+ */
+class SignInScreen extends React.Component {
+
+  static navigationOptions = {
+    header: null,
+  }
+  render() {
+    return (
+      <View style={styles.container}>
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.contentContainer}>
+          <View style={styles.getStartedContainer}>
+            <Text>!SIGN ME IN!</Text>
+            <Button title='SUCCESS' onPress={() => { alert('SUCC IT!!!!! :)'), this.props.navigation.navigate('Host') }} />
+            <Button title='OOPS NO' onPress={() => { alert('failed to link your account'), this.props.navigation.goBack(null) }} />
+          </View>
+        </ScrollView>
+      </View>
+    );
+  }
+}
+
+/* ChannelScreen:
+ *    ChannelScreen promote user to enter a invitation code to join an existing channel
+ *    If successful, switch ChannelQueueScreen. Otherwise, ask user to enter code again.
+ *    Having back button for user to go back to home page of the app
+ */
+class ChannelScreen extends React.Component {
+
+  static navigationOptions = () => ({
+    header: null,
+    title: "FIND A CHANNEL TO JOIN",
+  });
+
+  render() {
+    return (
+      <ScrollView style={styles.container}>
+
+        <View style={styles.getStartedContainer}>
+
+          <Button title='THIS IS THIS THE CHANNEL U WANTED :)' onPress={() => { this.props.navigation.navigate('Queue') }} />
+          <Button title='Go Back' onPress={() => { this.props.navigation.goBack(null) }} />
+        </View>
+
+        <Text style={styles.todoText}>
+          TODOS:Find Channels To Join
+        </Text>
+        <Text style={styles.todoText}>
+          1.  enter invitation code?
+        </Text>
+        <Text style={styles.todoText}>
+          2.  comfirmation of joining the channel
+        </Text>
+        <Text style={styles.todoText}>
+          3.  switch to queue screen
+        </Text>
+        <Text style={styles.todoText}>
+          4.  button to refresh the channel list
+        </Text>
+        <Text style={styles.todoText}>
+          5.  if user is banned, show alert
+        </Text>
+
+
+      </ScrollView>
+    );
+  }
+}
+
+// Used to assign screens to a variable which are used to connect screens
+const ScreenStack = createStackNavigator(
   {
     Home: HomeScreen,
     Channels: ChannelScreen,
-    Links: {
-      screen: LinksScreen,
-      navigationOptions: () => ({headerBackTitle: null}),
-    }
+    Links: LinksScreen,
+    SignIn: SignInScreen,
+    Host: HostQueueScreen,
+    Queue: ChannelQueueScreen,
   },
   {
     initialRouteName: 'Home',
   }
 );
-const AppContainer = createAppContainer(RootStack);
+
+const AppContainer = createAppContainer(ScreenStack);
 
 export default AppContainer;
 
-/*export default class App extends React.Component {
-  render() {
-    return <AppContainer />;
-  }
-}*/
-
-
-function creation11 (){
-  alert('PLEASE LINK YOUR SPOTIFY ACCOUNT');
-}
-
-function membership11 (){
-  alert('PLEASE SELECT A CHANNEL TO JOIN');
-}
-
-function handleLearnMorePress() {
-  WebBrowser.openBrowserAsync(
-    'https://docs.expo.io/versions/latest/workflow/development-mode/'
-  );
-}
-
-function getMoviesFromApiAsync() {
-  return fetch('https://facebook.github.io/react-native/movies.json')
-    .then((response) => response.json())
-    .then((responseJson) => {
-      return responseJson;
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-}
-
-function getSongsFromApiAsync(){
-  return fetch('http://192.168.0.136:3000/users')
-    .then((response) => response.json())
-    .then((responseJson) => {
-      console.log(responseJson)
-      return responseJson;
-    })
-    .catch((error) =>{
-      console.error(error);
-    });
-}
-
-function handleHelpPress() {
-  WebBrowser.openBrowserAsync(
-    'https://docs.expo.io/versions/latest/workflow/up-and-running/#cant-see-your-changes'
-  );
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -151,14 +244,19 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginTop: 3,
     marginLeft: -10,
-    backgroundColor:"black",
+    backgroundColor: "black",
   },
   getStartedContainer: {
+<<<<<<< HEAD
     fontSize:20,
     backgroundColor:"#89CFF0",
+=======
+    fontSize: 20,
+    backgroundColor: "white",
+>>>>>>> b7d6aad586d05c6fe3aa5a2e76c58217c5707814
     alignItems: 'center',
     marginHorizontal: 0,
-    marginVertical:90
+    marginVertical: 90
   },
   homeScreenFilename: {
     marginVertical: 7,
@@ -217,9 +315,9 @@ const styles = StyleSheet.create({
     color: '#2e78b7',
   },
   buttonSize: {
-    fontSize:100,
-    width:100,
-    height:100,
+    fontSize: 100,
+    width: 100,
+    height: 100,
     color: '#2e78b7'
   },
 

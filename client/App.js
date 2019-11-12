@@ -22,8 +22,13 @@ export default function App(props) {
   } else {
     return (
       <View style={styles.container}>
+<<<<<<< HEAD
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
         <HomeScreen />
+=======
+        {/*Platform.OS === 'ios' && <StatusBar barStyle="default" />*/}
+        < HomeScreen />
+>>>>>>> b7d6aad586d05c6fe3aa5a2e76c58217c5707814
       </View>
     );
   }
