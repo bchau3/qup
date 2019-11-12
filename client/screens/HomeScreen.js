@@ -32,31 +32,6 @@ class HomeScreen extends React.Component {
     const { navigate } = this.props.navigation;
     return (
 
-<<<<<<< HEAD
-    <View style={styles.container}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}>
-        
-        <View style={styles.getStartedContainer}> 
-          <Text>Welcome to Q-Up! Please select an option.</Text>
-          <TouchableOpacity
-            style = {styles.loginScreenButton}
-            onPress = {() => {navigate('Links')}}
-            underlayColor = '#fff'>
-            <Text style = {styles.loginText}>Create Channel</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style = {styles.loginScreenButton}
-            onPress = {() => {navigate('Channels')}}
-            underlayColor = '#fff'>
-            <Text style = {styles.loginText}>Join Channel</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>  
-    </View>
-  );
-=======
       <View style={styles.container}>
         <ScrollView
           style={styles.container}
@@ -71,7 +46,6 @@ class HomeScreen extends React.Component {
         </ScrollView>
       </View>
     );
->>>>>>> b7d6aad586d05c6fe3aa5a2e76c58217c5707814
   }
 }
 
@@ -106,12 +80,6 @@ class LinksScreen extends React.Component {
           style={styles.container}
           contentContainerStyle={styles.contentContainer}>
 
-<<<<<<< HEAD
-function membership11 (){
-  alert('PLEASE SELECT A CHANNEL TO JOIN');
-}
-=======
->>>>>>> b7d6aad586d05c6fe3aa5a2e76c58217c5707814
 
           <View style={styles.getStartedContainer}>
             <Text>!PLEASE LINK YOUR SPOTIFY ACCOUNT!</Text>
@@ -247,13 +215,8 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
   },
   getStartedContainer: {
-<<<<<<< HEAD
-    fontSize:20,
-    backgroundColor:"#89CFF0",
-=======
     fontSize: 20,
     backgroundColor: "white",
->>>>>>> b7d6aad586d05c6fe3aa5a2e76c58217c5707814
     alignItems: 'center',
     marginHorizontal: 0,
     marginVertical: 90

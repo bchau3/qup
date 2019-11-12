@@ -1,14 +1,11 @@
 import React from 'react';
 import { ExpoLinksView } from '@expo/samples';
 import {
-    Image,
-    Platform,
     ScrollView,
     StyleSheet,
     Text,
     TouchableOpacity,
-    View,
-    Button
+    View
   } from 'react-native';
 
 // for screen switch
@@ -18,16 +15,9 @@ import ChannelQueueScreen from './ChannelQueueScreen';
 
 class ChannelScreen extends React.Component {
   
-<<<<<<< HEAD
-  static navigationOptions = {
-      title: "Find a channel to join",
-  }
-=======
   static navigationOptions = () => ({
-    //header: null,
     title: "FIND A CHANNEL TO JOIN",
   });
->>>>>>> b7d6aad586d05c6fe3aa5a2e76c58217c5707814
   
     render() {
     return (

@@ -3,9 +3,7 @@ import {
     ScrollView,
     StyleSheet,
     Text,
-    TouchableOpacity,
     View,
-    Button
   } from 'react-native';
 
 // for screen switch 
@@ -14,12 +12,8 @@ import { createStackNavigator } from 'react-navigation-stack'
 
 class OptionScreen extends React.Component {
   static navigationOptions = {
-<<<<<<< HEAD
-    title: 'Settings',
-=======
     //title: 'OPTION',
     header: null
->>>>>>> b7d6aad586d05c6fe3aa5a2e76c58217c5707814
   }
 
   render(){ 
