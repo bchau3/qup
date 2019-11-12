@@ -57,7 +57,7 @@ class HomeScreen extends React.Component {
       to go back to previous page
 */
 
-/* Need to delete LinksScreen.js file to make this work
+/*
  * LinksScreen:
  *    Screen promoteS user to link account to Spotify server.
  *    When user agrees to link account, switch to SignInScreen.
