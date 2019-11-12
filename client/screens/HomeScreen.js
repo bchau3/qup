@@ -1,6 +1,7 @@
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import {
+  AppRegistry,    // change background color
   Image,
   Platform,
   ScrollView,
@@ -23,7 +24,7 @@ import ChannelScreen from './ChannelScreen';
 class HomeScreen extends React.Component {
 
   static navigationOptions = {
-    title: 'WELCOME',
+    title: 'Q-Up Login Screen',
   }
 
   render(){ 
@@ -35,12 +36,20 @@ class HomeScreen extends React.Component {
         style={styles.container}
         contentContainerStyle={styles.contentContainer}>
         
-
         <View style={styles.getStartedContainer}> 
-         
-          <Button title='Create Channel' onPress={()=>{navigate('Links')}}/>
-          <Button title='Join Channel' onPress={()=>{navigate('Channels')}}/>
-
+          <Text>Welcome to Q-Up! Please select an option.</Text>
+          <TouchableOpacity
+            style = {styles.loginScreenButton}
+            onPress = {() => {navigate('Links')}}
+            underlayColor = '#fff'>
+            <Text style = {styles.loginText}>Create Channel</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style = {styles.loginScreenButton}
+            onPress = {() => {navigate('Channels')}}
+            underlayColor = '#fff'>
+            <Text style = {styles.loginText}>Join Channel</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>  
     </View>
@@ -78,7 +87,7 @@ function creation11 (){
 }
 
 function membership11 (){
-  alert('PLEASE SELECTE A CHANNEL TO JOIN');
+  alert('PLEASE SELECT A CHANNEL TO JOIN');
 }
 
 function handleLearnMorePress() {
@@ -119,7 +128,7 @@ function handleHelpPress() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#89CFF0',
   },
   developmentModeText: {
     marginBottom: 20,
@@ -146,7 +155,7 @@ const styles = StyleSheet.create({
   },
   getStartedContainer: {
     fontSize:20,
-    backgroundColor:"white",
+    backgroundColor:"#89CFF0",
     alignItems: 'center',
     marginHorizontal: 0,
     marginVertical:90
@@ -212,5 +221,25 @@ const styles = StyleSheet.create({
     width:100,
     height:100,
     color: '#2e78b7'
+  },
+
+  loginScreenButton:{
+    marginRight:40,
+    marginLeft:40,
+    marginTop:10,
+    paddingTop:10,
+    paddingBottom:10,
+    backgroundColor:'#ffb6c1',
+    borderRadius:10,
+    borderWidth: 1,
+    borderColor: '#000000'
+  },
+  loginText:{
+      color:'#000000',
+      textAlign:'center',
+      paddingLeft : 30,
+      paddingRight : 30,
+      fontSize : 25
   }
+
 });

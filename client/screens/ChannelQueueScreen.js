@@ -19,7 +19,7 @@ import OptionScreen from './OptionScreen';
 class ChannelQueueScreen extends React.Component {
 
   static navigationOptions = {
-    title: 'QUEUE',
+    title: 'Queue',
   }
 
   render(){ 
@@ -30,13 +30,13 @@ class ChannelQueueScreen extends React.Component {
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.contentContainer}>
-        <View style={styles.getStartedContainer}> 
-         <Text>!QUEUE!</Text>
-         <Text>TODO:</Text>
-         <Text>1.SHOW QUEUE IS EMPTY</Text>
-         <Text>2.EACH SONG HAS ITS OWN SECTION</Text>
-         <Text>3.ABLE TO SWIPE THE SONG TABS</Text>
-         <Text>4.TAB GIVE OPTIONS TO DELETE (SONG OWNER ONLY)</Text>
+        <View style={styles.container}> 
+         <Text style = {styles.todoText}>!QUEUE!</Text>
+         <Text style = {styles.todoText}>TODO:</Text>
+         <Text style = {styles.todoText}>1.SHOW QUEUE IS EMPTY</Text>
+         <Text style = {styles.todoText}>2.EACH SONG HAS ITS OWN SECTION</Text>
+         <Text style = {styles.todoText}>3.ABLE TO SWIPE THE SONG TABS</Text>
+         <Text style = {styles.todoText}>4.TAB GIVE OPTIONS TO DELETE (SONG OWNER ONLY)</Text>
 
         </View>
       </ScrollView>  
@@ -48,9 +48,9 @@ class ChannelQueueScreen extends React.Component {
 class SearchBar extends React.Component {
     render(){
         return (
-        <View style={styles.getStartedContainer}> 
-         <Text>!SEARCH!</Text>
-         <Text>!SEARCH BAR IS HERE!</Text>
+        <View style={styles.container}> 
+         <Text style = {styles.todoText}>!SEARCH!</Text>
+         <Text style = {styles.todoText}>!SEARCH BAR IS HERE!</Text>
         </View>
         );
     }
@@ -58,15 +58,15 @@ class SearchBar extends React.Component {
 
 export default createBottomTabNavigator({
     Settings: {screen: OptionScreen},
-    SEARCH: {screen: SearchBar},
-    Home: {screen: ChannelQueueScreen },
+    Search: {screen: SearchBar},
+    Home: {screen: ChannelQueueScreen},
 })
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 15,
-    backgroundColor: '#fff',
+    backgroundColor: '#89CFF0',
   },
   getStartedContainer: {
     fontSize:20,
@@ -82,9 +82,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   todoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
+    fontSize: 14,
+    color: '#000000',
     lineHeight: 24,
     textAlign: 'left',
+    paddingLeft: 30
   },
 });

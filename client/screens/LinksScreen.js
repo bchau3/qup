@@ -19,7 +19,7 @@ import HostQueueScreen from './HostQueueScreen';
 class LinksScreen extends React.Component {
 
   static navigationOptions = {
-    title: 'LINK',
+    title: 'Account Link',
     header: null,
   }
 
@@ -34,10 +34,19 @@ class LinksScreen extends React.Component {
         
 
         <View style={styles.getStartedContainer}> 
-          <Text>!PLEASE LINK YOUR SPOTIFY ACCOUNT!</Text>
-          <Button title='Link Account' onPress={()=>{navigate('Links')}}/>
-          <Button title='I DONT WANNA' onPress={()=>{this.props.navigation.goBack(null)}}/>
-
+          <Text style={styles.linkPrompt}>Link your Spotify Premium Account!</Text>
+          <TouchableOpacity
+            style = {styles.buttonStyle}
+            onPress = {() => {navigate('Links')}}
+            underlayColor = '#fff'>
+            <Text style = {styles.buttonStyleText}>Link Account</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style = {styles.buttonStyle}
+            onPress = {() => {this.props.navigation.goBack(null)}}
+            underlayColor = '#fff'>
+            <Text style = {styles.buttonStyleText}>Cancel</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>  
     </View>
@@ -53,9 +62,19 @@ class SignInOption extends React.Component {
         style={styles.container}
         contentContainerStyle={styles.contentContainer}>
       <View style={styles.getStartedContainer}> 
-       <Text>!SIGN ME IN!</Text>
-          <Button title='SUCCESS' onPress={()=>{alert('SUCC IT!!!!! :)'), this.props.navigation.navigate('Host')}}/>
-          <Button title='OOPS NO' onPress={()=>{alert('failed to link your account'), this.props.navigation.goBack(null)}}/>
+       <Text style = {styles.linkPrompt}>Provide login credentials!</Text>
+          <TouchableOpacity
+            style = {styles.buttonStyle}
+            onPress = {() => {alert('Successfully linked account!'), this.props.navigation.navigate('Host')}}
+            underlayColor = '#fff'>
+            <Text style = {styles.buttonStyleText}>Success!</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style = {styles.buttonStyle}
+            onPress={()=>{alert('Failed to link your account...'), this.props.navigation.goBack(null)}}            
+            underlayColor = '#fff'>
+            <Text style = {styles.buttonStyleText}>Fail!</Text>
+          </TouchableOpacity>
       </View>
       </ScrollView>  
     </View>
@@ -82,7 +101,30 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 15,
-    backgroundColor: '#fff',
+    backgroundColor: '#89CFF0',
+  },
+  linkPrompt: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    textAlign: 'center',    
+  },
+  buttonStyle: {
+    marginRight:100,
+    marginLeft:100,
+    marginTop:10,
+    paddingTop:10,
+    paddingBottom:10,
+    backgroundColor:'#ffb6c1',
+    borderRadius:10,
+    borderWidth: 1,
+    borderColor: '#000000'
+  },
+  buttonStyleText: {
+    color:'#000000',
+    textAlign:'center',
+    paddingLeft : 20,
+    paddingRight : 20,
+    fontSize : 15
   },
 });
 

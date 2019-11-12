@@ -15,11 +15,9 @@ import {
 import { createBottomTabNavigator } from 'react-navigation'
 import OptionScreen from './OptionScreen';
 
-
 class HostQueueScreen extends React.Component {
-
   static navigationOptions = {
-    title: 'QUEUE',
+    title: 'Queue',
   }
 
   render(){ 
@@ -47,13 +45,19 @@ class HostQueueScreen extends React.Component {
   );
   }
 }
-
+// left off on this, make the entire screen blue not just the text
 class SearchBar extends React.Component {
     render(){
         return (
-        <View style={styles.getStartedContainer}> 
-         <Text>!SEARCH!</Text>
-         <Text>!SEARCH BAR IS HERE!</Text>
+        <View style={styles.container}> 
+          <ScrollView
+            style={styles.container}
+            contentContainerStyle={styles.contentContainer}>
+            <View style={styles.getStartedContainer}> 
+              <Text>!SEARCH!</Text>
+              <Text>!SEARCH BAR IS HERE!</Text>
+            </View>
+          </ScrollView>  
         </View>
         );
     }
@@ -61,7 +65,7 @@ class SearchBar extends React.Component {
 
 export default createBottomTabNavigator({
     Home: {screen: HostQueueScreen },
-    SEARCH: {screen: SearchBar},
+    Search: {screen: SearchBar},
     Settings: {screen: OptionScreen},
 })
 
@@ -69,11 +73,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 15,
-    backgroundColor: '#fff',
+    backgroundColor: '#89CFF0',
   },
   getStartedContainer: {
     fontSize:20,
-    backgroundColor:"white",
+    backgroundColor:'#89CFF0',
     alignItems: 'center',
     marginHorizontal: 0,
     marginVertical:90

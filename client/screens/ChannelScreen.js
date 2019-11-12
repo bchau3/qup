@@ -19,7 +19,7 @@ import ChannelQueueScreen from './ChannelQueueScreen';
 class ChannelScreen extends React.Component {
   
   static navigationOptions = {
-      title: "FIND A CHANNEL TO JOIN",
+      title: "Find a channel to join",
   }
   
     render() {
@@ -27,9 +27,12 @@ class ChannelScreen extends React.Component {
     <ScrollView style={styles.container}>
        
        <View style={styles.getStartedContainer}> 
-         
-          <Button title='THIS IS THIS THE CHANNEL U WANTED :)' onPress={()=>{this.props.navigation.navigate('Queue')}}/>
-
+          <TouchableOpacity
+            style = {styles.buttonStyle}
+            onPress = {() => {this.props.navigation.navigate('Queue')}}
+            underlayColor = '#fff'>
+            <Text style = {styles.buttonStyleText}>This is the channel you wanted!</Text>
+          </TouchableOpacity>
         </View>
 
        <Text style={styles.todoText}>
@@ -80,11 +83,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 15,
-    backgroundColor: '#fff',
+    backgroundColor: '#89CFF0',
   },
   getStartedContainer: {
     fontSize:20,
-    backgroundColor:"white",
+    backgroundColor: '#89CFF0',
     alignItems: 'center',
     marginHorizontal: 0,
     marginVertical:90
@@ -97,8 +100,27 @@ const styles = StyleSheet.create({
   },
   todoText: {
     fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
+    color: '#000000',
     lineHeight: 24,
     textAlign: 'left',
+    paddingLeft: 30
   },
+  buttonStyle:{
+    marginRight:40,
+    marginLeft:40,
+    marginTop:10,
+    paddingTop:10,
+    paddingBottom:10,
+    backgroundColor:'#ffb6c1',
+    borderRadius:10,
+    borderWidth: 1,
+    borderColor: '#000000'
+  },
+  buttonStyleText:{
+      color:'#000000',
+      textAlign:'center',
+      paddingLeft : 20,
+      paddingRight : 20,
+      fontSize : 15
+  }
 });
