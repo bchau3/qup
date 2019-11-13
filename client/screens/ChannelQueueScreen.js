@@ -80,7 +80,7 @@ class SearchBarScreen extends React.Component {
 export default createBottomTabNavigator({
   OPTION: { screen: OptionScreen },
   SEARCH: { screen: SearchBarScreen },
-  Home: { screen: ChannelQueueScreen },
+  HOME: { screen: ChannelQueueScreen },
 })
 
 const styles = StyleSheet.create({
