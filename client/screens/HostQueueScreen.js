@@ -74,11 +74,12 @@ class SearchBarScreen extends React.Component {
         <SearchBar
           inputStyle={{ backgroundColor: '#ffb6c1' }}
           containerStyle={{ backgroundColor: '#DB7093', borderWidth: 1, borderRadius: 5 }}
+          inputContainerStyle={{backgroundColor: '#ffb6c1' }}
           placeholderTextColor={'#436EEE'}
-          placeholder={'Search...'}
+          placeholder={'Search for a song'}
           onChangeText={this.updateSearch}
           value={search}
-          platform='ios'
+          showCancel={true}
         />
         <ScrollView
           style = {styles.container}

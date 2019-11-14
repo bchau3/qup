@@ -68,13 +68,19 @@ class SearchBarScreen extends React.Component {
   };
 
   render() {
-    return (
+    const { search } = this.state;
+
+    return (          
       <View style = {styles.container}>
         <SearchBar
-          inputStyle={{ backgroundColor: 'black' }}
-          containerStyle={{ backgroundColor: '#ffb6c1', borderWidth: 1, borderRadius: 5 }}
-          placeholderTextColor={'grey'}
-          placeholder={'Search...'}
+          inputStyle={{ backgroundColor: '#ffb6c1' }}
+          containerStyle={{ backgroundColor: '#DB7093', borderWidth: 1, borderRadius: 5 }}
+          inputContainerStyle={{backgroundColor: '#ffb6c1' }}
+          placeholderTextColor={'#436EEE'}
+          placeholder={'Search for a song'}
+          onChangeText={this.updateSearch}
+          value={search}
+          showCancel={true}
         />
         <ScrollView
           style = {styles.container}
@@ -94,7 +100,6 @@ export default createBottomTabNavigator({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 15,
     backgroundColor: '#89Cff0',
   },
   getStartedContainer: {
