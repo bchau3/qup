@@ -1,14 +1,13 @@
+const config = require('./config');
 const Pool = require('pg').Pool
-// Move to seperate file outside version control
-// For production environment
-const pool = new Pool({
-    user: 'me',
-    host: 'localhost',
-    database: 'qup',
-    password: 'password',
-    port: 5432,
-})
 
+const pool = new Pool({
+    user: global.gConfig.database.user,
+    host: global.gConfig.database.host,
+    database: global.gConfig.database.database,
+    password: global.gConfig.database.password,
+    port: global.gConfig.database.port,
+})
 
 // GET (/channel/:id)
 // get all info of channel by id
