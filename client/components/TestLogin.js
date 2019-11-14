@@ -3,7 +3,7 @@ import { Button, Text, View } from 'react-native';
 import { AuthSession, apisAreAvailable } from 'expo';
 
 // Authentication APIs
-import {storeCodeAtId} from '../api/auth.js';
+import {storeCodeAtId, getAuthToken} from '../api/auth.js';
 
 // Get server info from config file
 import {server_url} from '../config.js';
@@ -72,9 +72,11 @@ export default class TestLogin extends Component {
         // Params has format {code: "", state: ""}
         console.log(result.params);
         this.setState({access: result.params});
-
+        
+        
 
         // TODO: Get accessToken from code
+        console.log(getAuthToken(result.params.code, redirectUrl));
 
         // TODO: Get username with accessToken
 

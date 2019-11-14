@@ -86,6 +86,8 @@ app.use(
         // after checking the state parameter
         const code = req.query.code;
         const redirect_uri = req.query.redirect_uri;
+        console.log(code);
+        console.log(redirect_uri);
             var authOptions = {
                 url: 'https://accounts.spotify.com/api/token',
                 form: {
