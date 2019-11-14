@@ -12,6 +12,8 @@ import {
   Button
 } from 'react-native';
 
+import TestLogin from '../components/TestLogin';
+
 // for screen switch 
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack'
@@ -113,6 +115,7 @@ class SignInScreen extends React.Component {
             <Button title='SUCCESS' onPress={() => { alert('SUCC IT!!!!! :)'), this.props.navigation.navigate('Host') }} />
             <Button title='OOPS NO' onPress={() => { alert('failed to link your account'), this.props.navigation.goBack(null) }} />
           </View>
+          <TestLogin />
         </ScrollView>
       </View>
     );
