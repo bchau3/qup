@@ -36,9 +36,12 @@ class HomeScreen extends React.Component {
           contentContainerStyle={styles.contentContainer}>
           <View style={styles.getStartedContainer}>            
             <Text>Welcome to Q-Up! Please select an option.</Text>
+            <Image 
+              source={require('./qup_logo.png')}
+              style={styles.imageStyle} />               
             <TouchableOpacity
               style = {styles.buttonStyle}
-              onPress = {() => {navigate('Links')}} 
+              onPress = {() => {navigate('Links')}}
               underlayColor = '#fff'>
               <Text style = {styles.buttonText}>Create Channel</Text>
             </TouchableOpacity>
@@ -47,7 +50,7 @@ class HomeScreen extends React.Component {
               onPress = {() => {navigate('Channels')}} 
               underlayColor = '#fff'>
               <Text style = {styles.buttonText}>Join Channel</Text>
-            </TouchableOpacity>
+            </TouchableOpacity>     
           </View>
         </ScrollView>
       </View>
@@ -156,13 +159,12 @@ class ChannelScreen extends React.Component {
   render() {
     return (
       <ScrollView style={styles.container}>
-
         <View style={styles.getStartedContainer}>
           <TouchableOpacity
             style = {styles.buttonStyle}
             onPress = {() => { this.props.navigation.navigate('Queue') }} 
             underlayColor = '#fff'>
-            <Text style = {styles.buttonText}>THIS IS THE CHANNEL U WANTED :)</Text>
+            <Text style = {styles.buttonText}>Channel Joined</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style = {styles.buttonStyle}
@@ -227,28 +229,33 @@ const styles = StyleSheet.create({
     backgroundColor: "#89CFF0",
     alignItems: 'center',
     marginHorizontal: 0,
-    marginVertical: 90
+    marginVertical: 30
   },
   todoText: {
     textAlign: 'left',
     fontSize: 15
   },
   buttonStyle: {
-    marginRight: 20,
-    marginLeft: 20,
+    marginRight: 10,
+    marginLeft: 10,
     marginTop: 10,
     paddingTop: 10,
     paddingBottom: 10,
     backgroundColor: '#ffb6c1',
-    borderRadius: 10,
+    borderRadius: 50,
     borderWidth: 1,
-    borderColor: '#000000'
+    borderColor: '#000000',
+    width: 200,
   },
   buttonText: {
     color: '#000000',
     textAlign: 'center',
-    paddingLeft: 30,
-    paddingRight: 30,
-    fontSize: 20
+    paddingLeft: 20,
+    paddingRight: 20,
+    fontSize: 15
+  },
+  imageStyle: {
+    width: 250,
+    height: 250,
   }
 });

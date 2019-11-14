@@ -69,13 +69,18 @@ class SearchBarScreen extends React.Component {
 
   render() {
     return (
-
-      <SearchBar
-        inputStyle={{ backgroundColor: 'black' }}
-        containerStyle={{ backgroundColor: 'white', borderWidth: 1, borderRadius: 5 }}
-        placeholderTextColor={'grey'}
-        placeholder={'Search...'}
-      />
+      <View style = {styles.container}>
+        <SearchBar
+          inputStyle={{ backgroundColor: 'black' }}
+          containerStyle={{ backgroundColor: '#ffb6c1', borderWidth: 1, borderRadius: 5 }}
+          placeholderTextColor={'grey'}
+          placeholder={'Search...'}
+        />
+        <ScrollView
+          style = {styles.container}
+          contentContainerStyle = {styles.contentContainer}>
+        </ScrollView>
+      </View>
     );
   }
 }
@@ -98,17 +103,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 0,
     marginVertical: 90
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-  todoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'left',
   },
 });
