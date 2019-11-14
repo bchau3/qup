@@ -10,7 +10,7 @@ import {
 
 // for screen switch 
 import { createBottomTabNavigator } from 'react-navigation'
-import OptionScreen from './OptionScreen';
+import OptionScreen from './option_screen';
 import { SearchBar } from 'react-native-elements';
 
 import TabBarIcon from '../components/TabBarIcon'; // for bar icons
@@ -24,9 +24,6 @@ class ChannelQueueScreen extends React.Component {
 
   static navigationOptions = {
     tabBarLabel: 'QUEUE',
-    tabBarIcon: ({ focused }) => (
-      <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
-    ),
   }
 
   render() {
@@ -77,11 +74,17 @@ class SearchBarScreen extends React.Component {
   }
 }
 
-export default createBottomTabNavigator({
-  OPTION: { screen: OptionScreen },
-  SEARCH: { screen: SearchBarScreen },
-  HOME: { screen: ChannelQueueScreen },
-})
+// create bottom tabs to switch screens
+export default createBottomTabNavigator(
+  {
+    OPTION: { screen: OptionScreen },
+    SEARCH: { screen: SearchBarScreen },
+    HOME: { screen: ChannelQueueScreen },
+  },
+  {
+    initialRouteName: 'SEARCH'
+  }
+)
 
 const styles = StyleSheet.create({
   container: {

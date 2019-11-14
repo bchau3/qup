@@ -3,9 +3,7 @@ import {
     ScrollView,
     StyleSheet,
     Text,
-    TouchableOpacity,
     View,
-    Button
   } from 'react-native';
 
 // for screen switch 
@@ -65,14 +63,15 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       paddingTop: 15,
-      backgroundColor: '#fff',
+      backgroundColor: '#89CFF0',
     },
     getStartedContainer: {
       fontSize:20,
-      backgroundColor:"white",
-      alignItems: 'center',
+      backgroundColor:'#89CFF0',
+      alignItems: 'flex-start',
       marginHorizontal: 0,
-      marginVertical:90
+      marginVertical:90,
+      paddingLeft: 30
     },
     getStartedText: {
       fontSize: 17,

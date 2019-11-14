@@ -1,7 +1,5 @@
-import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import {
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -10,23 +8,18 @@ import {
 
 // for screen switch 
 import { createBottomTabNavigator } from 'react-navigation'
-import OptionScreen from './OptionScreen';
+import OptionScreen from './option_screen';
 import { SearchBar } from 'react-native-elements';
 
-import TabBarIcon from '../components/TabBarIcon'; // for bar icons
 
-/* ChannelQueueScreen:
- *    This screen shows the song queue
- *    It should show each song as a tab stacking in a scrollview.
- *    Each song tab should be able to be swipe to open options to up and down vote songs
+/* HostQueueScreen:
+ *    Screen shows the song queue that are made for the host only
+ *    It has all functionality of a Channelmate Queue, but with more
+ *    options such as skip song, etc.
  */
-class ChannelQueueScreen extends React.Component {
-
+class HostQueueScreen extends React.Component {
   static navigationOptions = {
     tabBarLabel: 'QUEUE',
-    tabBarIcon: ({ focused }) => (
-      <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
-    ),
   }
 
   render() {
@@ -43,7 +36,11 @@ class ChannelQueueScreen extends React.Component {
             <Text>1.SHOW QUEUE IS EMPTY</Text>
             <Text>2.EACH SONG HAS ITS OWN SECTION</Text>
             <Text>3.ABLE TO SWIPE THE SONG TABS</Text>
-            <Text>4.TAB GIVE OPTIONS TO DELETE (SONG OWNER ONLY)</Text>
+            <Text>3-1.HOST HAS UPVOTE, DOWNVOTW</Text>
+            <Text>4.TAB GIVE OPTIONS TO DELETE ANY SONGS</Text>
+            <Text>5.CURRENT SONG SHOULD HAS A WINDOW AT BOTTOM</Text>
+            <Text>5-1.THE HOST CAN SKIP CURRENT SONG</Text>
+
           </View>
         </ScrollView>
       </View>
@@ -66,7 +63,6 @@ class SearchBarScreen extends React.Component {
 
   render() {
     return (
-
       <SearchBar
         inputStyle={{ backgroundColor: 'black' }}
         containerStyle={{ backgroundColor: 'white', borderWidth: 1, borderRadius: 5 }}
@@ -77,11 +73,17 @@ class SearchBarScreen extends React.Component {
   }
 }
 
-export default createBottomTabNavigator({
-  OPTION: { screen: OptionScreen },
-  SEARCH: { screen: SearchBarScreen },
-  HOME: { screen: ChannelQueueScreen },
-})
+// using createBottomTabNavigator, we can create tabs on the bottom of the page to switch screens
+export default createBottomTabNavigator(
+  {
+    OPTION: { screen: OptionScreen },
+    SEARCH: { screen: SearchBarScreen },
+    HOME: { screen: HostQueueScreen },
+  },
+  {
+    initialRouteName: 'SEARCH'
+  }
+)
 
 const styles = StyleSheet.create({
   container: {
@@ -103,10 +105,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   todoText: {
-    fontSize: 14,
-    color: '#000000',
+    fontSize: 17,
+    color: 'rgba(96,100,109, 1)',
     lineHeight: 24,
     textAlign: 'left',
-    paddingLeft: 30
   },
 });

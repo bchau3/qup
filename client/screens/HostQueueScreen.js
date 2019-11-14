@@ -1,14 +1,10 @@
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import {
-  Image,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  View,
-  Button
+  View
 } from 'react-native';
 
 // for screen switch 
@@ -23,9 +19,8 @@ import { SearchBar } from 'react-native-elements';
  *    options such as skip song, etc.
  */
 class HostQueueScreen extends React.Component {
-
   static navigationOptions = {
-    title: 'QUEUE',
+    title: 'Queue',
   }
 
   render() {
@@ -92,7 +87,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 15,
-    backgroundColor: '#fff',
+    backgroundColor: '#89CFF0',
   },
   getStartedContainer: {
     fontSize: 20,

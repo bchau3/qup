@@ -1,6 +1,7 @@
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import {
+  AppRegistry,    // change background color
   Image,
   Platform,
   ScrollView,
@@ -24,7 +25,7 @@ import ChannelQueueScreen from './ChannelQueueScreen';
 class HomeScreen extends React.Component {
 
   static navigationOptions = {
-    title: 'WELCOME',
+    title: 'Q-Up Login Screen',
   }
 
   render() {
@@ -188,7 +189,7 @@ export default AppContainer;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#89CFF0',
   },
   developmentModeText: {
     marginBottom: 20,
@@ -281,5 +282,25 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     color: '#2e78b7'
+  },
+
+  loginScreenButton:{
+    marginRight:40,
+    marginLeft:40,
+    marginTop:10,
+    paddingTop:10,
+    paddingBottom:10,
+    backgroundColor:'#ffb6c1',
+    borderRadius:10,
+    borderWidth: 1,
+    borderColor: '#000000'
+  },
+  loginText:{
+      color:'#000000',
+      textAlign:'center',
+      paddingLeft : 30,
+      paddingRight : 30,
+      fontSize : 25
   }
+
 });
