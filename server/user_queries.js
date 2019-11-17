@@ -1,5 +1,6 @@
 const config = require('./config');
 const Pool = require('pg').Pool
+const spotifyAPI = require('./spotify_api');
 
 const pool = new Pool({
   user: global.gConfig.database.user,
@@ -97,6 +98,27 @@ const updateUser = (request, response) => {
         response.status(200).send(`User deleted with ID: ${id}`)
       })
     }
+
+    /** Update database of user with username to new code
+     * 
+     * @param {*} access_token User's access token
+     * @param {*} code User's code to be inserted into database
+     */
+    const storeCodeAtUser = (code, redirect_uri, access_token) => {
+      // Get username of user
+      spotifyAPI.getUserData(code, redirect_uri, access_token, function(code, redirect_uri, body) {
+        // Do something with username of user
+        let userID = body.id;
+
+        pool.query("INSERT INTO users (username, code, redirect_uri) VALUES ($1, $2, $3) ON CONFLICT (username) DO UPDATE SET code = EXCLUDED.code, redirect_uri = EXCLUDED.redirect_uri;", [userID, code], (error, results) => {
+          if (error) {
+            throw error;
+          }
+          console.log(`User ${userID} updated with code ${code}`);
+        });
+
+      });
+    }
     
     module.exports = {
       getUserById,
@@ -105,4 +127,5 @@ const updateUser = (request, response) => {
       updateUser,
       removeUserFromChannel,
       deleteUser,
+      storeCodeAtUser
     }

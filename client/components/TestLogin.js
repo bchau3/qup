@@ -11,14 +11,15 @@ import {server_url} from '../config.js';
 export default class TestLogin extends Component {
     state = {
         userInfo: null,
-        access: null,
-        authToken: null,
+        code: null,
+        access_token: null,
+        refresh_token: null,
     };
 
     render() {
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                {!this.state.access ? (
+                {!this.state.code ? (
                     <Button title="Open Spotify Auth" onPress={this._handlePressAsync} />
                 ) : (
                         this._renderUserInfo()
@@ -32,9 +33,10 @@ export default class TestLogin extends Component {
     _renderUserInfo = () => {
         return (
             <View style={{ alignItems: 'center' }}>
-                <Text>Code: {this.state.access.code} </Text>
-                <Text>State: {this.state.access.state} </Text>
-                <Text>AuthToken: {this.state.authToken}</Text>
+                <Text>Code: {this.state.code.code} </Text>
+                <Text>State: {this.state.code.state} </Text>
+                <Text>AccessToken: {this.state.access_token}</Text>
+                <Text>RefreshToken: {this.state.refresh_token}</Text>
                 <Button onPress={this._handlePressStoreCodeAsync.bind(this, )} title="Store Code"> </Button>
                 <Button title="Get Auth Token"> </Button>
                 <Button title="Refresh Auth Token"> </Button>
@@ -71,22 +73,17 @@ export default class TestLogin extends Component {
 
         // Params has format {code: "", state: ""}
         console.log(result.params);
-        this.setState({access: result.params});
+        this.setState({code: result.params});
         
-        
+        // Get accessToken from code
+        let authInfo = await getAuthToken(result.params.code, redirectUrl);
 
-        // TODO: Get accessToken from code
-        console.log(getAuthToken(result.params.code, redirectUrl));
-
-        // TODO: Get username with accessToken
-
-        // TODO: Store code @ user w/ username in database
-        let storeResponse = await storeCodeAtId(this.state.access.code, 1);
+        this.setState({access_token: authInfo.access_token, refresh_token: authInfo.refresh_token});
     };
 
     // Clear userInfo to restart auth process
     clearInfo = () => {
-        this.setState({access: null});
+        this.setState({code: null, access_token: null, refresh_token: null});
     }
 
 }

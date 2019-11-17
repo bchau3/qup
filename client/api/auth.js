@@ -1,6 +1,5 @@
 import { server_url } from '../config.js';
-var querystring = require('querystring');
-
+const queryString = require('query-string');
 
 /**
 * Function to get all user information and update with new code
@@ -72,18 +71,20 @@ export async function putCode(url = '', data = {}){
 export async function getAuthToken(code, redirect_url) {
     console.log(code + " " + redirect_url);
 
-    const response = await fetch({server_url}.server_url + "/callback", {
-        headers: {
-            'Content-Type': 'application/json'
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        redirect: 'follow', // manual, *follow, error
-        body: JSON.stringify({
-            code: code,
-            redirect_url: redirect_url
-        }) // body data type must match "Content-Type" header
-    });
-    return await response.json(); // parses JSON response into native JavaScript objects
+    const encodedCode = encodeURIComponent(code);
+    const encodedRedirect_url = encodeURIComponent(redirect_url);
+
+    try {
+        let response = await fetch(
+            `${server_url}/callback?code=${encodedCode}&redirect_uri=${encodedRedirect_url}`
+        );
+        let responseText = await response.text();
+        let responseJSON = await queryString.parse(responseText);
+        console.log(responseJSON);
+        return responseJSON;
+    } catch(error){
+        console.error(error);
+    }
 }
 
 

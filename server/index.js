@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const userDB = require('./user_queries')
 const channelDB = require('./channel_queries')
+const spotifyAPI = require('./spotify_api');
 const songDB = require('./song_queries')
 
 var request = require('request'); // "Request" library
@@ -81,13 +82,11 @@ app.use(
     });
     
     app.get('/callback', function (req, res) {
-        
         // your application requests refresh and access tokens
         // after checking the state parameter
         const code = req.query.code;
         const redirect_uri = req.query.redirect_uri;
-        console.log(code);
-        console.log(redirect_uri);
+ 
             var authOptions = {
                 url: 'https://accounts.spotify.com/api/token',
                 form: {
@@ -107,16 +106,8 @@ app.use(
                     var access_token = body.access_token,
                     refresh_token = body.refresh_token;
                     
-                    var options = {
-                        url: 'https://api.spotify.com/v1/me',
-                        headers: { 'Authorization': 'Bearer ' + access_token },
-                        json: true
-                    };
-                    
-                    // use the access token to access the Spotify Web API
-                    request.get(options, function (error, response, body) {
-                        console.log(body);
-                    });
+                    // Store code at user with username in database
+                    userDB.storeCodeAtUser(code, redirect_uri, access_token);
                     
                     // we can also pass the token to the browser to make requests from there
                     res.status(201).send(
@@ -156,7 +147,7 @@ app.use(
             }
         });
     });
-    
+
     
     app.listen(global.gConfig.node_port, () => {
         console.log(`App running on port ${global.gConfig.node_port}.`)
