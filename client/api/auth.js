@@ -1,19 +1,20 @@
 import { server_url } from '../config.js';
+var querystring = require('querystring');
 
 
 /**
- * Function to get all user information and update with new code
- * Calls PUT api to update user in database
- * 
- * @param {*} code The spotify code to store
- * @param {*} id The id of user to store code to
- */
+* Function to get all user information and update with new code
+* Calls PUT api to update user in database
+* 
+* @param {*} code The spotify code to store
+* @param {*} id The id of user to store code to
+*/
 export async function storeCodeAtId(code, id){
     try {
         let users = await getUserWithId(id);
-
+        
         users[0].code = code;
-
+        
         let user = users[0];
         console.log({server_url}.server_url + "/user/")
         user = await putCode({ server_url }.server_url + '/user/' + {id}.id, {
@@ -29,28 +30,28 @@ export async function storeCodeAtId(code, id){
 
 
 /** 
- * API to make GET request of user in db with 'id'
- * 
- * @param {*} id id of user to get db entry of
- */
+* API to make GET request of user in db with 'id'
+* 
+* @param {*} id id of user to get db entry of
+*/
 export function getUserWithId(id) {
     return fetch({ server_url }.server_url + '/user/' + { id }.id)
-        .then((response) => response.json())
-        .then((responseJson) => {
-            console.log(responseJson)
-            return responseJson;
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+    .then((response) => response.json())
+    .then((responseJson) => {
+        console.log(responseJson)
+        return responseJson;
+    })
+    .catch((error) => {
+        console.error(error);
+    });
 }
 
 /**
- * API makes PUT request to update user in db
- * 
- * @param {*} url API url for user with id
- * @param {*} data The code to input into db
- */
+* API makes PUT request to update user in db
+* 
+* @param {*} url API url for user with id
+* @param {*} data The code to input into db
+*/
 export async function putCode(url = '', data = {}){
     // Default options are marked with *
     const response = await fetch(url, {
@@ -63,6 +64,29 @@ export async function putCode(url = '', data = {}){
     });
     return await response; // parses JSON response into native JavaScript objects
 }
+
+
+// get token from server
+// store 
+
+export async function getAuthToken(code, redirect_url) {
+    console.log(code + " " + redirect_url);
+
+    const response = await fetch({server_url}.server_url + "/callback", {
+        headers: {
+            'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: 'follow', // manual, *follow, error
+        body: JSON.stringify({
+            code: code,
+            redirect_url: redirect_url
+        }) // body data type must match "Content-Type" header
+    });
+    return await response.json(); // parses JSON response into native JavaScript objects
+}
+
+
 
 // Example API Call
 // putCode = async (url = '', data = {}) => {
