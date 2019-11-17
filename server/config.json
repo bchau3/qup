@@ -6,10 +6,10 @@
         "node_port": 3000,
         "json_indentation": 4,
         "database": {
-            "user": "me",
-            "host": "localhost",
+            "user": "postgres",
+            "host": "qup-test-1.chvizj59wle9.us-west-2.rds.amazonaws.com",
             "database": "qup",
-            "password": "password",
+            "password": "queueup2019",
             "port": 5432
         }
     },
