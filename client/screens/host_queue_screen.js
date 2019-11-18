@@ -1,19 +1,14 @@
-import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import {
-  Image,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  View,
-  Button
+  View
 } from 'react-native';
 
 // for screen switch 
 import { createBottomTabNavigator } from 'react-navigation'
-import OptionScreen from './OptionScreen';
+import OptionScreen from './option_screen';
 import { SearchBar } from 'react-native-elements';
 
 
@@ -23,9 +18,8 @@ import { SearchBar } from 'react-native-elements';
  *    options such as skip song, etc.
  */
 class HostQueueScreen extends React.Component {
-
   static navigationOptions = {
-    title: 'Queue',
+    tabBarLabel: 'QUEUE',
   }
 
   render() {
@@ -46,6 +40,7 @@ class HostQueueScreen extends React.Component {
             <Text>4.TAB GIVE OPTIONS TO DELETE ANY SONGS</Text>
             <Text>5.CURRENT SONG SHOULD HAS A WINDOW AT BOTTOM</Text>
             <Text>5-1.THE HOST CAN SKIP CURRENT SONG</Text>
+
           </View>
         </ScrollView>
       </View>
@@ -57,6 +52,9 @@ class HostQueueScreen extends React.Component {
  *    This screen has a search bar allows user to search a song from Spotify
  */
 class SearchBarScreen extends React.Component {
+  static navigationOptions = {
+    tabBarLabel: "SEARCH"
+  };
 
   state = {
     search: '',
@@ -67,58 +65,66 @@ class SearchBarScreen extends React.Component {
   };
 
   render() {
-    const { search } = this.state;
-
-    return (          
-      <View style = {styles.container}>
+    return (
+      <View style={styles.container}>
         <SearchBar
-          inputStyle={{ backgroundColor: '#ffb6c1' }}
-          containerStyle={{ backgroundColor: '#DB7093', borderWidth: 1, borderRadius: 5 }}
-          inputContainerStyle={{backgroundColor: '#ffb6c1' }}
-          placeholderTextColor={'#436EEE'}
-          placeholder={'Search for a song'}
+          inputStyle={{ backgroundColor: "#ffb6c1" }}
+          containerStyle={{
+            backgroundColor: "#DB7093",
+            borderWidth: 1,
+            borderRadius: 5
+          }}
+          inputContainerStyle={{ backgroundColor: "#ffb6c1" }}
+          placeholderTextColor={"#436EEE"}
+          placeholder={"Search for a song"}
           onChangeText={this.updateSearch}
-          value={search}
+          value={this.state.search}
           showCancel={true}
         />
         <ScrollView
-          style = {styles.container}
-          contentContainerStyle = {styles.contentContainer}>
-        </ScrollView>
+          style={styles.container}
+          contentContainerStyle={styles.contentContainer}
+        ></ScrollView>
       </View>
     );
   }
 }
 
 // using createBottomTabNavigator, we can create tabs on the bottom of the page to switch screens
-export default createBottomTabNavigator({
-  Home: { screen: HostQueueScreen },
-  Search: { screen: SearchBarScreen },
-  Options: { screen: OptionScreen },
-})
+export default createBottomTabNavigator(
+  {
+    OPTION: { screen: OptionScreen },
+    SEARCH: { screen: SearchBarScreen },
+    HOME: { screen: HostQueueScreen },
+  },
+  {
+    initialRouteName: 'SEARCH'
+  }
+)
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#89Cff0',
+    paddingTop: 15,
+    backgroundColor: "#89Cff0"
   },
   getStartedContainer: {
     fontSize: 20,
     backgroundColor: "#89Cff0",
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
     marginHorizontal: 20,
     marginVertical: 60
   },
   getStartedText: {
     fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
+    color: "rgba(96,100,109, 1)",
     lineHeight: 24,
-    textAlign: 'center',
+    textAlign: "center"
   },
   todoText: {
     fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
+    color: "rgba(96,100,109, 1)",
     lineHeight: 24,
-    textAlign: 'left',
-  },
+    textAlign: "left"
+  }
 });
