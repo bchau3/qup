@@ -37,18 +37,12 @@ export default class TestLogin extends Component {
                 <Text>State: {this.state.code.state} </Text>
                 <Text>AccessToken: {this.state.access_token}</Text>
                 <Text>RefreshToken: {this.state.refresh_token}</Text>
-                <Button onPress={this._handlePressStoreCodeAsync.bind(this, )} title="Store Code"> </Button>
                 <Button title="Get Auth Token"> </Button>
                 <Button title="Refresh Auth Token"> </Button>
                 <Button onPress={this.clearInfo} title="Clear info"> </Button>
             </View>
         );
     };
-
-    // Stores the current code at user with 'id' in database
-    _handlePressStoreCodeAsync = async (code, id) => {
-        storeCodeAtId(code, id);
-    }
 
     // Handle Login
     _handlePressAsync = async () => {
