@@ -78,6 +78,7 @@ export default class TestLogin extends Component {
         // Get accessToken from code
         let authInfo = await getAuthToken(result.params.code, redirectUrl);
 
+        // TODO: Remove auth tokens from client side. This is just for testing purposes
         this.setState({access_token: authInfo.access_token, refresh_token: authInfo.refresh_token});
     };
 

@@ -109,8 +109,11 @@ const updateUser = (request, response) => {
       spotifyAPI.getUserData(code, redirect_uri, access_token, function(code, redirect_uri, body) {
         // Do something with username of user
         let userID = body.id;
-
-        pool.query("INSERT INTO users (username, code) VALUES ($1, $2) ON CONFLICT (username) DO UPDATE SET code = EXCLUDED.code", [userID, code], (error, results) => {
+        let displayName = body.display_name;
+        let email = body.email;
+        console.log(body);
+        pool.query("INSERT INTO users (name, email, username, code) VALUES ($1, $2, $3, $4) ON CONFLICT (username) DO UPDATE SET name = EXCLUDED.name, email = EXCLUDED.email, code = EXCLUDED.code", 
+                   [displayName, email, userID, code], (error, results) => {
           if (error) {
             throw error;
           }
