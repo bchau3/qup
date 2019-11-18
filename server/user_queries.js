@@ -110,7 +110,7 @@ const updateUser = (request, response) => {
         // Do something with username of user
         let userID = body.id;
 
-        pool.query("INSERT INTO users (username, code, redirect_uri) VALUES ($1, $2, $3) ON CONFLICT (username) DO UPDATE SET code = EXCLUDED.code, redirect_uri = EXCLUDED.redirect_uri;", [userID, code], (error, results) => {
+        pool.query("INSERT INTO users (username, code) VALUES ($1, $2) ON CONFLICT (username) DO UPDATE SET code = EXCLUDED.code", [userID, code], (error, results) => {
           if (error) {
             throw error;
           }
