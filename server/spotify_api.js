@@ -1,7 +1,7 @@
 var request = require('request'); // "Request" library
 const querystring = require("querystring");
 
-function getUserData (code, access_token, callback) {
+function getUserData (code, redirect_uri, access_token, callback) {
 
     console.log("access_token in getUserData" + access_token);
 
