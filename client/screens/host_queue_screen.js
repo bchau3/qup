@@ -1,4 +1,3 @@
-import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import {
   ScrollView,
@@ -9,7 +8,7 @@ import {
 
 // for screen switch 
 import { createBottomTabNavigator } from 'react-navigation'
-import OptionScreen from './OptionScreen';
+import OptionScreen from './option_screen';
 import { SearchBar } from 'react-native-elements';
 
 
@@ -20,7 +19,7 @@ import { SearchBar } from 'react-native-elements';
  */
 class HostQueueScreen extends React.Component {
   static navigationOptions = {
-    title: 'Queue',
+    tabBarLabel: 'QUEUE',
   }
 
   render() {
@@ -53,6 +52,9 @@ class HostQueueScreen extends React.Component {
  *    This screen has a search bar allows user to search a song from Spotify
  */
 class SearchBarScreen extends React.Component {
+  static navigationOptions = {
+    tabBarLabel: "SEARCH"
+  };
 
   state = {
     search: '',
@@ -64,48 +66,65 @@ class SearchBarScreen extends React.Component {
 
   render() {
     return (
-
-      
-      <SearchBar
-        inputStyle={{ backgroundColor: 'black' }}
-        containerStyle={{ backgroundColor: 'white', borderWidth: 1, borderRadius: 5 }}
-        placeholderTextColor={'grey'}
-        placeholder={'SEARCH...'}
-      />
-        );
+      <View style={styles.container}>
+        <SearchBar
+          inputStyle={{ backgroundColor: "#ffb6c1" }}
+          containerStyle={{
+            backgroundColor: "#DB7093",
+            borderWidth: 1,
+            borderRadius: 5
+          }}
+          inputContainerStyle={{ backgroundColor: "#ffb6c1" }}
+          placeholderTextColor={"#436EEE"}
+          placeholder={"Search for a song"}
+          onChangeText={this.updateSearch}
+          value={this.state.search}
+          showCancel={true}
+        />
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.contentContainer}
+        ></ScrollView>
+      </View>
+    );
   }
 }
 
 // using createBottomTabNavigator, we can create tabs on the bottom of the page to switch screens
-export default createBottomTabNavigator({
-  Home: { screen: HostQueueScreen },
-  SEARCH: { screen: SearchBarScreen },
-  OPTION: { screen: OptionScreen },
-})
+export default createBottomTabNavigator(
+  {
+    OPTION: { screen: OptionScreen },
+    SEARCH: { screen: SearchBarScreen },
+    HOME: { screen: HostQueueScreen },
+  },
+  {
+    initialRouteName: 'SEARCH'
+  }
+)
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 15,
-    backgroundColor: '#89CFF0',
+    backgroundColor: "#89Cff0"
   },
   getStartedContainer: {
     fontSize: 20,
-    backgroundColor: "white",
-    alignItems: 'center',
-    marginHorizontal: 0,
-    marginVertical: 90
+    backgroundColor: "#89Cff0",
+    alignItems: "flex-start",
+    marginHorizontal: 20,
+    marginVertical: 60
   },
   getStartedText: {
     fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
+    color: "rgba(96,100,109, 1)",
     lineHeight: 24,
-    textAlign: 'center',
+    textAlign: "center"
   },
   todoText: {
     fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
+    color: "rgba(96,100,109, 1)",
     lineHeight: 24,
-    textAlign: 'left',
-  },
+    textAlign: "left"
+  }
 });

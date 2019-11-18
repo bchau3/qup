@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-import HomeScreen from './screens/HomeScreen';
+import HomeScreen from './screens/home_screen';
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
