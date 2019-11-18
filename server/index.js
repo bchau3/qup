@@ -86,31 +86,31 @@ app.use(
         // after checking the state parameter
         const code = req.query.code;
         const redirect_uri = req.query.redirect_uri;
- 
-            var authOptions = {
-                url: 'https://accounts.spotify.com/api/token',
-                form: {
-                    code: code,
-                    redirect_uri: redirect_uri,
-                    grant_type: 'authorization_code'
-                },
-                headers: {
-                    'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
-                },
-                json: true
-            };
-            
-            request.post(authOptions, function (error, response, body) {
-                if (!error && response.statusCode === 200) {
-                    
-                    var access_token = body.access_token,
-                    refresh_token = body.refresh_token;
-                    
-                    // Store code at user with username in database
-                    userDB.storeCodeAtUser(code, redirect_uri, access_token);
-                    
-                    // we can also pass the token to the browser to make requests from there
-                    res.status(201).send(
+        
+        var authOptions = {
+            url: 'https://accounts.spotify.com/api/token',
+            form: {
+                code: code,
+                redirect_uri: redirect_uri,
+                grant_type: 'authorization_code'
+            },
+            headers: {
+                'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+            },
+            json: true
+        };
+        
+        request.post(authOptions, function (error, response, body) {
+            if (!error && response.statusCode === 200) {
+                
+                var access_token = body.access_token,
+                refresh_token = body.refresh_token;
+                
+                // Store code at user with username in database
+                userDB.storeCodeAtUser(code, redirect_uri, access_token);
+                
+                // we can also pass the token to the browser to make requests from there
+                res.status(201).send(
                     querystring.stringify({
                         access_token: access_token,
                         refresh_token: refresh_token
@@ -122,34 +122,34 @@ app.use(
                     }));
                 }
             });
-    });
-    
-    app.get('/refresh_token', function (req, res) {
-        
-        // requesting access token from refresh token
-        var refresh_token = req.query.refresh_token;
-        var authOptions = {
-            url: 'https://accounts.spotify.com/api/token',
-            headers: { 'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) },
-            form: {
-                grant_type: 'refresh_token',
-                refresh_token: refresh_token
-            },
-            json: true
-        };
-        
-        request.post(authOptions, function (error, response, body) {
-            if (!error && response.statusCode === 200) {
-                var access_token = body.access_token;
-                res.send({
-                    'access_token': access_token
-                });
-            }
         });
-    });
-
-    
-    app.listen(global.gConfig.node_port, () => {
-        console.log(`App running on port ${global.gConfig.node_port}.`)
-    });
-    
+        
+        app.get('/refresh_token', function (req, res) {
+            
+            // requesting access token from refresh token
+            var refresh_token = req.query.refresh_token;
+            var authOptions = {
+                url: 'https://accounts.spotify.com/api/token',
+                headers: { 'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) },
+                form: {
+                    grant_type: 'refresh_token',
+                    refresh_token: refresh_token
+                },
+                json: true
+            };
+            
+            request.post(authOptions, function (error, response, body) {
+                if (!error && response.statusCode === 200) {
+                    var access_token = body.access_token;
+                    res.send({
+                        'access_token': access_token
+                    });
+                }
+            });
+        });
+        
+        
+        app.listen(global.gConfig.node_port, () => {
+            console.log(`App running on port ${global.gConfig.node_port}.`)
+        });
+        

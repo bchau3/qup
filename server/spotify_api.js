@@ -1,7 +1,7 @@
 var request = require('request'); // "Request" library
 const querystring = require("querystring");
 
-function getUserData (code, redirect_uri, access_token, callback) {
+function getUserData(code, redirect_uri, access_token, callback) {
 
     console.log("access_token in getUserData" + access_token);
 
@@ -12,7 +12,7 @@ function getUserData (code, redirect_uri, access_token, callback) {
     };
 
     // use the access token to access the Spotify Web API
-    request.get(options, function(error, response, body) {
+    request.get(options, function (error, response, body) {
         callback(code, redirect_uri, body);
     });
 }

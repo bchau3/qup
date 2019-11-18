@@ -1,30 +1,30 @@
 {
-    "development": {
-        "config_id": "development",
-        "app_name": "qup",
-        "app_desc": "qup",
-        "node_port": 3000,
-        "json_indentation": 4,
-        "database": {
-            "user": "postgres",
-            "host": "qup-test-1.chvizj59wle9.us-west-2.rds.amazonaws.com",
-            "database": "qup",
-            "password": "queueup2019",
-            "port": 5432
-        }
-    },
-    "testing": {
-        "config_id": "testing",
-        "database": "my-app-db-test"
-    },
-    "staging": {
-        "config_id": "staging",
-        "node_port": 8080,
-        "database": "my-app-db-stag"
-    },
-    "production": {
-        "config_id": "production",
-        "node_port": 8080,
-        "database": "my-app-db-prod"
+  "development": {
+    "config_id": "development",
+    "app_name": "qup",
+    "app_desc": "qup",
+    "node_port": 3000,
+    "json_indentation": 4,
+    "database": {
+      "user": "postgres",
+      "host": "qup-test-1.chvizj59wle9.us-west-2.rds.amazonaws.com",
+      "database": "qup",
+      "password": "queueup2019",
+      "port": 5432
     }
+  },
+  "testing": {
+    "config_id": "testing",
+    "database": "my-app-db-test"
+  },
+  "staging": {
+    "config_id": "staging",
+    "node_port": 8080,
+    "database": "my-app-db-stag"
+  },
+  "production": {
+    "config_id": "production",
+    "node_port": 8080,
+    "database": "my-app-db-prod"
+  }
 }
