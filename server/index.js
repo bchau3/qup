@@ -35,7 +35,6 @@ app.post("/user", userDB.createUser);
 app.put("/user/:id", userDB.updateUser);
 app.put("/user/remove/:id", userDB.removeUserFromChannel);
 app.delete("/user/:id", userDB.deleteUser);
-
 app.get("/song/:channel_id", songDB.getSongByChannelId);
 
 /**
@@ -194,6 +193,28 @@ function getHostAccessToken(channel_id, callback) {
     });
   });
 }
+
+const searchSong = (req, res) => {
+  const query = req.query.q;
+  const channel_id = req.query.channel_id;
+
+  console.log(`query: ${query}`);
+  console.log(`channel_id: ${channel_id}`);
+  getHostAccessToken(channel_id, function(access_token){
+      var options = {
+        url: `https://api.spotify.com/v1/search?q=${query}&type=track&limit=1`,
+        headers: { Authorization: "Bearer " + access_token },
+        json: true
+      };
+      // use the access token to access the Spotify Web API
+      request.get(options, function(error, response, body) {
+        console.log(response);
+        res.send(response);
+      });
+  });
+};
+
+app.get("/search", searchSong);
 
 
 // Example call to get access_token

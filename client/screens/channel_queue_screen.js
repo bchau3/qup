@@ -7,6 +7,10 @@ import { createBottomTabNavigator } from "react-navigation";
 import OptionScreen from "./option_screen";
 import { SearchBar } from "react-native-elements";
 
+// Get server info from config file
+import { server_url } from "../config.js";
+const queryString = require("query-string");
+
 import TabBarIcon from "../components/TabBarIcon"; // for bar icons
 
 /* ChannelQueueScreen:
@@ -57,6 +61,7 @@ class SearchBarScreen extends React.Component {
 
   updateSearch = search => {
     this.setState({ search });
+    songSearch(search, 1);
   };
 
   render() {
@@ -83,6 +88,18 @@ class SearchBarScreen extends React.Component {
       </View>
     );
   }
+}
+
+export async function songSearch(query, channel_id) {
+  console.log(query);
+  const encodedQuery = encodeURIComponent(query);
+  let response = await fetch(
+    `${server_url}/search?q=${encodedQuery}&channel_id=1`
+  );
+  let responseText = await response.text();
+  let responseJSON = await JSON.parse(responseText);
+  console.log(responseJSON);
+  return responseJSON;
 }
 
 // create bottom tabs to switch screens
