@@ -1,6 +1,5 @@
 const config = require('./config');
 const Pool = require('pg').Pool
-const spotifyAPI = require('./spotify_api');
 
 const pool = new Pool({
   user: global.gConfig.database.user,
@@ -104,23 +103,32 @@ const deleteUser = (request, response) => {
  * @param {*} access_token User's access token
  * @param {*} code User's code to be inserted into database
  */
-const storeCodeAtUser = (code, redirect_uri, access_token) => {
-  // Get username of user
-  spotifyAPI.getUserData(code, redirect_uri, access_token, function (code, redirect_uri, body) {
-    // Do something with username of user
-    let userID = body.id;
-    let displayName = body.display_name;
-    let email = body.email;
-    console.log(body);
-    pool.query("INSERT INTO users (name, email, username, code) VALUES ($1, $2, $3, $4) ON CONFLICT (username) DO UPDATE SET name = EXCLUDED.name, email = EXCLUDED.email, code = EXCLUDED.code",
-      [displayName, email, userID, code], (error, results) => {
-        if (error) {
-          throw error;
-        }
-        console.log(`User ${userID} updated with code ${code}`);
-      });
-
+const storeRefreshTokenAtUser = (display_name, email, userID, refresh_token, callback) => {
+  pool.query("INSERT INTO users (name, email, username, refresh_token) VALUES ($1, $2, $3, $4) ON CONFLICT (username) DO UPDATE SET name = EXCLUDED.name, email = EXCLUDED.email, refresh_token = EXCLUDED.refresh_token",
+    [display_name, email, userID, refresh_token], (error, results) => {
+      if (error) {
+        throw error;
+      }
+      console.log(`User ${userID} updated with refresh_token ${refresh_token}`);
   });
+}
+
+/** Method to get host's code from DB given channel_id
+ * 
+ * @param {*} channel_id 
+ * @param {*} callback 
+ */
+function getHostRefreshToken(channel_id, callback){
+  pool.query(
+    "SELECT refresh_token from users, channels where channels.id = $1 AND channels.host = users.id", [channel_id], (error, results) => {
+      if (error) {
+        throw error;
+      }
+      let refresh_token = results.rows[0].refresh_token
+      console.log(`Got refresh_token ${refresh_token} from Channel_id ${channel_id}`);
+      callback(refresh_token);
+    }
+  );
 }
 
 module.exports = {
@@ -130,5 +138,6 @@ module.exports = {
   updateUser,
   removeUserFromChannel,
   deleteUser,
-  storeCodeAtUser
+  storeRefreshTokenAtUser,
+  getHostRefreshToken,
 }
