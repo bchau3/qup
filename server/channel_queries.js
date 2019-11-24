@@ -13,7 +13,7 @@ const pool = new Pool({
 // GET (/channel/:id)
 // get all info of channel by id
 const getChannelById = (request, response) => {
-  const id = parseInt(request.params.id);
+  const id = request.params.id;
 
   pool.query("SELECT * FROM channels WHERE id = $1", [id], (error, results) => {
     if (error) {
@@ -23,12 +23,12 @@ const getChannelById = (request, response) => {
   });
 };
 
-// GET (/channel/:host_id)
+// GET (/channel/host/:host_id)
 const getChannelByHostId = (request, response) => {
-  const host_id = parseInt(request.params.host_id);
+  const host_id = request.params.host_id;
 
   pool.query(
-    "SELECT * FROM channels WHERE host_id = $1",
+    "SELECT * FROM channels WHERE host = $1",
     [host_id],
     (error, results) => {
       if (error) {
@@ -39,9 +39,9 @@ const getChannelByHostId = (request, response) => {
   );
 };
 
-// GET (/channel/:join_code)
+// GET (/channel/code/:join_code)
 const getChannelByJoinCode = (request, response) => {
-  const join_code = parseInt(request.params.join_code);
+  const join_code = request.params.join_code;
 
   pool.query(
     "SELECT * FROM channels WHERE join_code = $1",

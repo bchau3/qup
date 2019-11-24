@@ -61,7 +61,7 @@ class SearchBarScreen extends React.Component {
 
   updateSearch = search => {
     this.setState({ search });
-    songSearch(search, 1);
+    songSearch(search, 7);
   };
 
   render() {
@@ -94,7 +94,7 @@ export async function songSearch(query, channel_id) {
   console.log(query);
   const encodedQuery = encodeURIComponent(query);
   let response = await fetch(
-    `${server_url}/search?q=${encodedQuery}&channel_id=1`
+    `${server_url}/search?q=${encodedQuery}&channel_id=${channel_id}`
   );
   let responseText = await response.text();
   let responseJSON = await JSON.parse(responseText);
