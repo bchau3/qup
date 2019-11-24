@@ -193,6 +193,26 @@ function getHostAccessToken(channel_id, callback) {
     });
   });
 }
+//PLAY SONG
+const playSong = (req, res) => {
+  const channel_id = req.channel_id;
+
+  console.log(`channel_id: ${channel_id}`);
+  getHostAccessToken(channel_id, function(access_token){
+      var options = {
+        url: `https://api.spotify.com/v1/player/play`,
+        headers: { Authorization: "Bearer " + access_token },
+        json: true
+      };
+      // use the access token to access the Spotify Web API
+      request.put(options, function(error, response, body) {
+        console.log(response);
+        res.send(response);
+      });
+  });
+};
+
+app.put("/play", playSong);
 
 const searchSong = (req, res) => {
   const query = req.query.q;
