@@ -78,10 +78,10 @@ export async function getAuthToken(code, redirect_url) {
         let response = await fetch(
             `${server_url}/callback?code=${encodedCode}&redirect_uri=${encodedRedirect_url}`
         );
-        let responseText = await response.text();
-        let responseJSON = await queryString.parse(responseText);
-        console.log(responseJSON);
-        return responseJSON;
+        // let responseText = await response.text();
+        // let responseJSON = await queryString.parse(responseText);
+        // console.log(responseJSON);
+        // return responseJSON;
     } catch(error){
         console.error(error);
     }

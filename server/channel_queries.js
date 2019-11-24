@@ -54,21 +54,29 @@ const getChannelByJoinCode = (request, response) => {
   );
 };
 
-// POST (/channel/:host_id)
+// POST (/channel/create)
 const createChannel = (request, response) => {
-  const host_id = parseInt(request.params.id);
-  // Randomize some 5 character code??
-  const join_code = "AXETL";
+  const username = request.query.username;
+  const join_code = request.query.join_code;
+
   pool.query(
-    "INSERT INTO channels (host_id, join_code) VALUES ($1, $2)",
-    [host_id, join_code],
-    (error, results) => {
-      if (error) {
-        throw error;
-      }
-      response.status(201).send(`Channel created with ID: ${results.insertId}`);
-    }
-  );
+    "SELECT id from users where username=$1", [username], (error,results) => {
+      let host = results.rows[0].id;
+      pool.query(
+        "INSERT INTO channels (host, join_code) VALUES ($1, $2)",
+        [host, join_code],
+        (error, results) => {
+          if (error) {
+            throw error;
+          }
+          response.status(201).send(
+            querystring.stringify({
+              id: results.insertId
+            })
+          );
+        }
+      );
+    });
 };
 
 // PUT (/channel/:id)
@@ -88,11 +96,11 @@ const updateChannel = (request, response) => {
   );
 };
 
-// DELETE (/channel/:id)
+// DELETE (/channel/remove)
 const deleteChannel = (request, response) => {
   const id = parseInt(request.params.id);
 
-  pool.query("DELETE FROM users WHERE id = $1", [id], (error, results) => {
+  pool.query("DELETE FROM channels WHERE id = $1", [id], (error, results) => {
     if (error) {
       throw error;
     }

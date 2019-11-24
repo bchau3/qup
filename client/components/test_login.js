@@ -13,7 +13,10 @@ export default class TestLogin extends Component {
     userInfo: null,
     code: null,
     access_token: null,
-    refresh_token: null
+    refresh_token: null,
+    name: null,
+    email: null,
+    host_id: null,
   };
 
   render() {
@@ -33,6 +36,9 @@ export default class TestLogin extends Component {
   _renderUserInfo = () => {
     return (
       <View style={{ alignItems: "center" }}>
+        <Text>Name: {this.state.name}</Text>
+        <Text>Email: {this.state.email}</Text>
+        <Text>Id: {this.state.id}</Text>
         <Text>Code: {this.state.code.code} </Text>
         <Text>State: {this.state.code.state} </Text>
         <Text>AccessToken: {this.state.access_token}</Text>
@@ -75,7 +81,10 @@ export default class TestLogin extends Component {
     //TODO: Remove auth tokens from client side. This is just for testing purposes
     this.setState({
       access_token: authInfo.access_token,
-      refresh_token: authInfo.refresh_token
+      refresh_token: authInfo.refresh_token,
+      name: authInfo.display_name,
+      email: authInfo.email,
+      host_id: authInfo.id
     });
   };
 

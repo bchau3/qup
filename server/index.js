@@ -36,6 +36,7 @@ app.put("/user/:id", userDB.updateUser);
 app.put("/user/remove/:id", userDB.removeUserFromChannel);
 app.delete("/user/:id", userDB.deleteUser);
 app.get("/song/:channel_id", songDB.getSongByChannelId);
+app.post("/channel/create", channelDB.createChannel);
 
 /**
  * Generates a random string containing numbers and letters
@@ -113,15 +114,17 @@ app.get("/callback", function(req, res) {
           body.id,
           refresh_token
         );
+        // we can also pass the token to the browser to make requests from there
+        res.status(201).send(
+          querystring.stringify({
+            access_token: access_token,
+            refresh_token: refresh_token,
+            display_name: body.display_name,
+            email: body.email,
+            id: body.id,
+          })
+        );
       });
-
-      // we can also pass the token to the browser to make requests from there
-      res.status(201).send(
-        querystring.stringify({
-          access_token: access_token,
-          refresh_token: refresh_token
-        })
-      );
     } else {
       res.redirect(
         "/#" +
@@ -165,9 +168,9 @@ app.listen(global.gConfig.node_port, () => {
 });
 
 /**
- * 
- * @param {*} channel_id 
- * @param {*} callback 
+ *
+ * @param {*} channel_id
+ * @param {*} callback
  */
 function getHostAccessToken(channel_id, callback) {
   userDB.getHostRefreshToken(channel_id, function(refresh_token) {
@@ -188,7 +191,7 @@ function getHostAccessToken(channel_id, callback) {
     request.post(authOptions, function(error, response, body) {
       if (!error && response.statusCode === 200) {
         var access_token = body.access_token;
-        callback(access_token)
+        callback(access_token);
       }
     });
   });
@@ -198,17 +201,17 @@ const playSong = (req, res) => {
   const channel_id = req.channel_id;
 
   console.log(`channel_id: ${channel_id}`);
-  getHostAccessToken(channel_id, function(access_token){
-      var options = {
-        url: `https://api.spotify.com/v1/player/play`,
-        headers: { Authorization: "Bearer " + access_token },
-        json: true
-      };
-      // use the access token to access the Spotify Web API
-      request.put(options, function(error, response, body) {
-        console.log(response);
-        res.send(response);
-      });
+  getHostAccessToken(channel_id, function(access_token) {
+    var options = {
+      url: `https://api.spotify.com/v1/player/play`,
+      headers: { Authorization: "Bearer " + access_token },
+      json: true
+    };
+    // use the access token to access the Spotify Web API
+    request.put(options, function(error, response, body) {
+      console.log(response);
+      res.send(response);
+    });
   });
 };
 
@@ -220,22 +223,21 @@ const searchSong = (req, res) => {
 
   console.log(`query: ${query}`);
   console.log(`channel_id: ${channel_id}`);
-  getHostAccessToken(channel_id, function(access_token){
-      var options = {
-        url: `https://api.spotify.com/v1/search?q=${query}&type=track&limit=1`,
-        headers: { Authorization: "Bearer " + access_token },
-        json: true
-      };
-      // use the access token to access the Spotify Web API
-      request.get(options, function(error, response, body) {
-        console.log(response);
-        res.send(response);
-      });
+  getHostAccessToken(channel_id, function(access_token) {
+    var options = {
+      url: `https://api.spotify.com/v1/search?q=${query}&type=track&limit=1`,
+      headers: { Authorization: "Bearer " + access_token },
+      json: true
+    };
+    // use the access token to access the Spotify Web API
+    request.get(options, function(error, response, body) {
+      console.log(response);
+      res.send(response);
+    });
   });
 };
 
 app.get("/search", searchSong);
-
 
 // Example call to get access_token
 // getHostAccessToken(
