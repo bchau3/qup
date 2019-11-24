@@ -1,5 +1,6 @@
 const config = require("./config");
 const Pool = require("pg").Pool;
+var querystring = require("querystring");
 
 const pool = new Pool({
   user: global.gConfig.database.user,
@@ -98,7 +99,9 @@ const updateChannel = (request, response) => {
 
 // DELETE (/channel/remove)
 const deleteChannel = (request, response) => {
-  const id = parseInt(request.params.id);
+  const id = request.query.id;
+
+  console.log(id);
 
   pool.query("DELETE FROM channels WHERE id = $1", [id], (error, results) => {
     if (error) {

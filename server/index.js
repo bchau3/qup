@@ -37,6 +37,7 @@ app.put("/user/remove/:id", userDB.removeUserFromChannel);
 app.delete("/user/:id", userDB.deleteUser);
 app.get("/song/:channel_id", songDB.getSongByChannelId);
 app.post("/channel/create", channelDB.createChannel);
+app.delete("/channel/remove", channelDB.deleteChannel);
 
 /**
  * Generates a random string containing numbers and letters

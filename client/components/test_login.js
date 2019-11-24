@@ -16,7 +16,7 @@ export default class TestLogin extends Component {
     refresh_token: null,
     name: null,
     email: null,
-    host_id: null,
+    username: null,
   };
 
   render() {
@@ -38,7 +38,7 @@ export default class TestLogin extends Component {
       <View style={{ alignItems: "center" }}>
         <Text>Name: {this.state.name}</Text>
         <Text>Email: {this.state.email}</Text>
-        <Text>Id: {this.state.id}</Text>
+        <Text>Id: {this.state.username}</Text>
         <Text>Code: {this.state.code.code} </Text>
         <Text>State: {this.state.code.state} </Text>
         <Text>AccessToken: {this.state.access_token}</Text>
@@ -84,7 +84,7 @@ export default class TestLogin extends Component {
       refresh_token: authInfo.refresh_token,
       name: authInfo.display_name,
       email: authInfo.email,
-      host_id: authInfo.id
+      username: authInfo.id
     });
   };
 
