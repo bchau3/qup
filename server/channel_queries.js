@@ -64,15 +64,16 @@ const createChannel = (request, response) => {
     "SELECT id from users where username=$1", [username], (error,results) => {
       let host = results.rows[0].id;
       pool.query(
-        "INSERT INTO channels (host, join_code) VALUES ($1, $2)",
+        "INSERT INTO channels (host, join_code) VALUES ($1, $2) RETURNING id",
         [host, join_code],
         (error, results) => {
           if (error) {
             throw error;
           }
+          console.log(results.rows[0].id);
           response.status(201).send(
             querystring.stringify({
-              id: results.insertId
+              id: results.rows[0].id,
             })
           );
         }

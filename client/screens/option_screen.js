@@ -1,5 +1,6 @@
 import React from "react";
-import { ScrollView, StyleSheet, Text, View, Button } from "react-native";
+import { ScrollView, StyleSheet, Text, View, Button, AsyncStorage} from "react-native";
+import {deleteChannel} from '../api/channel';
 
 /* OptionScreen:
  *    Option Screen shows the options for either host or channelmats to leave the channel
@@ -41,20 +42,7 @@ export default class OptionScreen extends React.Component {
             <Button
               title="CLOSE THIS CHANNEL"
               onPress={() => {
-                alert("Successfully Closing the Channel"),
-                  this.props.navigation.goBack(
-                    this.props.navigation.goBack(
-                      this.props.navigation.goBack(
-                        this.props.navigation.goBack(
-                          this.props.navigation.goBack(
-                            this.props.navigation.goBack(
-                              this.props.navigation.goBack(null)
-                            )
-                          )
-                        )
-                      )
-                    )
-                  );
+                this._closeChannel()
               }}
             />
 
@@ -63,26 +51,44 @@ export default class OptionScreen extends React.Component {
             <Button
               title="UNLINK MY ACCOUNT"
               onPress={() => {
-                alert("Successfully Unlinked Your Account"),
-                  this.props.navigation.goBack(
-                    this.props.navigation.goBack(
-                      this.props.navigation.goBack(
-                        this.props.navigation.goBack(
-                          this.props.navigation.goBack(
-                            this.props.navigation.goBack(
-                              this.props.navigation.goBack(null)
-                            )
-                          )
-                        )
-                      )
-                    )
-                  );
+                this._closeChannel()     
               }}
             />
           </View>
         </ScrollView>
       </View>
     );
+  }
+
+  _closeChannel = async () => {
+    // Get channel_id
+    let channel_id = await this._getChannelId();
+    // Close channel
+    deleteChannel(channel_id);
+    this.props.navigation.goBack(
+      this.props.navigation.goBack(
+        this.props.navigation.goBack(
+          this.props.navigation.goBack(
+            this.props.navigation.goBack(
+              this.props.navigation.goBack(
+                this.props.navigation.goBack(null)
+              )
+            )
+          )
+        )
+      )
+    );
+  }
+
+  _getChannelId = async () => {
+    let channel_id = '';
+    try {
+      channel_id = await AsyncStorage.getItem('channel_id') || 'none';
+    } catch (error) {
+      // Error retrieving data
+      console.log(error.message);
+    }
+    return channel_id;
   }
 }
 

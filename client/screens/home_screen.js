@@ -18,7 +18,7 @@ import { createAppContainer, createSwitchNavigator} from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack'
 
 // for stacknaviagtor
-import LinksScreen from './links_screen';
+import LoginScreen from './links_screen';
 import ChannelScreen from './find_channel_screen';
 
 // HomeScreen
@@ -45,7 +45,7 @@ class HomeScreen extends React.Component {
                     <TouchableOpacity
                         style={styles.buttonStyle}
                         onPress={() => {
-                            navigate("LINKFLOW");
+                            navigate("LOGINFLOW");
                         }}
                         underlayColor="#fff"
                     >
@@ -93,7 +93,7 @@ class HomeScreen extends React.Component {
 const ScreenStack = createStackNavigator(
   {
     HOME: HomeScreen,
-    LINKFLOW: LinksScreen,
+    LOGINFLOW: LoginScreen,
     CHANNELFLOW: ChannelScreen,
   },
   {
