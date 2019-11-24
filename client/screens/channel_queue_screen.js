@@ -1,6 +1,6 @@
 import * as WebBrowser from "expo-web-browser";
 import * as React from "react";
-import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Platform, ScrollView, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 // for screen switch
 import { createBottomTabNavigator } from "react-navigation";
@@ -56,12 +56,13 @@ class ChannelQueueScreen extends React.Component {
  */
 class SearchBarScreen extends React.Component {
   state = {
-    search: ""
+    search: "",
+    list: []
   };
 
   updateSearch = search => {
     this.setState({ search });
-    songSearch(search, 7);
+    this.songSearch(search, 7);
   };
 
   render() {
@@ -84,22 +85,63 @@ class SearchBarScreen extends React.Component {
         <ScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}
-        ></ScrollView>
+        >
+          <View style={styles.getStartedContainer} >
+            {this.state.list.map((song) => { 
+              return (
+                <TouchableOpacity
+                  style={styles.buttonStyle}
+                  onPress={() => {
+                    // TODO
+                  }}
+                  underlayColor="#fff"
+                >
+                  <Text style={styles.buttonText}>{song.song_name}</Text>
+                  {/* <Text style={styles.buttonText}>{song.key}</Text> */}
+                  <Text style={styles.buttonText}>{song.artist_name}</Text>
+                  {/* <Text style={styles.buttonText}>{song.song_uri}</Text> */}
+                  {/* <Text style={styles.buttonText}>{song.album_artwork}</Text> */}
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </ScrollView>
       </View>
     );
   }
-}
 
-export async function songSearch(query, channel_id) {
-  console.log(query);
-  const encodedQuery = encodeURIComponent(query);
-  let response = await fetch(
-    `${server_url}/search?q=${encodedQuery}&channel_id=${channel_id}`
-  );
-  let responseText = await response.text();
-  let responseJSON = await JSON.parse(responseText);
-  console.log(responseJSON);
-  return responseJSON;
+    songSearch = async (query, channel_id) => {
+      console.log(query);
+      const encodedQuery = encodeURIComponent(query);
+      let response = await fetch(
+        `${server_url}/search?q=${encodedQuery}&channel_id=${channel_id}`
+      );
+      let responseText = await response.text();
+      let responseJSON = await JSON.parse(responseText);
+      console.log(responseJSON);
+      this.parseSongs(responseJSON);
+  };
+
+  parseSongs = responseJSON => {
+    this.setState({list: []});
+    for(var i = 0; i < 6; i++){
+      var track_id = responseJSON.body.tracks.items[i].album.artists[0].id;
+      var artist_name = responseJSON.body.tracks.items[i].album.artists[0].name;
+      var song_name = responseJSON.body.tracks.items[i].name;
+      var song_uri = responseJSON.body.tracks.items[i].album.artists[0].uri;
+      var album_artwork = responseJSON.body.tracks.items[i].album.images[2].url;
+
+      var json = JSON.parse(JSON.stringify({
+        key: track_id,
+        artist_name: artist_name,
+        song_name: song_name,
+        song_uri: song_uri,
+        album_artwork: album_artwork
+      }));
+      console.log(this.state.list);
+      this.setState({ list: this.state.list.concat(json) });
+    }
+  };
 }
 
 // create bottom tabs to switch screens
@@ -139,5 +181,24 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     textAlign: "left",
     paddingLeft: 30
+  },
+  buttonStyle: {
+    marginRight: 10,
+    marginLeft: 10,
+    marginTop: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    backgroundColor: "#ffb6c1",
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: "#000000",
+    width: 200
+  },
+  buttonText: {
+    color: "#000000",
+    textAlign: "center",
+    paddingLeft: 20,
+    paddingRight: 20,
+    fontSize: 15  
   }
 });
