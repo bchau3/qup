@@ -19,6 +19,10 @@ export default class OptionScreen extends React.Component {
             <Text>[OPTION]</Text>
             <Text>!LEAVE CHANNEL! (CHANNELMATE ONLY)</Text>
             <Button
+              title="Get join code"
+              onPress={this._alertJoinCode}
+              />
+            <Button
               title="LEAVE THE CHANNEL"
               onPress={() => {
                 alert("Successfully Leaving the Channel"),
@@ -78,6 +82,17 @@ export default class OptionScreen extends React.Component {
         )
       )
     );
+  }
+
+  _alertJoinCode = async () => {
+    let join_code = "";
+    try {
+      join_code = (await AsyncStorage.getItem("join_code")) || "none";
+    } catch (error) {
+      // Error retrieving data
+      console.log(error.message);
+    }
+    return alert(join_code);    
   }
 
   _getChannelId = async () => {
