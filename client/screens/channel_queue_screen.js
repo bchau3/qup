@@ -96,10 +96,13 @@ class SearchBarScreen extends React.Component {
                   }}
                   underlayColor="#fff"
                 >
+                  <View style={{paddingRight: 10 }}>
                   <Image
-                    style={{ width: 50, height: 50 }}
+                    style={{ width: 50, height: 50}}
                     source={{ uri: song.album_artwork }}
                   />
+                  </View>
+
                   <Text>
                     <Text style={styles.songTitle}>
                       {song.song_name}
@@ -107,6 +110,7 @@ class SearchBarScreen extends React.Component {
                     </Text>
                     <Text>{song.artist_name}</Text>
                   </Text>
+
                   {/* <Text style={styles.buttonText}>{song.key}</Text> */}
                   {/* <Text style={styles.buttonText}>{song.song_uri}</Text> */}
                   {/* {<Text style={styles.buttonText}>{song.album_artwork}</Text>} */}
@@ -222,14 +226,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingLeft: 10,
     paddingRight: 10,
-    fontSize: 15,
+    fontSize: 12,
   },
   songTitle: {
     color: "#000000",
     textAlign: "left",
     paddingLeft: 20,
     paddingRight: 20,
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: 'bold'
   }
 });

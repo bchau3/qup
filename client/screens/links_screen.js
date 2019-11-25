@@ -77,7 +77,7 @@ class LoginScreen extends React.Component {
                 <Text style={styles.buttonText}>Link Account</Text>
               </TouchableOpacity>
             ) : (
-                this._navigate()
+                navigate("HOST")
               )}
             <TouchableOpacity
               style={styles.buttonStyle}
@@ -92,10 +92,6 @@ class LoginScreen extends React.Component {
         </ScrollView>
       </View>
     );
-  }
-
-  _navigate = () => {
-    this.props.navigation.navigate('HOST');
   }
 
   // Handle Printing Info
