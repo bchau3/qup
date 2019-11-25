@@ -1,6 +1,6 @@
 import * as WebBrowser from "expo-web-browser";
 import * as React from "react";
-import { Platform, ScrollView, StyleSheet, Text, View, TouchableOpacity, AsyncStorage } from "react-native";
+import { Image, Platform, ScrollView, StyleSheet, Text, View, TouchableOpacity, AsyncStorage } from "react-native";
 
 // for screen switch
 import { createBottomTabNavigator } from "react-navigation";
@@ -62,7 +62,7 @@ class SearchBarScreen extends React.Component {
 
   updateSearch = search => {
     this.setState({ search });
-    this.songSearch(search, 7);
+    this.songSearch(search);
   };
 
   render() {
@@ -96,11 +96,20 @@ class SearchBarScreen extends React.Component {
                   }}
                   underlayColor="#fff"
                 >
-                  <Text style={styles.buttonText}>{song.song_name}</Text>
+                  <Image
+                    style={{ width: 50, height: 50 }}
+                    source={{ uri: song.album_artwork }}
+                  />
+                  <Text>
+                    <Text style={styles.songTitle}>
+                      {song.song_name}
+                      {"\n\n"}
+                    </Text>
+                    <Text>{song.artist_name}</Text>
+                  </Text>
                   {/* <Text style={styles.buttonText}>{song.key}</Text> */}
-                  <Text style={styles.buttonText}>{song.artist_name}</Text>
                   {/* <Text style={styles.buttonText}>{song.song_uri}</Text> */}
-                  {/* <Text style={styles.buttonText}>{song.album_artwork}</Text> */}
+                  {/* {<Text style={styles.buttonText}>{song.album_artwork}</Text>} */}
                 </TouchableOpacity>
               );
             })}
@@ -124,7 +133,7 @@ class SearchBarScreen extends React.Component {
 
   parseSongs = responseJSON => {
     this.setState({list: []});
-    for(var i = 0; i < 6; i++){
+    for(var i = 0; i < 15; i++){
       var track_id = responseJSON.body.tracks.items[i].album.artists[0].id;
       var artist_name = responseJSON.body.tracks.items[i].album.artists[0].name;
       var song_name = responseJSON.body.tracks.items[i].name;
@@ -200,16 +209,27 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     backgroundColor: "#ffb6c1",
-    borderRadius: 50,
+    borderRadius: 0,
     borderWidth: 1,
     borderColor: "#000000",
-    width: 200
+    width: 380,
+    height: 70,
+    flex: 1,
+    flexDirection: "row"
   },
   buttonText: {
     color: "#000000",
     textAlign: "center",
+    paddingLeft: 10,
+    paddingRight: 10,
+    fontSize: 15,
+  },
+  songTitle: {
+    color: "#000000",
+    textAlign: "left",
     paddingLeft: 20,
     paddingRight: 20,
-    fontSize: 15  
+    fontSize: 18,
+    fontWeight: 'bold'
   }
 });

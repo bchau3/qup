@@ -229,7 +229,7 @@ const searchSong = (req, res) => {
   console.log(`channel_id: ${channel_id}`);
   getHostAccessToken(channel_id, function(access_token) {
     var options = {
-      url: `https://api.spotify.com/v1/search?q=${query}&type=track&limit=6`,
+      url: `https://api.spotify.com/v1/search?q=${query}&type=track&limit=15`,
       headers: { Authorization: "Bearer " + access_token },
       json: true
     };
