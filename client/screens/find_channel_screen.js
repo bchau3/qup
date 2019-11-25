@@ -10,7 +10,8 @@ import {
   View,
   Button,
   Alert,
-  Animated
+  Animated,
+  AsyncStorage
 } from "react-native";
 
 import {
@@ -21,6 +22,8 @@ import {
 
 import { createStackNavigator } from "react-navigation-stack";
 import ChannelQueueScreen from "./channel_queue_screen";
+
+import {joinChannel} from '../api/channel';
 
 // For Confirmation code
 export const CELL_SIZE = 70;
@@ -50,28 +53,36 @@ class JoinChannelScreen extends React.Component {
     () => new Animated.Value(1)
   );
 
-  onFinishCheckingCode = code => {
+  onFinishCheckingCode = async code => {
     // Check for channel with code
-
+    channel_id = await joinChannel(code);
     // If channel_id not returned
-    if (code !== "1234") {
+    if (channel_id == null) {
       return Alert.alert(
-        "Confirmation Code",
-        "Code not match! Try 1234",
+        "Channel Code",
+        "No channel exists with code",
         [{ text: "OK" }],
         { cancelable: false }
       );
     }
 
     // channel_id returned
-
     // Set Asyncstorage to channel_id
-
+    this._storeChannelId(channel_id);
     // Go to queue page for channel
     Alert.alert("Confirmation Code", "Successful!", [{ text: "OK" }], {
       cancelable: false
     });
     this.props.navigation.navigate("QUEUE");
+  };
+
+  _storeChannelId = async (channel_id) => {
+    try {
+      await AsyncStorage.setItem("channel_id", channel_id.toString());
+    } catch (error) {
+      // Error storing data
+      console.log(error.message);
+    }
   };
 
   animateCell({ hasValue, index, isFocused }) {

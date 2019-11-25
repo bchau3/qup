@@ -1,6 +1,6 @@
 import * as WebBrowser from "expo-web-browser";
 import * as React from "react";
-import { Platform, ScrollView, StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { Platform, ScrollView, StyleSheet, Text, View, TouchableOpacity, AsyncStorage } from "react-native";
 
 // for screen switch
 import { createBottomTabNavigator } from "react-navigation";
@@ -110,16 +110,16 @@ class SearchBarScreen extends React.Component {
     );
   }
 
-    songSearch = async (query, channel_id) => {
-      console.log(query);
-      const encodedQuery = encodeURIComponent(query);
-      let response = await fetch(
-        `${server_url}/search?q=${encodedQuery}&channel_id=${channel_id}`
-      );
-      let responseText = await response.text();
-      let responseJSON = await JSON.parse(responseText);
-      console.log(responseJSON);
-      this.parseSongs(responseJSON);
+  songSearch = async (query) => {
+    const channel_id = await this._getChannelId();
+    const encodedQuery = encodeURIComponent(query);
+    let response = await fetch(
+      `${server_url}/search?q=${encodedQuery}&channel_id=${channel_id}`
+    );
+    let responseText = await response.text();
+    let responseJSON = await JSON.parse(responseText);
+    console.log(responseJSON);
+    this.parseSongs(responseJSON);
   };
 
   parseSongs = responseJSON => {
@@ -142,6 +142,17 @@ class SearchBarScreen extends React.Component {
       this.setState({ list: this.state.list.concat(json) });
     }
   };
+
+  _getChannelId = async () => {
+  let channel_id = '';
+  try {
+    channel_id = await AsyncStorage.getItem('channel_id') || 'none';
+  } catch (error) {
+    // Error retrieving data
+    console.log(error.message);
+  }
+  return channel_id;
+}
 }
 
 // create bottom tabs to switch screens
