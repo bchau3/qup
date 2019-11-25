@@ -61,7 +61,9 @@ const createChannel = (request, response) => {
   const join_code = request.query.join_code;
 
   pool.query(
-    "SELECT id from users where username=$1", [username], (error,results) => {
+    "SELECT id from users where username=$1",
+    [username],
+    (error, results) => {
       let host = results.rows[0].id;
       pool.query(
         "INSERT INTO channels (host, join_code) VALUES ($1, $2) RETURNING id",
@@ -70,15 +72,23 @@ const createChannel = (request, response) => {
           if (error) {
             throw error;
           }
+
+          // Update host's channel_id in user's table
+          pool.query("UPDATE users SET channel_id=$1 WHERE id=$2", [
+            results.rows[0].id,
+            host
+          ]);
+
           console.log(results.rows[0].id);
           response.status(201).send(
             querystring.stringify({
-              id: results.rows[0].id,
+              id: results.rows[0].id
             })
           );
         }
       );
-    });
+    }
+  );
 };
 
 // PUT (/channel/:id)
@@ -108,10 +118,14 @@ const deleteChannel = (request, response) => {
     if (error) {
       throw error;
     }
+    
+    // Reset user's current channel
+    pool.query("UPDATE users SET channel_id=null WHERE channel_id=$1", [id]);
+
+    // Todo: Clear all songs with channel_id
+
     response.status(200).send(`Channel deleted with ID: ${id}`);
   });
-
-  // Todo: Clear all songs with channel_id
 };
 
 module.exports = {

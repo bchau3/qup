@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
   View,
   Button,
-  Alert
+  Alert,
+  Animated
 } from "react-native";
 
 import {
@@ -17,61 +18,145 @@ import {
   createSwitchNavigator,
   NavigationActions
 } from "react-navigation";
+
 import { createStackNavigator } from "react-navigation-stack";
 import ChannelQueueScreen from "./channel_queue_screen";
+
+// For Confirmation code
+export const CELL_SIZE = 70;
+export const CELL_BORDER_RADIUS = 8;
+export const DEFAULT_CELL_BG_COLOR = "#fff";
+export const NOT_EMPTY_CELL_BG_COLOR = "#3557b7";
+export const ACTIVE_CELL_BG_COLOR = "#f7fafe";
+const codeLength = 4;
+import CodeFiled from "react-native-confirmation-code-field";
 
 /* ChannelScreen:
  *    ChannelScreen promote user to enter a invitation code to join an existing channel
  *    If successful, switch ChannelQueueScreen. Otherwise, ask user to enter code again.
  *    Having back button for user to go back to home page of the app
  */
-class ChannelScreen extends React.Component {
+
+class JoinChannelScreen extends React.Component {
   static navigationOptions = () => ({
     header: null,
     title: "Join Channel"
   });
 
+  _animationsColor = [...new Array(codeLength)].map(
+    () => new Animated.Value(0)
+  );
+  _animationsScale = [...new Array(codeLength)].map(
+    () => new Animated.Value(1)
+  );
+
+  onFinishCheckingCode = code => {
+    // Check for channel with code
+
+    // If channel_id not returned
+    if (code !== "1234") {
+      return Alert.alert(
+        "Confirmation Code",
+        "Code not match! Try 1234",
+        [{ text: "OK" }],
+        { cancelable: false }
+      );
+    }
+
+    // channel_id returned
+
+    // Set Asyncstorage to channel_id
+
+    // Go to queue page for channel
+    Alert.alert("Confirmation Code", "Successful!", [{ text: "OK" }], {
+      cancelable: false
+    });
+    this.props.navigation.navigate("QUEUE");
+  };
+
+  animateCell({ hasValue, index, isFocused }) {
+    Animated.parallel([
+      Animated.timing(this._animationsColor[index], {
+        toValue: isFocused ? 1 : 0,
+        duration: 250
+      }),
+      Animated.spring(this._animationsScale[index], {
+        toValue: hasValue ? 0 : 1,
+        duration: hasValue ? 300 : 250
+      })
+    ]).start();
+  }
+
+  cellProps = ({ hasValue, index, isFocused }) => {
+    const animatedCellStyle = {
+      backgroundColor: hasValue
+        ? this._animationsScale[index].interpolate({
+            inputRange: [0, 1],
+            outputRange: [NOT_EMPTY_CELL_BG_COLOR, ACTIVE_CELL_BG_COLOR]
+          })
+        : this._animationsColor[index].interpolate({
+            inputRange: [0, 1],
+            outputRange: [DEFAULT_CELL_BG_COLOR, ACTIVE_CELL_BG_COLOR]
+          }),
+      borderRadius: this._animationsScale[index].interpolate({
+        inputRange: [0, 1],
+        outputRange: [CELL_SIZE, CELL_BORDER_RADIUS]
+      }),
+      transform: [
+        {
+          scale: this._animationsScale[index].interpolate({
+            inputRange: [0, 1],
+            outputRange: [0.2, 1]
+          })
+        }
+      ]
+    };
+
+    // Run animation on next event loop tik
+    // Because we need first return new style prop and then animate this value
+    setTimeout(() => {
+      this.animateCell({ hasValue, index, isFocused });
+    }, 0);
+
+    return {
+      style: [styles.input, animatedCellStyle]
+    };
+  };
+
+  containerProps = { style: styles.inputWrapStyle };
+
   render() {
     return (
-      <ScrollView style={styles.container}>
-        <View style={styles.getStartedContainer}>
-          <TouchableOpacity
-            style={styles.buttonStyle}
-            onPress={() => {
-              this.props.navigation.navigate("QUEUE");
-            }}
-            underlayColor="#fff"
-          >
-            <Text style={styles.buttonText}>Channel Joined</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.buttonStyle}
-            onPress={() => {
-              this.props.navigation.goBack(null);
-            }}
-            underlayColor="#fff"
-          >
-            <Text style={styles.buttonText}>Go Back</Text>
-          </TouchableOpacity>
+      <View style={styles.inputWrapper}>
+        <Text style={styles.inputLabel}>Verification</Text>
+        <Image
+          style={styles.icon}
+          source={require("../assets/images/qup_logo.png")}
+        />
+        <Text style={styles.inputSubLabel}>
+          {"Please enter the channel code"}
+        </Text>
+        <CodeFiled
+          maskSymbol=" "
+          variant="clear"
+          codeLength={codeLength}
+          keyboardType="numeric"
+          cellProps={this.cellProps}
+          containerProps={this.containerProps}
+          onFulfill={this.onFinishCheckingCode}
+          CellComponent={Animated.Text}
+        />
+        <View style={styles.nextButton}>
+          <Text style={styles.nextButtonText}>Verify</Text>
         </View>
-        <Text style={styles.todoText}>TODOS:Find Channels To Join</Text>
-        <Text style={styles.todoText}>1. enter invitation code?</Text>
-        <Text style={styles.todoText}>
-          2. comfirmation of joining the channel
-        </Text>
-        <Text style={styles.todoText}>3. switch to queue screen</Text>
-        <Text style={styles.todoText}>
-          4. button to refresh the channel list
-        </Text>
-        <Text style={styles.todoText}>5. if user is banned, show alert</Text>
-      </ScrollView>
+      </View>
     );
   }
 }
 
 const ChannelmateFlow = createStackNavigator(
   {
-    FINDCHANNEL: ChannelScreen,
+    JOINCHANNEL: JoinChannelScreen,
     QUEUE: ChannelQueueScreen
   },
   {
@@ -129,5 +214,82 @@ const styles = StyleSheet.create({
   imageStyle: {
     width: 250,
     height: 250
+  },
+  inputWrapper: {
+    backgroundColor: "white",
+    paddingHorizontal: 20
+  },
+
+  inputLabel: {
+    paddingTop: 50,
+    color: "#000",
+    fontSize: 25,
+    fontWeight: "700",
+    textAlign: "center",
+    paddingBottom: 40
+  },
+
+  icon: {
+    width: 217 / 2.4,
+    height: 158 / 2.4,
+    marginLeft: "auto",
+    marginRight: "auto"
+  },
+  inputSubLabel: {
+    paddingTop: 30,
+    color: "#000",
+    textAlign: "center"
+  },
+  inputWrapStyle: {
+    height: CELL_SIZE,
+    marginTop: 30,
+    paddingHorizontal: 20,
+    justifyContent: "space-between"
+  },
+
+  input: {
+    margin: 0,
+    height: CELL_SIZE,
+    width: CELL_SIZE,
+    lineHeight: 55,
+    ...Platform.select({
+      web: {
+        lineHeight: 65
+      }
+    }),
+    fontSize: 30,
+    borderRadius: CELL_BORDER_RADIUS,
+    color: "#3759b8",
+    backgroundColor: "#fff",
+
+    // IOS
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+
+    // Android
+    elevation: 3
+  },
+
+  nextButton: {
+    marginTop: 40,
+    borderRadius: 80,
+    minHeight: 80,
+    backgroundColor: "#3557b7",
+    justifyContent: "center",
+    flex: 1,
+    minWidth: 360,
+    marginBottom: 100
+  },
+
+  nextButtonText: {
+    textAlign: "center",
+    fontSize: 20,
+    color: "#fff",
+    fontWeight: "700"
   }
 });

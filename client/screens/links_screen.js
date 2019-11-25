@@ -183,9 +183,9 @@ class LoginScreen extends React.Component {
 
 function shareCodeGenerator() {
   var shareCode = '';
-  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  var characters = '0123456789';
   var charactersLength = characters.length;
-  for (var i = 0; i < 5; i++) {
+  for (var i = 0; i < 4; i++) {
     shareCode += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
   return shareCode;
