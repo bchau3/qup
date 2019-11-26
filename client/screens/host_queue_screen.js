@@ -1,16 +1,10 @@
 import * as React from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import { ScrollView,StyleSheet,Text,View } from 'react-native';
 
 // for screen switch 
 import { createBottomTabNavigator } from 'react-navigation'
-import OptionScreen from './option_screen';
-import { SearchBar } from 'react-native-elements';
-
+import OptionScreen from "./option_screen";
+import SearchBarScreen from "./search_bar_screen";
 
 /* HostQueueScreen:
  *    Screen shows the song queue that are made for the host only
@@ -43,48 +37,6 @@ class HostQueueScreen extends React.Component {
 
           </View>
         </ScrollView>
-      </View>
-    );
-  }
-}
-
-/* SearchBarScreen:
- *    This screen has a search bar allows user to search a song from Spotify
- */
-class SearchBarScreen extends React.Component {
-  static navigationOptions = {
-    tabBarLabel: "SEARCH"
-  };
-
-  state = {
-    search: '',
-  };
-
-  updateSearch = search => {
-    this.setState({ search });
-  };
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <SearchBar
-          inputStyle={{ backgroundColor: "#ffb6c1" }}
-          containerStyle={{
-            backgroundColor: "#DB7093",
-            borderWidth: 1,
-            borderRadius: 5
-          }}
-          inputContainerStyle={{ backgroundColor: "#ffb6c1" }}
-          placeholderTextColor={"#436EEE"}
-          placeholder={"Search for a song"}
-          onChangeText={this.updateSearch}
-          value={this.state.search}
-          showCancel={true}
-        />
-        <ScrollView
-          style={styles.container}
-          contentContainerStyle={styles.contentContainer}
-        ></ScrollView>
       </View>
     );
   }
