@@ -10,6 +10,7 @@ import { SearchBar } from "react-native-elements";
 // Get server info from config file
 import { server_url } from "../config.js";
 const queryString = require("query-string");
+import { addSong } from "../api/songs";
 
 import TabBarIcon from "../components/TabBarIcon"; // for bar icons
 
@@ -92,7 +93,7 @@ class SearchBarScreen extends React.Component {
                 <TouchableOpacity
                   style={styles.buttonStyle}
                   onPress={() => {
-                    // TODO
+                    this._addSong(song)
                   }}
                   underlayColor="#fff"
                 >
@@ -119,6 +120,11 @@ class SearchBarScreen extends React.Component {
     );
   }
 
+  _addSong = async (song_json) => {
+    const channel_id = await this._getChannelId();
+    addSong(channel_id, song_json);
+  }
+
   songSearch = async (query) => {
     const channel_id = await this._getChannelId();
     const encodedQuery = encodeURIComponent(query);
@@ -142,7 +148,7 @@ class SearchBarScreen extends React.Component {
       var track_duration = responseJSON.body.tracks.items[i].duration_ms;
 
       var json = JSON.parse(JSON.stringify({
-        key: track_id,
+        track_id: track_id,
         artist_name: artist_name,
         song_name: song_name,
         song_uri: song_uri,

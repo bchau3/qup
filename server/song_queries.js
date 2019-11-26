@@ -22,9 +22,32 @@ const getChannelSongsByChannelId = (request, response) => {
             throw error
         }
         response.status(200).json(results.rows)
-    
+
     })
 };
+
+
+/** GET /max_priority
+ * 
+ * Returns max priority of current channel
+ * Returns 0 if no song in channel
+ * @param {*} request 
+ * @param {*} response 
+ */
+const getMaxPriorityOfChannel = (request, response) => {
+    const channel_id = request.query.channel_id;
+    pool.query('SELECT priority FROM songs WHERE channel_id = $1 ORDER BY priority DESC', [channel_id], (error, results) => {
+        if (error) {
+            throw error
+        }
+        if (results.rows.length == 0) {
+            response.status(200).json(0);
+        }
+        else {
+            response.status(200).json(results.rows[0].priority)
+        }
+    })
+}
 
 /**
  * DELETE /song_channel_id
@@ -84,7 +107,7 @@ const getSongByChannelId = (request, response) => {
 }
 
 /**
- * POST (/song/:channel_id)
+ * POST (/song/create)
  * @param {*} request 
  * @param {*} response 
  * curl --header "Content-Type: application/json" --request POST --data '{"channel_id":"4d":'20', "artist_name":"Chris Breezy", "song_name":"No Guidance","song_uri":"2","album_artwork":"4"}' 'http://localhost:3000/song/create'
@@ -93,16 +116,17 @@ const createSong = (request, response) => {
     // const channel_id = parseInt(request.params.channel_id)
     // const channel_id = parseInt(response.params.channel_id);
     // const priority = parseInt(response.params.priority);
-    const {channel_id, priority, track_id, artist_name, song_name, song_uri, album_artwork} = request.body
+    console.log(request.body);
+    const { channel_id, priority, track_id, artist_name, song_name, song_uri, album_artwork } = request.body
 
     pool.query('INSERT INTO songs (channel_id, priority, track_id, artist_name, song_name, song_uri, album_artwork) VALUES ($1, $2, $3, $4, $5, $6, $7)',
-            [channel_id, priority, track_id, artist_name, song_name, song_uri, album_artwork],
-            (error, results) => {
-        if (error) {
-            throw error
-        }
-        response.status(201).send(`Song added to channel ID: ${results.channel_id}`)
-    })
+        [channel_id, priority, track_id, artist_name, song_name, song_uri, album_artwork],
+        (error, results) => {
+            if (error) {
+                throw error
+            }
+            response.status(201).send(`Song added to channel ID: ${results.channel_id}`)
+        })
 }
 
 
@@ -144,5 +168,6 @@ module.exports = {
     deleteSong,
     getChannelSongsByChannelId,
     deleteSongByChannelId,
-    deleteSongsByChannelId
+    deleteSongsByChannelId,
+    getMaxPriorityOfChannel
 }
