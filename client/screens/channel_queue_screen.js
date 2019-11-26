@@ -96,13 +96,10 @@ class SearchBarScreen extends React.Component {
                   }}
                   underlayColor="#fff"
                 >
-                  <View style={{paddingRight: 10 }}>
                   <Image
                     style={{ width: 50, height: 50}}
                     source={{ uri: song.album_artwork }}
                   />
-                  </View>
-
                   <Text>
                     <Text style={styles.songTitle}>
                       {song.song_name}
@@ -110,7 +107,6 @@ class SearchBarScreen extends React.Component {
                     </Text>
                     <Text>{song.artist_name}</Text>
                   </Text>
-
                   {/* <Text style={styles.buttonText}>{song.key}</Text> */}
                   {/* <Text style={styles.buttonText}>{song.song_uri}</Text> */}
                   {/* {<Text style={styles.buttonText}>{song.album_artwork}</Text>} */}
@@ -143,13 +139,15 @@ class SearchBarScreen extends React.Component {
       var song_name = responseJSON.body.tracks.items[i].name;
       var song_uri = responseJSON.body.tracks.items[i].album.artists[0].uri;
       var album_artwork = responseJSON.body.tracks.items[i].album.images[2].url;
+      var track_duration = responseJSON.body.tracks.items[i].duration_ms;
 
       var json = JSON.parse(JSON.stringify({
         key: track_id,
         artist_name: artist_name,
         song_name: song_name,
         song_uri: song_uri,
-        album_artwork: album_artwork
+        album_artwork: album_artwork,
+        track_duration: track_duration
       }));
       console.log(this.state.list);
       this.setState({ list: this.state.list.concat(json) });
