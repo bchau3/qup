@@ -108,7 +108,7 @@ const updateChannel = (request, response) => {
   );
 };
 
-// DELETE (/channel/remove)
+// DELETE (/channel/remove/?id=)
 const deleteChannel = (request, response) => {
   const id = request.query.id;
 

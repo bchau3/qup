@@ -35,13 +35,18 @@ app.post("/user", userDB.createUser);
 app.put("/user/:id", userDB.updateUser);
 app.put("/user/remove/:id", userDB.removeUserFromChannel);
 app.delete("/user/:id", userDB.deleteUser);
-app.get("/song/:channel_id", songDB.getSongByChannelId);
+//app.get("/song/:channel_id", songDB.getSongByChannelId);
 
 app.post("/channel/create", channelDB.createChannel);
 app.delete("/channel/remove", channelDB.deleteChannel);
 app.get("/channel/code/:join_code", channelDB.getChannelByJoinCode);
 app.get("/channel/host/:host_id", channelDB.getChannelByHostId);
 app.get("/channel/:id", channelDB.getChannelById);
+
+app.get("/song/get_songs_channel_id", songDB.getChannelSongsByChannelId);
+app.delete("/song/del_song_channel_id", songDB.deleteSongByChannelId);
+app.delete("/song/del_songs_channel_id", songDB.deleteSongsByChannelId);
+app.post("/song/create", songDB.createSong);
 /**
  * Generates a random string containing numbers and letters
  * @param  {number} length The length of the string

@@ -1,5 +1,6 @@
 const config = require('./config');
-const Pool = require('pg').Pool
+const Pool = require('pg').Pool;
+var querystring = require("querystring");
 
 const pool = new Pool({
     user: global.gConfig.database.user,
@@ -8,6 +9,54 @@ const pool = new Pool({
     password: global.gConfig.database.password,
     port: global.gConfig.database.port,
 })
+
+/**
+ * GET /songs_channel_id
+ * @param {} request 
+ * @param {*} response 
+ */
+const getChannelSongsByChannelId = (request, response) => {
+    const channel_id = request.query.channel_id;
+    pool.query('SELECT * FROM songs WHERE channel_id = $1 ORDER BY priority ASC', [channel_id], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+    
+    })
+};
+
+/**
+ * DELETE /song_channel_id
+ * @param {*} request 
+ * @param {*} response 
+ */
+const deleteSongByChannelId = (request, response) => {
+    const channel_id = request.query.channel_id;
+    const track_id = request.query.song_id;
+    pool.query('DELETE FROM songs WHERE channel_id = $1 AND track_id = $2', [channel_id, track_id], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows);
+    });
+}
+
+/**
+ * DELETE /songs_channel_id
+ * @param {} request 
+ * @param {*} response 
+ */
+const deleteSongsByChannelId = (request, response) => {
+    const channel_id = request.query.channel_id;
+    pool.query('DELETE FROM songs WHERE channel_id = $1', [channel_id], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows);
+    });
+}
+
 
 
 // GET (/song/:id)
@@ -34,16 +83,25 @@ const getSongByChannelId = (request, response) => {
     })
 }
 
-// POST (/song/:channel_id)
+/**
+ * POST (/song/:channel_id)
+ * @param {*} request 
+ * @param {*} response 
+ * curl --header "Content-Type: application/json" --request POST --data '{"channel_id":"4d":'20', "artist_name":"Chris Breezy", "song_name":"No Guidance","song_uri":"2","album_artwork":"4"}' 'http://localhost:3000/song/create'
+ */
 const createSong = (request, response) => {
-    const channel_id = parseInt(request.params.channel_id)
-    const { track_id, votes, voteskip } = request.body
+    // const channel_id = parseInt(request.params.channel_id)
+    // const channel_id = parseInt(response.params.channel_id);
+    // const priority = parseInt(response.params.priority);
+    const {channel_id, priority, track_id, artist_name, song_name, song_uri, album_artwork} = request.body
 
-    pool.query('INSERT INTO songs (track_id, channel_id, votes, voteskip) VALUES ($1, $2, $3, $4)', [track_id, channel_id, votes, voteskip], (error, results) => {
+    pool.query('INSERT INTO songs (channel_id, priority, track_id, artist_name, song_name, song_uri, album_artwork) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+            [channel_id, priority, track_id, artist_name, song_name, song_uri, album_artwork],
+            (error, results) => {
         if (error) {
             throw error
         }
-        response.status(201).send(`Song added with ID: ${results.insertId}`)
+        response.status(201).send(`Song added to channel ID: ${results.channel_id}`)
     })
 }
 
@@ -84,4 +142,7 @@ module.exports = {
     createSong,
     updateSong,
     deleteSong,
+    getChannelSongsByChannelId,
+    deleteSongByChannelId,
+    deleteSongsByChannelId
 }
