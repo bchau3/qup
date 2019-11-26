@@ -8,6 +8,8 @@ import { SearchBar } from "react-native-elements";
 import { server_url } from "../config.js";
 const queryString = require("query-string");
 
+import { addSong } from "../api/songs";
+
 /* SearchBarScreen:
  *    This screen has a search bar allows user to search a song from Spotify
  */
@@ -49,7 +51,7 @@ export default class SearchBarScreen extends React.Component {
                                 <TouchableOpacity
                                     style={styles.buttonStyle}
                                     onPress={() => {
-                                        // TODO
+                                        this._addSong(song)
                                     }}
                                     underlayColor="#fff"
                                 >
@@ -80,6 +82,11 @@ export default class SearchBarScreen extends React.Component {
         );
     }
 
+    _addSong = async (song_json) => {
+        const channel_id = await this._getChannelId();
+        addSong(channel_id, song_json);
+    }
+
     songSearch = async (query) => {
         const channel_id = await this._getChannelId();
         const encodedQuery = encodeURIComponent(query);
@@ -102,7 +109,7 @@ export default class SearchBarScreen extends React.Component {
             var album_artwork = responseJSON.body.tracks.items[i].album.images[2].url;
 
             var json = JSON.parse(JSON.stringify({
-                key: track_id,
+                track_id: track_id,
                 artist_name: artist_name,
                 song_name: song_name,
                 song_uri: song_uri,

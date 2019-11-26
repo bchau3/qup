@@ -66,7 +66,7 @@ const deleteSongByChannelId = (request, response) => {
 }
 
 /**
- * DELETE /songs_channel_id
+ * DELETE /song/del_songs_channel_id
  * @param {} request 
  * @param {*} response 
  */
