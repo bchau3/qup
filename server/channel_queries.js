@@ -114,17 +114,24 @@ const deleteChannel = (request, response) => {
 
   console.log(id);
 
-  pool.query("DELETE FROM channels WHERE id = $1", [id], (error, results) => {
+  // Delete songs before deleting channel
+  pool.query('DELETE FROM songs WHERE channel_id = $1', [id], (error, results) => {
     if (error) {
-      throw error;
+      throw error
     }
-    
-    // Reset user's current channel
-    pool.query("UPDATE users SET channel_id=null WHERE channel_id=$1", [id]);
 
-    // Todo: Clear all songs with channel_id
+    pool.query("DELETE FROM channels WHERE id = $1", [id], (error, results) => {
+      if (error) {
+        throw error;
+      }
 
-    response.status(200).send(`Channel deleted with ID: ${id}`);
+      // Reset user's current channel
+      pool.query("UPDATE users SET channel_id=null WHERE channel_id=$1", [id]);
+
+      // Todo: Clear all songs with channel_id
+
+      response.status(200).send(`Channel deleted with ID: ${id}`);
+    });
   });
 };
 
