@@ -25,6 +25,8 @@ import {createChannel} from "../api/channel";
 import { styles } from '../style/link_screen_style';
 // Get server info from config file
 import { server_url } from "../config.js";
+import { LinearGradient } from 'expo-linear-gradient';
+
 
 /*
  * LinksScreen:
@@ -60,8 +62,12 @@ class LoginScreen extends React.Component {
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.scrollViewContainer}>
-          <View style={styles.LinkScreenContainer}>
-            
+          {/* <View style={styles.LinkScreenContainer}> */}
+          <LinearGradient
+                        colors={['#101227', '#ff3fc9']}
+                        start={{ x: 0.0, y: 0.0 }} end={{ x: 0.0, y: 6.5 }}
+                        style={styles.LinkScreenContainer}
+          >
             {/* Import Image */}
             <View style={{paddingBottom: 25}}>
             <Image
@@ -96,7 +102,8 @@ class LoginScreen extends React.Component {
             >
               <Text style={styles.buttonText2}>Cancel</Text>
             </TouchableOpacity>
-          </View>
+          </LinearGradient>
+          {/* </View> */}
       </View>
     );
   }

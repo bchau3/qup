@@ -7,7 +7,8 @@ import {
     TouchableOpacity,
     View,
     Button,
-    Alert
+    Alert,
+    ImageBackground
 } from 'react-native';
 
 // for screen switch 
@@ -34,34 +35,30 @@ class HomeScreen extends React.Component {
     render() {
         const { navigate } = this.props.navigation;
         return (
-            <View style={styles.scrollViewContainer} >
+            <ImageBackground source={require("../assets/images/home_background.png")} style={styles.getStartedContainer}>
 
-                <View style={styles.getStartedContainer}>
-
-                    <View style={{ paddingBottom: 85 }}>
-                        <Text style={styles.titleContainer}> {this.state.titleText} </Text>
-                    </View>
-
-                    <TouchableOpacity
-                        style={styles.buttonStyle}
-                        onPress={() => { navigate("LINKFLOW"); }}>
-                        <Text style={styles.buttonTextHomeScreen}> {this.state.createButtonText} </Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        style={styles.buttonStyle2}
-                        onPress={() => { navigate("CHANNELFLOW"); }}>
-                        <Text style={styles.buttonTextHomeScreen}> {this.state.joinButtonText} </Text>
-                    </TouchableOpacity>
-
+                <View style={{ paddingBottom: 85 }}>
+                    <Image source={require("../assets/images/qup_text_logo.png")} style={{ width: 250, height: 110 }} />
                 </View>
-            </View>
+
+                <TouchableOpacity
+                    style={styles.buttonStyle}
+                    onPress={() => { navigate("LINKFLOW"); }}>
+                    <Text style={styles.buttonTextHomeScreen}> {this.state.createButtonText} </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={styles.buttonStyle2}
+                    onPress={() => { navigate("CHANNELFLOW"); }}>
+                    <Text style={styles.buttonTextHomeScreen}> {this.state.joinButtonText} </Text>
+                </TouchableOpacity>
+            </ImageBackground>
         );
     }
 }
 
 // Used to assign screens to a variable which are used to connect screens
-//const ScreenStack = createStackNavigator(
+// const ScreenStack = createStackNavigator(
 const ScreenStack = createStackNavigator(
     {
         HOME: HomeScreen,

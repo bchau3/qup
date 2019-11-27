@@ -3,7 +3,8 @@ import { Platform, StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
     backgroundContainer: {
         flex: 1,
-        backgroundColor: "#070C3C",
+        backgroundColor: "#101227",
+        //backgroundColor: "#070C3C",
     },
     imageStyle: {
         width: 280,
@@ -14,7 +15,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: "#070C3C",
+        backgroundColor: "#101227",
+        //backgroundColor: "#070C3C",
     },
     textStyle: {
         fontSize: 20,

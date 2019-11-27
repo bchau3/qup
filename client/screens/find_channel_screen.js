@@ -25,13 +25,15 @@ import ChannelQueueScreen from "./channel_queue_screen";
 
 import { joinChannel } from '../api/channel';
 import { styles } from "../style/sign_in_screen_style";
+import { LinearGradient } from 'expo-linear-gradient';
+
 
 // For Confirmation code
-export const CELL_SIZE = 70;
-export const CELL_BORDER_RADIUS = 8;
+export const CELL_SIZE = 60;
+export const CELL_BORDER_RADIUS = 5;
 export const DEFAULT_CELL_BG_COLOR = "#fff";
-export const NOT_EMPTY_CELL_BG_COLOR = "#3557b7";
-export const ACTIVE_CELL_BG_COLOR = "#f7fafe";
+export const NOT_EMPTY_CELL_BG_COLOR = "#ff3fc9";
+export const ACTIVE_CELL_BG_COLOR = "powderblue";
 const codeLength = 4;
 import CodeFiled from "react-native-confirmation-code-field";
 
@@ -140,31 +142,39 @@ class JoinChannelScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <View style={styles.inputWrapper}>
+      <View style={styles.initContainer}>
+        {/* <View style={styles.inputWrapper}> */}
+        <LinearGradient
+                        colors={['#101227', '#36C3FF']}
+                        start={{ x: 0.0, y: 0.0 }} end={{ x: 0.0, y: 6.5 }}
+                        style={styles.container}
+        >
+
           <Text style={styles.inputLabel}>Verification</Text>
 
-          <View style={{paddingBottom: 25}}>
-          <Image
-            style={styles.icon}
-            source={require("../assets/images/qup_logo.png")}
-          />
+          <View style={{ paddingBottom: 25 }}>
+            <Image
+              style={styles.icon}
+              source={require("../assets/images/qup_logo.png")}
+            />
           </View>
 
           <Text style={styles.inputSubLabel}>
             Please enter the channel code
           </Text>
 
-          <CodeFiled
-            maskSymbol=" "
-            variant="clear"
-            codeLength={codeLength}
-            keyboardType="numeric"
-            cellProps={this.cellProps}
-            containerProps={this.containerProps}
-            onFulfill={this.onFinishCheckingCode}
-            CellComponent={Animated.Text}
-          />
+          <View style={{paddingBottom: 50}}>
+            <CodeFiled
+              maskSymbol=" "
+              variant="clear"
+              codeLength={codeLength}
+              keyboardType="numeric"
+              cellProps={this.cellProps}
+              containerProps={this.containerProps}
+              onFulfill={this.onFinishCheckingCode}
+              CellComponent={Animated.Text}
+            />
+          </View>
 
           <TouchableOpacity
             style={styles.nextButton}
@@ -175,8 +185,8 @@ class JoinChannelScreen extends React.Component {
           >
             <Text style={styles.nextButtonText}>Cancel</Text>
           </TouchableOpacity>
-
-        </View>
+          </LinearGradient>
+        {/* </View> */}
       </View>
     );
   }

@@ -3,7 +3,8 @@ import { Platform, StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
     scrollViewContainer: {
         flex: 1,
-        backgroundColor: "#070C3C",
+        backgroundColor: "#101227",
+        //backgroundColor: "#070C3C",
     },
     imageStyle: {
         width: 150,
@@ -42,11 +43,13 @@ const styles = StyleSheet.create({
         borderColor: "#1ED760",
     },
     LinkScreenContainer: {
-        fontSize: 20,
+        //fontSize: 20,
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: "#070C3C",
+        //backgroundColor: "white",
+        backgroundColor: "#101227",
+        //backgroundColor: "#070C3C",
     },
     textStyleLink: {
         fontSize: 20,
@@ -60,7 +63,9 @@ const styles = StyleSheet.create({
         textAlign: "center",
         paddingLeft: 20,
         paddingRight: 20,
-        fontSize: 25,
+        fontSize: 23,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     buttonText2: {
         color: "white",

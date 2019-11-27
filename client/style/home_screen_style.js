@@ -3,7 +3,8 @@ import { Platform, StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
     scrollViewContainer: {
         flex: 1,
-        backgroundColor: "#070C3C",
+        backgroundColor: "#101227",
+        //backgroundColor: "#070C3C",
     },
     buttonContainer: {
         fontSize: 50,
@@ -16,9 +17,8 @@ const styles = StyleSheet.create({
     titleContainer: {
         //font: 'Normal',
         fontSize: 95,
-        textShadowColor: "white",
-        //textShadowRadius:25,
-        color: '#36c3ff',
+        //color: '#36c3ff',
+        color: 'pink',
         alignItems: "center",
         fontWeight: "900"
     },
@@ -46,9 +46,10 @@ const styles = StyleSheet.create({
         backgroundColor: "black"
     },
     getStartedContainer: {
-        flex: 1,
-        fontSize: 25,
-        color: 'whitesmoke',
+        //flex: 1,
+        //fontSize: 25,
+        //color: 'whitesmoke',
+        height: '100%',
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
