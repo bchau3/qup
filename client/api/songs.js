@@ -7,11 +7,10 @@ const queryString = require('query-string');
  */
 export async function getChannelSongsByChannelId(channel_id) {
     let response = await fetch(`${ server_url }/song/get_songs_channel_id?channel_id=${ channel_id }`);
-    // console.log(resp onse);
     let responseText = await response.text();
     let responseJSON = await JSON.parse(responseText);
-    console.log(responseJSON);
-    
+    //console.log(responseJSON);
+    return responseJSON;
 }
 
 /**

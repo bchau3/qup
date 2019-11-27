@@ -5,6 +5,7 @@ import { ScrollView,StyleSheet,Text,View } from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation'
 import OptionScreen from "./option_screen";
 import SearchBarScreen from "./search_bar_screen";
+import SongQueue from "../components/song_queue";
 
 /* HostQueueScreen:
  *    Screen shows the song queue that are made for the host only
@@ -19,24 +20,15 @@ class HostQueueScreen extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-
       <View style={styles.container}>
+
         <ScrollView
           style={styles.container}
-          contentContainerStyle={styles.contentContainer}>
-          <View style={styles.getStartedContainer}>
-            <Text>!QUEUE!</Text>
-            <Text>TODO:</Text>
-            <Text>1.SHOW QUEUE IS EMPTY</Text>
-            <Text>2.EACH SONG HAS ITS OWN SECTION</Text>
-            <Text>3.ABLE TO SWIPE THE SONG TABS</Text>
-            <Text>3-1.HOST HAS UPVOTE, DOWNVOTW</Text>
-            <Text>4.TAB GIVE OPTIONS TO DELETE ANY SONGS</Text>
-            <Text>5.CURRENT SONG SHOULD HAS A WINDOW AT BOTTOM</Text>
-            <Text>5-1.THE HOST CAN SKIP CURRENT SONG</Text>
-
-          </View>
+          contentContainerStyle={styles.contentContainer}
+        >
+          <SongQueue />
         </ScrollView>
+
       </View>
     );
   }

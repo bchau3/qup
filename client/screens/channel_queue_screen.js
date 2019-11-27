@@ -6,7 +6,7 @@ import { Image, Platform, ScrollView, StyleSheet, Text, View, TouchableOpacity, 
 import { createBottomTabNavigator } from "react-navigation";
 import OptionScreen from "./option_screen";
 import SearchBarScreen from "./search_bar_screen";
-import SongQueue from "../components/SongQueue";
+import SongQueue from "../components/song_queue";
 
 // Get server info from config file
 const queryString = require("query-string");
