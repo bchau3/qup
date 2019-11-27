@@ -1,6 +1,7 @@
 import * as WebBrowser from "expo-web-browser";
 import * as React from "react";
-import { Image, Platform, ScrollView, StyleSheet, Text, View, TouchableOpacity, AsyncStorage } from "react-native";
+import { Image, Button, Platform, ScrollView, StyleSheet, Text, View, TouchableOpacity, AsyncStorage } from "react-native";
+import {playSong} from '../api/queue';
 
 // for screen switch
 import { createBottomTabNavigator } from "react-navigation";
@@ -38,6 +39,12 @@ class ChannelQueueScreen extends React.Component {
           contentContainerStyle={styles.contentContainer}
         >
           <View style={styles.getStartedContainer}>
+            <Button
+              title="Play Song"
+              onPress={() => {
+                this._playSong
+              }}
+              />
             <Text>!QUEUE!</Text>
             <Text>TODO:</Text>
             <Text>1.SHOW QUEUE IS EMPTY</Text>
@@ -49,6 +56,23 @@ class ChannelQueueScreen extends React.Component {
       </View>
     );
   }
+}
+
+_playSong = async () => {
+  const channel_id = await this._getChannelId();
+  console.log(channel_id);
+  playSong(channel_id);
+}
+
+_getChannelId = async () => {
+  let channel_id = '';
+  try {
+      channel_id = await AsyncStorage.getItem('channel_id') || 'none';
+  } catch (error) {
+      // Error retrieving data
+      console.log(error.message);
+  }
+  return channel_id;
 }
 
 // create bottom tabs to switch screens

@@ -4,6 +4,15 @@ const userDB = require("./user_queries");
 const channelDB = require("./channel_queries");
 const spotifyAPI = require("./spotify_api");
 const songDB = require("./song_queries");
+const Pool = require('pg').Pool
+
+const pool = new Pool({
+  user: global.gConfig.database.user,
+  host: global.gConfig.database.host,
+  database: global.gConfig.database.database,
+  password: global.gConfig.database.password,
+  port: global.gConfig.database.port,
+})
 
 var request = require("request"); // "Request" library
 var cors = require("cors");
@@ -209,7 +218,15 @@ function getHostAccessToken(channel_id, callback) {
 }
 //PLAY SONG
 const playSong = (req, res) => {
-  const channel_id = req.channel_id;
+  const channel_id = req.query.channel_id;
+
+  pool.query('SELECT track_id FROM songs WHERE channel_id = $1', [channel_id], (error, results) => {
+    if (error) {
+        throw error
+    }
+    let songs = results.rows;
+    console.log(songs);
+  })
 
   console.log(`channel_id: ${channel_id}`);
   getHostAccessToken(channel_id, function(access_token) {
@@ -218,9 +235,10 @@ const playSong = (req, res) => {
       headers: { Authorization: "Bearer " + access_token },
       json: true
     };
+
     // use the access token to access the Spotify Web API
     request.put(options, function(error, response, body) {
-      console.log(response);
+      //console.log(response);
       res.send(response);
     });
   });
