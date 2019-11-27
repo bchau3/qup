@@ -6,10 +6,11 @@ import { Image, Platform, ScrollView, StyleSheet, Text, View, TouchableOpacity, 
 import { createBottomTabNavigator } from "react-navigation";
 import OptionScreen from "./option_screen";
 import SearchBarScreen from "./search_bar_screen";
+import SongQueue from "../components/SongQueue";
 
 // Get server info from config file
 const queryString = require("query-string");
-import { addSong } from "../api/songs";
+import { getChannelSongsByChannelId } from "../api/songs";
 
 import TabBarIcon from "../components/TabBarIcon"; // for bar icons
 
@@ -33,19 +34,14 @@ class ChannelQueueScreen extends React.Component {
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
-        <ScrollView
+       
+        <ScrollView 
           style={styles.container}
           contentContainerStyle={styles.contentContainer}
         >
-          <View style={styles.getStartedContainer}>
-            <Text>!QUEUE!</Text>
-            <Text>TODO:</Text>
-            <Text>1.SHOW QUEUE IS EMPTY</Text>
-            <Text>2.EACH SONG HAS ITS OWN SECTION</Text>
-            <Text>3.ABLE TO SWIPE THE SONG TABS</Text>
-            <Text>4.TAB GIVE OPTIONS TO DELETE (SONG OWNER ONLY)</Text>
-          </View>
+          <SongQueue/>
         </ScrollView>
+        
       </View>
     );
   }
