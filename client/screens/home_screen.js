@@ -78,4 +78,3 @@ const ScreenStack = createStackNavigator(
 const AppContainer = createAppContainer(ScreenStack);
 
 export default AppContainer;
-

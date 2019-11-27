@@ -1,6 +1,11 @@
 import React, { Component } from "react";
-import { Button, Text, View } from "react-native";
+import { Button, Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { AuthSession, apisAreAvailable } from "expo";
+
+import { createAppContainer, createSwitchNavigator, NavigationActions } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack'
+
+import HostQueueScreen from '../screens/host_queue_screen';
 
 // Authentication APIs
 import { storeCodeAtId, getAuthToken } from "../api/auth.js";
@@ -8,7 +13,7 @@ import { storeCodeAtId, getAuthToken } from "../api/auth.js";
 // Get server info from config file
 import { server_url } from "../config.js";
 
-export default class TestLogin extends Component {
+export default class Login extends Component {
   state = {
     userInfo: null,
     code: null,
@@ -19,14 +24,27 @@ export default class TestLogin extends Component {
     username: null,
   };
 
+  static navigationOptions = {
+    title: 'Login Screen',
+    header: null,
+  }
+
   render() {
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <View style={styles.getStartedContainer}>
         {!this.state.code ? (
-          <Button title="Open Spotify Auth" onPress={this._handlePressAsync} />
+          <TouchableOpacity
+            style={styles.buttonStyle}
+            onPress={
+              this._handlePressAsync
+            }
+            underlayColor="#fff"
+          >
+            <Text style={styles.buttonText}>Link Account</Text>
+          </TouchableOpacity>
         ) : (
-          this._renderUserInfo()
-        )}
+            () => {this.props.navigation.navigate('HOST')}
+      )}
       </View>
     );
   }
@@ -93,3 +111,43 @@ export default class TestLogin extends Component {
     this.setState({ code: null, access_token: null, refresh_token: null });
   };
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#89Cff0"
+  },
+  contentContainer: {
+    paddingTop: 30
+  },
+  getStartedContainer: {
+    fontSize: 20,
+    backgroundColor: "#89CFF0",
+    alignItems: "center",
+    marginHorizontal: 0,
+    marginVertical: 30
+  },
+  todoText: {
+    textAlign: "left",
+    fontSize: 15
+  },
+  buttonStyle: {
+    marginRight: 10,
+    marginLeft: 10,
+    marginTop: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    backgroundColor: "#ffb6c1",
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: "#000000",
+    width: 200
+  },
+  buttonText: {
+    color: "#000000",
+    textAlign: "center",
+    paddingLeft: 20,
+    paddingRight: 20,
+    fontSize: 15
+  }
+});

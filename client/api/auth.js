@@ -8,17 +8,17 @@ const queryString = require('query-string');
 * @param {*} code The spotify code to store
 * @param {*} id The id of user to store code to
 */
-export async function storeCodeAtId(code, id){
+export async function storeRefreshAtId(refresh_token, id){
     try {
         let users = await getUserWithId(id);
-        
-        users[0].code = code;
-        
         let user = users[0];
+        
+        user.refresh_token = refresh_token;
+        
         console.log({server_url}.server_url + "/user/")
         user = await putCode({ server_url }.server_url + '/user/' + {id}.id, {
             channel_id: user.channel_id,
-            code: user.code,
+            refresh_token: user.refresh_token,
             email: user.email,
             name: user.name
         });

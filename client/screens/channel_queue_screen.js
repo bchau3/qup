@@ -1,11 +1,14 @@
 import * as WebBrowser from "expo-web-browser";
 import * as React from "react";
-import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Image, Platform, ScrollView, StyleSheet, Text, View, TouchableOpacity, AsyncStorage } from "react-native";
 
 // for screen switch
 import { createBottomTabNavigator } from "react-navigation";
 import OptionScreen from "./option_screen";
-import { SearchBar } from "react-native-elements";
+import SearchBarScreen from "./search_bar_screen";
+
+// Get server info from config file
+const queryString = require("query-string");
 
 import TabBarIcon from "../components/TabBarIcon"; // for bar icons
 
@@ -42,44 +45,6 @@ class ChannelQueueScreen extends React.Component {
             <Text>4.TAB GIVE OPTIONS TO DELETE (SONG OWNER ONLY)</Text>
           </View>
         </ScrollView>
-      </View>
-    );
-  }
-}
-
-/* SearchBarScreen:
- *    This screen has a search bar allows user to search a song from Spotify
- */
-class SearchBarScreen extends React.Component {
-  state = {
-    search: ""
-  };
-
-  updateSearch = search => {
-    this.setState({ search });
-  };
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <SearchBar
-          inputStyle={{ backgroundColor: "#ffb6c1" }}
-          containerStyle={{
-            backgroundColor: "#DB7093",
-            borderWidth: 1,
-            borderRadius: 5
-          }}
-          inputContainerStyle={{ backgroundColor: "#ffb6c1" }}
-          placeholderTextColor={"#436EEE"}
-          placeholder={"Search for a song"}
-          onChangeText={this.updateSearch}
-          value={this.state.search}
-          showCancel={true}
-        />
-        <ScrollView
-          style={styles.container}
-          contentContainerStyle={styles.contentContainer}
-        ></ScrollView>
       </View>
     );
   }
@@ -122,5 +87,35 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     textAlign: "left",
     paddingLeft: 30
+  },
+  buttonStyle: {
+    marginRight: 10,
+    marginLeft: 10,
+    marginTop: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    backgroundColor: "#ffb6c1",
+    borderRadius: 0,
+    borderWidth: 1,
+    borderColor: "#000000",
+    width: 380,
+    height: 70,
+    flex: 1,
+    flexDirection: "row"
+  },
+  buttonText: {
+    color: "#000000",
+    textAlign: "center",
+    paddingLeft: 10,
+    paddingRight: 10,
+    fontSize: 12,
+  },
+  songTitle: {
+    color: "#000000",
+    textAlign: "left",
+    paddingLeft: 20,
+    paddingRight: 20,
+    fontSize: 15,
+    fontWeight: 'bold'
   }
 });
