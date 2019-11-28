@@ -218,27 +218,42 @@ function getHostAccessToken(channel_id, callback) {
   });
 }
 //PLAY SONG
-const playSong = ({
-  song_uri,
-  playerInstancee: {
-    options: {
-      getHostAccessToken,
-      channel_id
-    }
-  }
-}) => {
-  //const channel_id = req.query.channel_id;
-  getHostAccessToken(channel_id, function(access_token) {
-    fetch(`https://api.spotify.com/v1/me/player/play`, {
-      method: 'PUT',
-      body: JSON.stringify({ uris: [song_uri] }),
-      headers: { 
-        'Content-Type': 'application/json',
-        Authorization: "Bearer " + access_token 
-      },
+const playSong = (req, res) => {
+  const channel_id = req.query.channel_id;
+
+  // Get all songs given channel id
+  pool.query(
+    `SELECT song_uri FROM songs WHERE channel_id = $1 ORDER BY priority ASC`, [channel_id], (error, results) => {
+      if(error){
+        throw error;
+      }
+      // Put results into json array
+      json = {
+        uris: [],
+        offset: {"position": 0},
+      }
+      console.log(results.rows);
+      for(i = 0; i < results.rows.length; i++){
+        json.uris.push(results.rows[i].song_uri);
+      }
+
+      console.log(json);
+
+    getHostAccessToken(channel_id, function(access_token) {
+      var options = {
+        url: `https://api.spotify.com/v1/me/player/play`,
+        headers: { Authorization: "Bearer " + access_token },
+        json: true,
+        body: json
+      };
+      // use the access token to access the Spotify Web API
+      request.put(options, function(error, response, body) {
+        console.log(response.body);
+        res.send(response);
+      });
     });
   });
-};
+}
 
 app.put("/play", playSong);
 
