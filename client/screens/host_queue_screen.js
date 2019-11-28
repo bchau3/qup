@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ScrollView,StyleSheet,Text,View, Button, AsyncStorage} from 'react-native';
+import { ScrollView,StyleSheet,Text,View, Button, AsyncStorage, TouchableOpacity} from 'react-native';
 
 // for screen switch 
 import { createBottomTabNavigator } from 'react-navigation'
@@ -28,13 +28,15 @@ class HostQueueScreen extends React.Component {
           contentContainerStyle={styles.contentContainer}
         >
           <SongQueue />
-
-            <Button
-              title="Play Song"
-              onPress={
-                this._playSong
-              }
-            />
+          <TouchableOpacity
+            style={styles.buttonStyle}
+            onPress={
+              this._playSong
+            }
+            underlayColor="#fff"
+          >
+            <Text style={styles.buttonText}>Play</Text>
+          </TouchableOpacity>
               
         </ScrollView>
 
@@ -43,6 +45,7 @@ class HostQueueScreen extends React.Component {
   }
 
   _playSong = async () => {
+    console.log("hello?");
     const channel_id = await this._getChannelId();
     console.log(channel_id);
 
@@ -97,5 +100,35 @@ const styles = StyleSheet.create({
     color: "rgba(96,100,109, 1)",
     lineHeight: 24,
     textAlign: "left"
+  },
+    buttonStyle: {
+    marginRight: 10,
+    marginLeft: 10,
+    marginTop: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    backgroundColor: "#ffb6c1",
+    borderRadius: 0,
+    borderWidth: 1,
+    borderColor: "#000000",
+    width: 380,
+    height: 70,
+    flex: 1,
+    flexDirection: "row"
+  },
+  buttonText: {
+    color: "#000000",
+    textAlign: "center",
+    paddingLeft: 10,
+    paddingRight: 10,
+    fontSize: 12,
+  },
+  songTitle: {
+    color: "#000000",
+    textAlign: "left",
+    paddingLeft: 20,
+    paddingRight: 20,
+    fontSize: 15,
+    fontWeight: 'bold'
   }
 });

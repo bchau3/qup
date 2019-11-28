@@ -42,28 +42,29 @@ class ChannelQueueScreen extends React.Component {
           contentContainerStyle={styles.contentContainer}
         >
           <SongQueue/>
-
-           <Button
-              title="Play Song"
-              onPress={
-                this._playSong
-              }
-              />
+           <TouchableOpacity
+                style={styles.buttonStyle}
+                onPress={
+                  this._playSong
+                }
+                underlayColor="#fff"
+              >
+                <Text style={styles.buttonText}>Play</Text>
+            </TouchableOpacity>
         </ScrollView>
-        
       </View>
     );
   }
-}
 
-_playSong = async () => {
+  _playSong = async () => {
+  console.log("Hello?");
   const channel_id = await this._getChannelId();
   console.log(channel_id);
 
   playSong(channel_id);
-}
+  }
 
-_getChannelId = async () => {
+  _getChannelId = async () => {
   let channel_id = '';
   try {
       channel_id = await AsyncStorage.getItem('channel_id') || 'none';
@@ -72,7 +73,11 @@ _getChannelId = async () => {
       console.log(error.message);
   }
   return channel_id;
+  }
+
 }
+
+
 
 // create bottom tabs to switch screens
 export default createBottomTabNavigator(
