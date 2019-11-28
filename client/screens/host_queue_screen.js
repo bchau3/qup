@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { ScrollView,StyleSheet,Text,View } from 'react-native';
+import { ScrollView,StyleSheet,Text,View, Button} from 'react-native';
 
 // for screen switch 
 import { createBottomTabNavigator } from 'react-navigation'
 import OptionScreen from "./option_screen";
 import SearchBarScreen from "./search_bar_screen";
 import SongQueue from "../components/song_queue";
+import {playSong} from "../api/queue";
 
 /* HostQueueScreen:
  *    Screen shows the song queue that are made for the host only
@@ -27,6 +28,14 @@ class HostQueueScreen extends React.Component {
           contentContainerStyle={styles.contentContainer}
         >
           <SongQueue />
+
+            <Button
+              title="Play Song"
+              onPress={() => {
+                this._playSong
+              }}
+            />
+              
         </ScrollView>
 
       </View>

@@ -32,11 +32,11 @@ export function getChannelSongURI(channel_id) {
 //     return await response; // parses JSON response into native JavaScript objects
 // }
 
-// export async function playSong(channel_id) {
-//     const response = await fetch(
-//         `${server_url}/play?channel_id=${channel_id}`,
-//         {
-//             method: 'PUT',
-//         }
-//     )
-// }
+export async function playSong(channel_id) {
+    const response = await fetch(
+        `${server_url}/play?channel_id=${channel_id}`,
+        {
+            method: 'PUT',
+        }
+    )
+}
