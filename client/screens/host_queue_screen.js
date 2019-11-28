@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ScrollView,StyleSheet,Text,View, Button} from 'react-native';
+import { ScrollView,StyleSheet,Text,View, Button, AsyncStorage} from 'react-native';
 
 // for screen switch 
 import { createBottomTabNavigator } from 'react-navigation'
@@ -31,15 +31,33 @@ class HostQueueScreen extends React.Component {
 
             <Button
               title="Play Song"
-              onPress={() => {
+              onPress={
                 this._playSong
-              }}
+              }
             />
               
         </ScrollView>
 
       </View>
     );
+  }
+
+  _playSong = async () => {
+    const channel_id = await this._getChannelId();
+    console.log(channel_id);
+
+    playSong(channel_id);
+  }
+
+  _getChannelId = async () => {
+    let channel_id = '';
+    try {
+        channel_id = await AsyncStorage.getItem('channel_id') || 'none';
+    } catch (error) {
+        // Error retrieving data
+        console.log(error.message);
+    }
+    return channel_id;
   }
 }
 
