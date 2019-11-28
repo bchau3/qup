@@ -45,9 +45,9 @@ class ChannelQueueScreen extends React.Component {
 
            <Button
               title="Play Song"
-              onPress={() => {
+              onPress={
                 this._playSong
-              }}
+              }
               />
         </ScrollView>
         
@@ -60,9 +60,7 @@ _playSong = async () => {
   const channel_id = await this._getChannelId();
   console.log(channel_id);
 
-  playSong({
-    song_uri: getChannelSongURI(channel_id),
-  });
+  playSong(channel_id);
 }
 
 _getChannelId = async () => {
@@ -74,10 +72,6 @@ _getChannelId = async () => {
       console.log(error.message);
   }
   return channel_id;
-}
-_getChannelSongURI = async () => {
-  const channel_id = await this._getChannelId;
-  _getChannelSongURI(channel_id)
 }
 
 // create bottom tabs to switch screens
