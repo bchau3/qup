@@ -124,7 +124,7 @@ const getSongByChannelId = (request, response) => {
  */
 const createSong = (request, response) => {
     console.log(request.body);
-    const { channel_id, priority, track_id, artist_name, song_name, song_uri, album_artwork } = request.body
+    const { channel_id, priority, track_id, artist_name, song_name, song_uri, album_artwork, duration_ms } = request.body
     pool.query('SELECT FROM songs WHERE channel_id = $1 AND track_id = $2', [channel_id, track_id],
             (error,results) => {
                 if (error) {
@@ -132,8 +132,8 @@ const createSong = (request, response) => {
                 }
                 if (results.rows.length == 0) {
                     //response.status(200).json(0);
-                    pool.query('INSERT INTO songs (channel_id, priority, track_id, artist_name, song_name, song_uri, album_artwork) VALUES ($1, $2, $3, $4, $5, $6, $7)',
-                            [channel_id, priority, track_id, artist_name, song_name, song_uri, album_artwork],
+                    pool.query('INSERT INTO songs (channel_id, priority, track_id, artist_name, song_name, song_uri, album_artwork, duration_ms) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+                            [channel_id, priority, track_id, artist_name, song_name, song_uri, album_artwork, duration_ms],
                             (error, results) => {
                                 if (error) {
                                     throw error
