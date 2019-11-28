@@ -26,6 +26,17 @@ const getChannelSongsByChannelId = (request, response) => {
     })
 };
 
+const getChannelSongURI = (request, response) => {
+    const channel_id = request.query.channel_id;
+    pool.query('SELECT song_uri FROM songs WHERE channel_id = $1 ORDER BY priority ASC', [channel_id], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+
+    })
+};
+
 
 /** GET /max_priority
  * 
@@ -79,7 +90,6 @@ const deleteSongsByChannelId = (request, response) => {
         response.status(200).json(results.rows);
     });
 }
-
 
 
 // GET (/song/:id)
@@ -169,5 +179,6 @@ module.exports = {
     getChannelSongsByChannelId,
     deleteSongByChannelId,
     deleteSongsByChannelId,
-    getMaxPriorityOfChannel
+    getMaxPriorityOfChannel,
+    getChannelSongURI
 }

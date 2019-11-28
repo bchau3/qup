@@ -1,7 +1,8 @@
 import * as WebBrowser from "expo-web-browser";
 import * as React from "react";
 import { Image, Button, Platform, ScrollView, StyleSheet, Text, View, TouchableOpacity, AsyncStorage } from "react-native";
-import {playSong} from '../api/queue';
+import {playSong, getChannelSongURI} from '../api/queue';
+
 
 // for screen switch
 import { createBottomTabNavigator } from "react-navigation";
@@ -61,7 +62,10 @@ class ChannelQueueScreen extends React.Component {
 _playSong = async () => {
   const channel_id = await this._getChannelId();
   console.log(channel_id);
-  playSong(channel_id);
+
+  playSong({
+    song_uri: getChannelSongURI(channel_id),
+  });
 }
 
 _getChannelId = async () => {
@@ -73,6 +77,10 @@ _getChannelId = async () => {
       console.log(error.message);
   }
   return channel_id;
+}
+_getChannelSongURI = async () => {
+  const channel_id = await this._getChannelId;
+  _getChannelSongURI(channel_id)
 }
 
 // create bottom tabs to switch screens

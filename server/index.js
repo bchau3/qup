@@ -55,6 +55,7 @@ app.get("/channel/:id", channelDB.getChannelById);
 app.get("/song/get_songs_channel_id", songDB.getChannelSongsByChannelId);
 app.delete("/song/del_song_channel_id", songDB.deleteSongByChannelId);
 app.delete("/song/del_songs_channel_id", songDB.deleteSongsByChannelId);
+app.get("/song/get_channel_song_uri", songDB.getChannelSongURI);
 app.post("/song/create", songDB.createSong);
 app.get("/song/max_priority", songDB.getMaxPriorityOfChannel);
 
@@ -88,7 +89,7 @@ app.get("/login/:redirect_uri", function(req, res) {
   res.cookie(stateKey, state);
 
   // your application requests authorization
-  var scope = "user-read-private user-read-email user-read-playback-state";
+  var scope = "user-read-private user-read-email user-read-playback-state user-modify-playback-state";
   res.redirect(
     "https://accounts.spotify.com/authorize?" +
       querystring.stringify({
@@ -217,29 +218,24 @@ function getHostAccessToken(channel_id, callback) {
   });
 }
 //PLAY SONG
-const playSong = (req, res) => {
-  const channel_id = req.query.channel_id;
-
-  pool.query('SELECT track_id FROM songs WHERE channel_id = $1', [channel_id], (error, results) => {
-    if (error) {
-        throw error
+const playSong = ({
+  song_uri,
+  playerInstancee: {
+    options: {
+      getHostAccessToken,
+      channel_id
     }
-    let songs = results.rows;
-    console.log(songs);
-  })
-
-  console.log(`channel_id: ${channel_id}`);
+  }
+}) => {
+  //const channel_id = req.query.channel_id;
   getHostAccessToken(channel_id, function(access_token) {
-    var options = {
-      url: `https://api.spotify.com/v1/player/play`,
-      headers: { Authorization: "Bearer " + access_token },
-      json: true
-    };
-
-    // use the access token to access the Spotify Web API
-    request.put(options, function(error, response, body) {
-      //console.log(response);
-      res.send(response);
+    fetch(`https://api.spotify.com/v1/me/player/play`, {
+      method: 'PUT',
+      body: JSON.stringify({ uris: [song_uri] }),
+      headers: { 
+        'Content-Type': 'application/json',
+        Authorization: "Bearer " + access_token 
+      },
     });
   });
 };
