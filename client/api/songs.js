@@ -5,16 +5,12 @@ const queryString = require('query-string');
  * GET
  * @param {*} channel_id 
  */
-export function getChannelSongsByChannelId(channel_id) {
-    return fetch({ server_url }.server_url + '/song/get_songs_channel_id' + { channel_id }.channel_id)
-    .then((response) => response.json())
-    .then((responseJSON) => {
-        console.log(responseJSON)
-        return responseJSON;
-    })
-    .catch((error) => {
-        console.error(error);
-    });
+export async function getChannelSongsByChannelId(channel_id) {
+    let response = await fetch(`${ server_url }/song/get_songs_channel_id?channel_id=${ channel_id }`);
+    let responseText = await response.text();
+    let responseJSON = await JSON.parse(responseText);
+    //console.log(responseJSON);
+    return responseJSON;
 }
 
 /**
