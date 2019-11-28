@@ -107,13 +107,15 @@ export default class SearchBarScreen extends React.Component {
             var song_name = responseJSON.body.tracks.items[i].name;
             var song_uri = responseJSON.body.tracks.items[i].uri;
             var album_artwork = responseJSON.body.tracks.items[i].album.images[2].url;
+            var duration_ms = responseJSON.body.tracks.items[i].duration_ms
 
             var json = JSON.parse(JSON.stringify({
                 track_id: track_id,
                 artist_name: artist_name,
                 song_name: song_name,
                 song_uri: song_uri,
-                album_artwork: album_artwork
+                album_artwork: album_artwork,
+                duration_ms: duration_ms
             }));
             console.log(this.state.list);
             this.setState({ list: this.state.list.concat(json) });
