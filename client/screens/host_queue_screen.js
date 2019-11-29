@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from 'react-navigation'
 import OptionScreen from "./option_screen";
 import SearchBarScreen from "./search_bar_screen";
 import SongQueue from "../components/song_queue";
+import CurrentlyPlaying from "../components/song_queue";
 
 /* HostQueueScreen:
  *    Screen shows the song queue that are made for the host only
@@ -27,8 +28,8 @@ class HostQueueScreen extends React.Component {
           contentContainerStyle={styles.contentContainer}
         >
           <SongQueue />
+          <CurrentlyPlaying />
         </ScrollView>
-
       </View>
     );
   }

@@ -251,6 +251,28 @@ const searchSong = (req, res) => {
 
 app.get("/search", searchSong);
 
+
+const getCurrentSong = (req, res) => {
+  const channel_id = req.query.channel_id;
+
+  getHostAccessToken(channel_id, function (access_token) {
+    var options = {
+      url: `https://api.spotify.com/v1/me/player/currently-playing`,
+      headers: { Authorization: "Bearer " + access_token },
+      json: true
+    };
+    // use the access token to access the Spotify Web API
+    request.get(options, function (error, response, body) {
+      console.log(response.body);
+      res.send(response.body);
+    });
+  });
+}
+
+app.get("/currently-playing", getCurrentSong);
+
+
+
 // Example call to get access_token
 // getHostAccessToken(
 //     channel_id,
