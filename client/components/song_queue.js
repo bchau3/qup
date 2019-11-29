@@ -1,7 +1,9 @@
 import * as React from "react";
 import { Text, Image, View, StyleSheet, ScrollView, AsyncStorage, TouchableOpacity } from "react-native";
-import { Button } from "react-native-elements";
+import { Button, Icon } from "react-native-elements";
 import { getChannelSongsByChannelId } from "../api/songs"
+
+var fixedSongTitle;
 
 export default class SongQueue extends React.Component  {
 
@@ -13,7 +15,8 @@ export default class SongQueue extends React.Component  {
   render() {
     return (
       <View>
-        <Button 
+        <Button
+          style={{paddingTop: 20}} 
           title="Press me"
           onPress={() => {
             this._getChannelSongs()
@@ -21,15 +24,25 @@ export default class SongQueue extends React.Component  {
           </Button>
           <View style={styles.getStartedContainer} >
             {this.state.songs.map((song) => {
+              // song title might be too large to fit
+              fixedSongTitle = ""
+              if (song.song_name.length >= 20) {
+                for (var i = 0; i < 20; ++i) {
+                  fixedSongTitle += song.song_name[i]
+                }
+                fixedSongTitle += "..."
+              }
+              else
+                fixedSongTitle = song.song_name
+
               return (
                 <TouchableOpacity
                   style={styles.buttonStyle}
-                  onPress={() => {
-                    // Todo
-                  }}
-                  underlayColor="#fff"
+                  activeOpacity={1}
+                  //removed onpress, the pressable icon should be the only thing that will bring up a menu
+                  // not the whole entire song container
                 >
-                  <View style={{ paddingRight: 10 }}>
+                  <View style={{ paddingRight: 10, paddingLeft: 10 }}>
                     <Image
                       style={{ width: 50, height: 50 }}
                       source={{ uri: song.album_artwork }}
@@ -38,11 +51,19 @@ export default class SongQueue extends React.Component  {
 
                   <Text>
                     <Text style={styles.songTitle}>
-                      {song.song_name}
-                      {"\n\n"}
+                      {fixedSongTitle}
+                      {"\n"}
                     </Text>
-                    <Text>{song.artist_name}</Text>
+                    <Text style={{paddingTop: 30}}>{song.artist_name}</Text>
                   </Text>
+
+                  {/*test to make a touchable icon that opens options to features*/}
+                  <Icon
+                    name='bars'
+                    type='font-awesome'
+                    size={26}
+                    color='#000080'
+                    iconStyle={alignContext='center'}/>
 
                   {/* <Text style={styles.buttonText}>{song.key}</Text> */}
                   {/* <Text style={styles.buttonText}>{song.song_uri}</Text> */}

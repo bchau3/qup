@@ -26,7 +26,7 @@ class HostQueueScreen extends React.Component {
           style={styles.container}
           contentContainerStyle={styles.contentContainer}
         >
-          <SongQueue />
+          <SongQueue/>
         </ScrollView>
 
       </View>
