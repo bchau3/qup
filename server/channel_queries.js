@@ -39,6 +39,51 @@ const getChannelByHostId = (request, response) => {
   );
 };
 
+// GET (/channel/username/)
+const getChannelByUsername = (request, response) => {
+  const username = request.query.username;
+
+  pool.query(
+    "SELECT id from users where username=$1",
+    [username],
+    (error, results) => {
+      if (results.rows.length == 0) {
+        response.status(201).send(
+          querystring.stringify({
+          })
+        )
+      }
+      else{
+        let host = results.rows[0].id;
+        pool.query(
+          "SELECT * FROM channels WHERE host = $1",
+          [host],
+          (error, results) => {
+            if (error) {
+              throw error;
+            }
+            console.log(results.rows);
+            // Check for existence
+            if (results.rows.length == 0) {
+              response.status(201).send(
+                querystring.stringify({
+                })
+              )
+            }
+            else {
+              response.status(201).send(
+                querystring.stringify(results.rows[0])
+              );
+            }
+          }
+        );
+      }
+    }
+  );
+
+
+}
+
 // GET (/channel/code/:join_code)
 const getChannelByJoinCode = (request, response) => {
   const join_code = request.params.join_code;
@@ -141,5 +186,6 @@ module.exports = {
   getChannelByJoinCode,
   createChannel,
   updateChannel,
-  deleteChannel
+  deleteChannel,
+  getChannelByUsername
 };

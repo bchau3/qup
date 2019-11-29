@@ -8,20 +8,35 @@ const queryString = require('query-string');
 * @param {*} data The code to input into db
 */
 export async function createChannel(host_username, join_code) {
-  // Default options are marked with *
-  const response = await fetch(
-    `${server_url}/channel/create?username=${host_username}&join_code=${join_code}`, 
-    {
-    method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    headers: {
-      'Content-Type': 'application/json'
-      // 'Content-Type': 'application/x-www-form-urlencoded',
-    },
-  });
-  let responseText = await response.text();
-  let responseJSON = await queryString.parse(responseText);
-  console.log(responseJSON);
-  return responseJSON;
+
+  // If channel exists for host, just join instead
+  const channel_info = await fetch(
+    `${server_url}/channel/username?username=${host_username}`
+  )
+
+  let infoText = await channel_info.text();
+  let infoJSON = await queryString.parse(infoText);
+
+  // If response returned a join code also
+  if (infoJSON.id) {
+    return infoJSON
+  }
+  else{
+    // Default options are marked with *
+    const response = await fetch(
+      `${server_url}/channel/create?username=${host_username}&join_code=${join_code}`,
+      {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        headers: {
+          'Content-Type': 'application/json'
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+
+    let responseText = await response.text();
+    let responseJSON = await queryString.parse(responseText);
+    return responseJSON;
+  }
 }
 
 /**
