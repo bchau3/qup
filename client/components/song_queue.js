@@ -35,6 +35,9 @@ export default class SongQueue extends React.Component  {
               else
                 fixedSongTitle = song.song_name
 
+              // make a conditional that if the song's priority is 1, it'll return that song container along with play/pause functionalities
+              // and a "now playing" title above it
+
               return (
                 <TouchableOpacity
                   style={styles.buttonStyle}
