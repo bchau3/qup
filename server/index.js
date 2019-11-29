@@ -41,7 +41,8 @@ app.post("/channel/create", channelDB.createChannel);
 app.delete("/channel/remove", channelDB.deleteChannel);
 app.get("/channel/code/:join_code", channelDB.getChannelByJoinCode);
 app.get("/channel/host/:host_id", channelDB.getChannelByHostId);
-app.get("/channel/:id", channelDB.getChannelById);
+app.get("/channel/id/:id", channelDB.getChannelById);
+app.get("/channel/username/", channelDB.getChannelByUsername);
 
 app.get("/song/get_songs_channel_id", songDB.getChannelSongsByChannelId);
 app.delete("/song/del_song_channel_id", songDB.deleteSongByChannelId);
