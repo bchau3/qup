@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { ScrollView, StyleSheet, Text, View, AsyncStorage, Image } from 'react-native';
+import { Button, Icon } from "react-native-elements";
 
 // for screen switch 
 import { createBottomTabNavigator } from 'react-navigation'
@@ -43,8 +44,8 @@ class HostQueueScreen extends React.Component {
   }
 
   parseSongs(responseJSON) {
-    this.setState({ playingSong: song });
-    
+    this.setState({ playingSong: [] });
+
     var track_id = responseJSON[0].id;
     var artist_name = responseJSON[0].artist_name;
     var song_name = responseJSON[0].song_name;
@@ -79,25 +80,57 @@ class HostQueueScreen extends React.Component {
         </ScrollView>
 
         {/*play controls*/}
-        {/*I can't figure out a way to display just one song. I left off at this... */}
-        <View style={styles.playbackControl}>
-          {this.state.playingSong.map((song) =>{
-          <View style={{ paddingRight: 10, paddingLeft: 10 }}>
-            <Image
-              style={{ width: 50, height: 50 }}
-              source={{ uri: this.state.playingSong.album_artwork }}
-            />
-          </View>
-          <Text>
-            <Text style={styles.songTitle}>
-              {this.state.playingSong.song_name}
-              {"\n"}
-            </Text>
-            <Text style={{ paddingTop: 30 }}>{this.state.playingSong.artist_name}</Text>
-          </Text>
-        </View>
+        {this.state.playingSong.map((song) => {
+          return (
+            <View style={styles.playbackControl}>
+              <View style={{ paddingRight: 10, paddingLeft: 10 }}>
+                <Image
+                  style={{ width: 50, height: 50, alignSelf: 'auto' }}
+                  source={{ uri: song.album_artwork }}
+                />
+              </View>
+              <Text>
+                <Text style={styles.songTitle}>
+                  {song.song_name}
+                  {"\n"}
+                </Text>
+                <Text style={{ paddingTop: 30 }}>{song.artist_name}</Text>
+              </Text>
+
+              {/* playback buttons */}
+              <Icon
+                name='play'
+                type='font-awesome'
+                size={26}
+                color='#000080'
+                iconStyle={alignContent = 'space-between'}
+                onPress={() => {
+                  //TODO
+                }} />
+
+              <Icon
+                name='pause'
+                type='font-awesome'
+                size={26}
+                color='#000080'
+                iconStyle={alignContent = 'space-between'}
+                onPress={() => {
+                  //TODO
+                }} />
+
+              <Icon
+                name='step-forward'
+                type='font-awesome'
+                size={26}
+                color='#000080'
+                iconStyle={alignContent = 'space-between'}
+                onPress={() => {
+                  //TODO
+                }} />
+            </View>
+          );
+        })}
       </View>
-      
     );
   }
 }
@@ -140,18 +173,22 @@ const styles = StyleSheet.create({
     textAlign: "left"
   },
   playbackControl: {
-    marginRight: 0,
-    marginLeft: 0,
-    marginTop: 0,
-    paddingTop: 0,
-    paddingBottom: 0,
     backgroundColor: "#FFFFFF",
     borderRadius: 0,
     borderWidth: 1,
     borderColor: "#000000",
-    width: 500,
-    height: 100,
-    alignSelf: 'flex-end',
+    width: 350,
+    height: 60,
+    alignSelf: 'center',
     bottom: 0,
-  }
+    flexDirection: 'row',
+  },
+  songTitle: {
+    color: "#000000",
+    textAlign: "left",
+    paddingLeft: 20,
+    paddingRight: 20,
+    fontSize: 15,
+    fontWeight: 'bold'
+  },
 });
