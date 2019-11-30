@@ -66,7 +66,6 @@ export default class SearchBarScreen extends React.Component {
         {/* </View> */}
         <ScrollView
           style={styles.resultContainer}
-          contentContainerStyle={styles.contentContainer}
         >
           <View style={styles.getStartedContainer}>
             {this.state.list.map(song => {

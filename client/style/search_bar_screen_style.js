@@ -8,10 +8,10 @@ const styles = StyleSheet.create({
         //backgroundColor: "#89Cff0"
     },
     resultContainer: {
-        flex: 1,
         backgroundColor: "#101227",
     },
     contentContainer: {
+
         backgroundColor: "white"
     },
     searchBarContainer: {
