@@ -162,7 +162,9 @@ export default class SongQueue extends React.Component {
       //console.log(this.state.songs);
       this.setState({ songs: this.state.songs.concat(json) });
     }
-    this.props.action([this.state.songs[0]])
+    if(this.state.songs.length != 0){
+      this.props.action([this.state.songs[0]])
+    }
     console.log(this.state.songs);
   };
 }
