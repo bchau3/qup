@@ -7,8 +7,8 @@ import { createBottomTabNavigator } from 'react-navigation'
 import OptionScreen from "./option_screen";
 import SearchBarScreen from "./search_bar_screen";
 import SongQueue from "../components/song_queue";
-import { getChannelSongsByChannelId, playSong } from "../api/songs"
-
+import { getChannelSongsByChannelId} from "../api/songs"
+import { playSong } from "../api/queue";
 
 /* HostQueueScreen:
  *    Screen shows the song queue that are made for the host only
@@ -153,6 +153,7 @@ class HostQueueScreen extends React.Component {
       </View>
     );
   }
+
 }
 
 // using createBottomTabNavigator, we can create tabs on the bottom of the page to switch screens
@@ -210,5 +211,5 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     fontSize: 15,
     fontWeight: 'bold'
-  },
+  }
 });

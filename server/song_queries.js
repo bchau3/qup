@@ -26,6 +26,17 @@ const getChannelSongsByChannelId = (request, response) => {
     })
 };
 
+const getChannelSongURI = (request, response) => {
+    const channel_id = request.query.channel_id;
+    pool.query('SELECT song_uri FROM songs WHERE channel_id = $1 ORDER BY priority ASC', [channel_id], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+
+    })
+};
+
 
 /** GET /max_priority
  * 
@@ -81,7 +92,6 @@ const deleteSongsByChannelId = (request, response) => {
 }
 
 
-
 // GET (/song/:id)
 const getSongById = (request, response) => {
     const id = parseInt(request.params.id)
@@ -114,7 +124,7 @@ const getSongByChannelId = (request, response) => {
  */
 const createSong = (request, response) => {
     console.log(request.body);
-    const { channel_id, priority, track_id, artist_name, song_name, song_uri, album_artwork } = request.body
+    const { channel_id, priority, track_id, artist_name, song_name, song_uri, album_artwork, duration_ms } = request.body
     pool.query('SELECT FROM songs WHERE channel_id = $1 AND track_id = $2', [channel_id, track_id],
             (error,results) => {
                 if (error) {
@@ -122,8 +132,8 @@ const createSong = (request, response) => {
                 }
                 if (results.rows.length == 0) {
                     //response.status(200).json(0);
-                    pool.query('INSERT INTO songs (channel_id, priority, track_id, artist_name, song_name, song_uri, album_artwork) VALUES ($1, $2, $3, $4, $5, $6, $7)',
-                            [channel_id, priority, track_id, artist_name, song_name, song_uri, album_artwork],
+                    pool.query('INSERT INTO songs (channel_id, priority, track_id, artist_name, song_name, song_uri, album_artwork, duration_ms) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+                            [channel_id, priority, track_id, artist_name, song_name, song_uri, album_artwork, duration_ms],
                             (error, results) => {
                                 if (error) {
                                     throw error
@@ -179,5 +189,6 @@ module.exports = {
     getChannelSongsByChannelId,
     deleteSongByChannelId,
     deleteSongsByChannelId,
-    getMaxPriorityOfChannel
+    getMaxPriorityOfChannel,
+    getChannelSongURI
 }
