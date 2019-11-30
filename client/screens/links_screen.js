@@ -165,8 +165,13 @@ class LoginScreen extends React.Component {
 
     // Create Channel
     let join_code = shareCodeGenerator();
-    let resp = await createChannel(this.state.username, join_code);
-    let channel_id = resp.id
+    let resp = await createChannel(authInfo.id, join_code);
+    let channel_id = resp.id;
+
+    // If response returned a join code also
+    if (resp.join_code) {
+      join_code = resp.join_code;
+    }
 
     // Store ifnormation in AsyncStorage
     this._storeUserInfo(this.state.username, this.state.email, join_code, channel_id);

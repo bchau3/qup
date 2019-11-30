@@ -1,10 +1,14 @@
 import * as React from 'react';
-import { ScrollView,StyleSheet,Text,View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, AsyncStorage, Image } from 'react-native';
+import { Button, Icon } from "react-native-elements";
 
 // for screen switch 
 import { createBottomTabNavigator } from 'react-navigation'
 import OptionScreen from "./option_screen";
 import SearchBarScreen from "./search_bar_screen";
+import SongQueue from "../components/song_queue";
+import { getChannelSongsByChannelId} from "../api/songs"
+import { playSong } from "../api/queue";
 
 /* HostQueueScreen:
  *    Screen shows the song queue that are made for the host only
@@ -12,34 +16,144 @@ import SearchBarScreen from "./search_bar_screen";
  *    options such as skip song, etc.
  */
 class HostQueueScreen extends React.Component {
+
+  constructor(props) {
+    super(props)
+
+    // Bind the this context to the handler function
+    this.handler = this.handler.bind(this);
+
+    // Set some state
+    this.state = {
+    playingSong: []
+  }
+  }
+
   static navigationOptions = {
     tabBarLabel: 'QUEUE',
   }
 
+  
+
+  _getChannelId = async () => {
+    let channel_id = '';
+    try {
+      channel_id = await AsyncStorage.getItem('channel_id') || 'none';
+    } catch (error) {
+      // Error retrieving data
+      console.log(error.message);
+    }
+    return channel_id;
+  }
+
+  _getChannelSongs = async () => {
+    const channel_id = await this._getChannelId();
+    const songsJSON = await getChannelSongsByChannelId(channel_id);
+    //console.log(songsJSON);
+    this.parseSongs(songsJSON);
+  }
+
+  parseSongs(responseJSON) {
+    this.setState({ playingSong: [] });
+
+    if(responseJSON.length == 0){
+      return;
+    }
+
+    var track_id = responseJSON[0].id;
+    var artist_name = responseJSON[0].artist_name;
+    var song_name = responseJSON[0].song_name;
+    var song_uri = responseJSON[0].song_uri;
+    var album_artwork = responseJSON[0].album_artwork;
+    var priority = responseJSON[0].priority;
+
+    var json = JSON.parse(JSON.stringify({
+      track_id: track_id,
+      artist_name: artist_name,
+      song_name: song_name,
+      song_uri: song_uri,
+      album_artwork: album_artwork,
+      priority: priority
+    }));
+    this.setState({ playingSong: this.state.playingSong.concat(json) });
+    //console.log(this.state.playingSong);
+  }
+
+  handler(playingSong){
+    this.setState({playingSong: playingSong});
+  }
+
+  _playSong = async () => {
+    channel_id = await this._getChannelId()
+    playSong(channel_id).then(() => {
+      // Refresh current playing song
+      this._getChannelSongs();
+    });
+  }
+
+
   render() {
     const { navigate } = this.props.navigation;
+  //{ this._getChannelSongs() }
     return (
-
       <View style={styles.container}>
-        <ScrollView
-          style={styles.container}
-          contentContainerStyle={styles.contentContainer}>
-          <View style={styles.getStartedContainer}>
-            <Text>!QUEUE!</Text>
-            <Text>TODO:</Text>
-            <Text>1.SHOW QUEUE IS EMPTY</Text>
-            <Text>2.EACH SONG HAS ITS OWN SECTION</Text>
-            <Text>3.ABLE TO SWIPE THE SONG TABS</Text>
-            <Text>3-1.HOST HAS UPVOTE, DOWNVOTW</Text>
-            <Text>4.TAB GIVE OPTIONS TO DELETE ANY SONGS</Text>
-            <Text>5.CURRENT SONG SHOULD HAS A WINDOW AT BOTTOM</Text>
-            <Text>5-1.THE HOST CAN SKIP CURRENT SONG</Text>
+        <SongQueue action={this.handler} />
 
-          </View>
-        </ScrollView>
+        {/*play controls*/}
+        {this.state.playingSong.map((song) => {
+          return (
+            <View style={styles.playbackControl}>
+              <View style={{ paddingRight: 10, paddingLeft: 10 }}>
+                <Image
+                  style={{ width: 50, height: 50, alignSelf: 'auto' }}
+                  source={{ uri: song.album_artwork }}
+                />
+              </View>
+              <Text>
+                <Text style={styles.songTitle}>
+                  {song.song_name}
+                  {"\n"}
+                </Text>
+                <Text style={{ paddingTop: 30 }}>{song.artist_name}</Text>
+              </Text>
+
+              {/* playback buttons */}
+              <Icon
+                name='play'
+                type='font-awesome'
+                size={26}
+                color='#000080'
+                iconStyle={alignContent = 'space-between'}
+                onPress={() => {
+                  this._playSong();
+                }} />
+
+              <Icon
+                name='pause'
+                type='font-awesome'
+                size={26}
+                color='#000080'
+                iconStyle={alignContent = 'space-between'}
+                onPress={() => {
+                  //TODO
+                }} />
+
+              <Icon
+                name='step-forward'
+                type='font-awesome'
+                size={26}
+                color='#000080'
+                iconStyle={alignContent = 'space-between'}
+                onPress={() => {
+                  //TODO
+                }} />
+            </View>
+          );
+        })}
       </View>
     );
   }
+
 }
 
 // using createBottomTabNavigator, we can create tabs on the bottom of the page to switch screens
@@ -78,5 +192,24 @@ const styles = StyleSheet.create({
     color: "rgba(96,100,109, 1)",
     lineHeight: 24,
     textAlign: "left"
+  },
+  playbackControl: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 0,
+    borderWidth: 1,
+    borderColor: "#000000",
+    width: 350,
+    height: 60,
+    alignSelf: 'center',
+    bottom: 0,
+    flexDirection: 'row',
+  },
+  songTitle: {
+    color: "#000000",
+    textAlign: "left",
+    paddingLeft: 20,
+    paddingRight: 20,
+    fontSize: 15,
+    fontWeight: 'bold'
   }
 });

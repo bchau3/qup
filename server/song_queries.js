@@ -1,5 +1,6 @@
 const config = require('./config');
-const Pool = require('pg').Pool
+const Pool = require('pg').Pool;
+var querystring = require("querystring");
 
 const pool = new Pool({
     user: global.gConfig.database.user,
@@ -8,6 +9,87 @@ const pool = new Pool({
     password: global.gConfig.database.password,
     port: global.gConfig.database.port,
 })
+
+/**
+ * GET /songs_channel_id
+ * @param {} request 
+ * @param {*} response 
+ */
+const getChannelSongsByChannelId = (request, response) => {
+    const channel_id = request.query.channel_id;
+    pool.query('SELECT * FROM songs WHERE channel_id = $1 ORDER BY priority ASC', [channel_id], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+
+    })
+};
+
+const getChannelSongURI = (request, response) => {
+    const channel_id = request.query.channel_id;
+    pool.query('SELECT song_uri FROM songs WHERE channel_id = $1 ORDER BY priority ASC', [channel_id], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+
+    })
+};
+
+
+/** GET /max_priority
+ * 
+ * Returns max priority of current channel
+ * Returns 0 if no song in channel
+ * @param {*} request 
+ * @param {*} response 
+ */
+const getMaxPriorityOfChannel = (request, response) => {
+    const channel_id = request.query.channel_id;
+    pool.query('SELECT priority FROM songs WHERE channel_id = $1 ORDER BY priority DESC', [channel_id], (error, results) => {
+        if (error) {
+            throw error
+        }
+        if (results.rows.length == 0) {
+            response.status(200).json(0);
+        }
+        else {
+            response.status(200).json(results.rows[0].priority)
+        }
+    })
+}
+
+/**
+ * DELETE /song_channel_id
+ * @param {*} request 
+ * @param {*} response 
+ */
+const deleteSongByChannelId = (request, response) => {
+    const channel_id = request.query.channel_id;
+    const track_id = request.query.song_id;
+    pool.query('DELETE FROM songs WHERE channel_id = $1 AND track_id = $2', [channel_id, track_id], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows);
+    });
+}
+
+/**
+ * DELETE /song/del_songs_channel_id
+ * @param {} request 
+ * @param {*} response 
+ */
+const deleteSongsByChannelId = (request, response) => {
+    const channel_id = request.query.channel_id;
+    pool.query('DELETE FROM songs WHERE channel_id = $1', [channel_id], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows);
+    });
+}
 
 
 // GET (/song/:id)
@@ -34,17 +116,37 @@ const getSongByChannelId = (request, response) => {
     })
 }
 
-// POST (/song/:channel_id)
+/**
+ * POST (/song/create)
+ * @param {*} request 
+ * @param {*} response 
+ * curl --header "Content-Type: application/json" --request POST --data '{"channel_id":"4d":'20', "artist_name":"Chris Breezy", "song_name":"No Guidance","song_uri":"2","album_artwork":"4"}' 'http://localhost:3000/song/create'
+ */
 const createSong = (request, response) => {
-    const channel_id = parseInt(request.params.channel_id)
-    const { track_id, votes, voteskip } = request.body
+    console.log(request.body);
+    const { channel_id, priority, track_id, artist_name, song_name, song_uri, album_artwork, duration_ms } = request.body
+    pool.query('SELECT FROM songs WHERE channel_id = $1 AND track_id = $2', [channel_id, track_id],
+            (error,results) => {
+                if (error) {
+                    throw error
+                }
+                if (results.rows.length == 0) {
+                    //response.status(200).json(0);
+                    pool.query('INSERT INTO songs (channel_id, priority, track_id, artist_name, song_name, song_uri, album_artwork, duration_ms) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+                            [channel_id, priority, track_id, artist_name, song_name, song_uri, album_artwork, duration_ms],
+                            (error, results) => {
+                                if (error) {
+                                    throw error
+                                }
+                                response.status(201).send(`Song added to channel ID: ${results.channel_id}`)
+                            });
+                }
+                else {
+                    response.status(200).json(results.rows[0].priority)
+                }
+            });
 
-    pool.query('INSERT INTO songs (track_id, channel_id, votes, voteskip) VALUES ($1, $2, $3, $4)', [track_id, channel_id, votes, voteskip], (error, results) => {
-        if (error) {
-            throw error
-        }
-        response.status(201).send(`Song added with ID: ${results.insertId}`)
-    })
+    
 }
 
 
@@ -84,4 +186,9 @@ module.exports = {
     createSong,
     updateSong,
     deleteSong,
+    getChannelSongsByChannelId,
+    deleteSongByChannelId,
+    deleteSongsByChannelId,
+    getMaxPriorityOfChannel,
+    getChannelSongURI
 }

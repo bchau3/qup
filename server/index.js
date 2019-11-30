@@ -4,6 +4,15 @@ const userDB = require("./user_queries");
 const channelDB = require("./channel_queries");
 const spotifyAPI = require("./spotify_api");
 const songDB = require("./song_queries");
+const Pool = require('pg').Pool
+
+const pool = new Pool({
+  user: global.gConfig.database.user,
+  host: global.gConfig.database.host,
+  database: global.gConfig.database.database,
+  password: global.gConfig.database.password,
+  port: global.gConfig.database.port,
+})
 
 var request = require("request"); // "Request" library
 var cors = require("cors");
@@ -35,13 +44,22 @@ app.post("/user", userDB.createUser);
 app.put("/user/:id", userDB.updateUser);
 app.put("/user/remove/:id", userDB.removeUserFromChannel);
 app.delete("/user/:id", userDB.deleteUser);
-app.get("/song/:channel_id", songDB.getSongByChannelId);
+//app.get("/song/:channel_id", songDB.getSongByChannelId);
 
 app.post("/channel/create", channelDB.createChannel);
 app.delete("/channel/remove", channelDB.deleteChannel);
 app.get("/channel/code/:join_code", channelDB.getChannelByJoinCode);
 app.get("/channel/host/:host_id", channelDB.getChannelByHostId);
-app.get("/channel/:id", channelDB.getChannelById);
+app.get("/channel/id/:id", channelDB.getChannelById);
+app.get("/channel/username", channelDB.getChannelByUsername);
+
+app.get("/song/get_songs_channel_id", songDB.getChannelSongsByChannelId);
+app.delete("/song/del_song_channel_id", songDB.deleteSongByChannelId);
+app.delete("/song/del_songs_channel_id", songDB.deleteSongsByChannelId);
+app.get("/song/get_channel_song_uri", songDB.getChannelSongURI);
+app.post("/song/create", songDB.createSong);
+app.get("/song/max_priority", songDB.getMaxPriorityOfChannel);
+
 /**
  * Generates a random string containing numbers and letters
  * @param  {number} length The length of the string
@@ -72,7 +90,7 @@ app.get("/login/:redirect_uri", function(req, res) {
   res.cookie(stateKey, state);
 
   // your application requests authorization
-  var scope = "user-read-private user-read-email user-read-playback-state";
+  var scope = "user-read-private user-read-email user-read-playback-state user-modify-playback-state";
   res.redirect(
     "https://accounts.spotify.com/authorize?" +
       querystring.stringify({
@@ -202,22 +220,41 @@ function getHostAccessToken(channel_id, callback) {
 }
 //PLAY SONG
 const playSong = (req, res) => {
-  const channel_id = req.channel_id;
+  const channel_id = req.query.channel_id;
 
-  console.log(`channel_id: ${channel_id}`);
-  getHostAccessToken(channel_id, function(access_token) {
-    var options = {
-      url: `https://api.spotify.com/v1/player/play`,
-      headers: { Authorization: "Bearer " + access_token },
-      json: true
-    };
-    // use the access token to access the Spotify Web API
-    request.put(options, function(error, response, body) {
-      console.log(response);
-      res.send(response);
+  // Get all songs given channel id
+  pool.query(
+    `SELECT song_uri FROM songs WHERE channel_id = $1 ORDER BY priority ASC`, [channel_id], (error, results) => {
+      if(error){
+        throw error;
+      }
+      // Put results into json array
+      json = {
+        uris: [],
+        offset: {"position": 0},
+      }
+      console.log(results.rows);
+      for(i = 0; i < results.rows.length; i++){
+        json.uris.push(results.rows[i].song_uri);
+      }
+
+      console.log(json);
+
+    getHostAccessToken(channel_id, function(access_token) {
+      var options = {
+        url: `https://api.spotify.com/v1/me/player/play`,
+        headers: { Authorization: "Bearer " + access_token },
+        json: true,
+        body: json
+      };
+      // use the access token to access the Spotify Web API
+      request.put(options, function(error, response, body) {
+        console.log(response.body);
+        res.send(response);
+      });
     });
   });
-};
+}
 
 app.put("/play", playSong);
 
