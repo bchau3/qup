@@ -27,7 +27,6 @@ import { styles } from '../style/link_screen_style';
 import { server_url } from "../config.js";
 import { LinearGradient } from 'expo-linear-gradient';
 
-
 /*
  * LinksScreen:
  *    Screen promoteS user to link account to Spotify server.

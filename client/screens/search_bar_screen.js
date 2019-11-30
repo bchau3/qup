@@ -130,3 +130,4 @@ export default class SearchBarScreen extends React.Component {
     }
 }
 
+

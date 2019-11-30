@@ -2,9 +2,6 @@ import React from "react";
 import {
   AppRegistry, // change background color
   Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
