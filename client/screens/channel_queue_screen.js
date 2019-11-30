@@ -35,14 +35,7 @@ class ChannelQueueScreen extends React.Component {
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
-       
-        <ScrollView 
-          style={styles.container}
-          contentContainerStyle={styles.contentContainer}
-        >
         <SongQueue/>
-        </ScrollView>
-        <CurrentlyPlaying />  
       </View>
     );
   }

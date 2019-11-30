@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Text, Image, View, StyleSheet, ScrollView, AsyncStorage, TouchableOpacity } from "react-native";
+import { Text, Image, View, StyleSheet, ScrollView, AsyncStorage, TouchableOpacity, RefreshControl } from "react-native";
 import { Button, Icon } from "react-native-elements";
 import { getChannelSongsByChannelId } from "../api/songs"
 
@@ -9,44 +9,77 @@ export default class SongQueue extends React.Component {
 
   //this.state.dataSource.cloneWithRows(responseJson.map(item => item.name))
   state = {
-    songs: []
+    songs: [],
+    refreshing: false
   };
 
   render() {
     return (
-      <View>
-        <Button
-          style={{ paddingTop: 20 }}
-          title="Press me"
-          onPress={() => {
-            this._getChannelSongs()
-          }}>
-        </Button>
-        <View style={styles.getStartedContainer} >
-          {this.state.songs.map((song) => {
-            // song title might be too large to fit
-            fixedSongTitle = ""
-            if (song.song_name.length >= 20) {
-              for (var i = 0; i < 20; ++i) {
-                fixedSongTitle += song.song_name[i]
+        <ScrollView
+          // style={styles.container}
+          // contentContainerStyle={styles.contentContainer}
+          refreshControl = {
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={() => this._onRefresh()}
+            />
+          }
+        >
+          <View style={styles.getStartedContainer} >
+            {this.state.songs.map((song) => {
+              // song title might be too large to fit
+              fixedSongTitle = ""
+              if (song.song_name.length >= 20) {
+                for (var i = 0; i < 20; ++i) {
+                  fixedSongTitle += song.song_name[i]
+                }
+                fixedSongTitle += "..."
               }
-              fixedSongTitle += "..."
-            }
-            else
-              fixedSongTitle = song.song_name
+              else
+                fixedSongTitle = song.song_name
 
-            // make a conditional that if the song's priority is 1, it'll return that song container along with play/pause functionalities
-            // and a "now playing" title above it
-            if (song.priority === 1) {
-              return (
-                <View>
-                  <Text style={styles.songTitle}>
-                    Now Playing
-                  </Text>
+              // make a conditional that if the song's priority is 1, it'll return that song container along with play/pause functionalities
+              // and a "now playing" title above it
+              if (song.priority === 1) {
+                return (
+                  <View>
+                    <Text style={styles.songTitle}>
+                      Now Playing
+                    </Text>
 
+                    <TouchableOpacity
+                      style={styles.buttonStyle}
+                      activeOpacity={1}>
+                      <View style={{ paddingRight: 10, paddingLeft: 10 }}>
+                        <Image
+                          style={{ width: 50, height: 50 }}
+                          source={{ uri: song.album_artwork }}
+                        />
+                      </View>
+
+                      <Text>
+                        <Text style={styles.songTitle}>
+                          {fixedSongTitle}
+                          {"\n"}
+                        </Text>
+                        <Text style={{ paddingTop: 30 }}>{song.artist_name}</Text>
+                      </Text>
+                    </TouchableOpacity>
+
+                    <Text style={{ paddingTop: 10, paddingBottom: 5, fontWeight: 'bold', textAlign: "left", paddingLeft: 20, paddingRight: 20, fontSize: 15, }}>
+                      Queue
+                    </Text>
+                  </View>
+                );
+              }
+              else {
+                return (
                   <TouchableOpacity
                     style={styles.buttonStyle}
-                    activeOpacity={1}>
+                    activeOpacity={1}
+                  //removed onpress, the pressable icon should be the only thing that will bring up a menu
+                  // not the whole entire song container
+                  >
                     <View style={{ paddingRight: 10, paddingLeft: 10 }}>
                       <Image
                         style={{ width: 50, height: 50 }}
@@ -61,55 +94,32 @@ export default class SongQueue extends React.Component {
                       </Text>
                       <Text style={{ paddingTop: 30 }}>{song.artist_name}</Text>
                     </Text>
+
+                    {/*test to make a touchable icon that opens options to features*/}
+                    <Icon
+                      name='bars'
+                      type='font-awesome'
+                      size={26}
+                      color='#000080'
+                      iconStyle={alignContext = 'center'} />
+
+                    {/* <Text style={styles.buttonText}>{song.key}</Text> */}
+                    {/* <Text style={styles.buttonText}>{song.song_uri}</Text> */}
+                    {/* {<Text style={styles.buttonText}>{song.album_artwork}</Text>} */}
                   </TouchableOpacity>
-
-                  <Text style={{ paddingTop: 10, paddingBottom: 5, fontWeight: 'bold', textAlign: "left", paddingLeft: 20, paddingRight: 20, fontSize: 15, }}>
-                    Queue
-                  </Text>
-                </View>
-              );
-            }
-            else {
-              return (
-                <TouchableOpacity
-                  style={styles.buttonStyle}
-                  activeOpacity={1}
-                //removed onpress, the pressable icon should be the only thing that will bring up a menu
-                // not the whole entire song container
-                >
-                  <View style={{ paddingRight: 10, paddingLeft: 10 }}>
-                    <Image
-                      style={{ width: 50, height: 50 }}
-                      source={{ uri: song.album_artwork }}
-                    />
-                  </View>
-
-                  <Text>
-                    <Text style={styles.songTitle}>
-                      {fixedSongTitle}
-                      {"\n"}
-                    </Text>
-                    <Text style={{ paddingTop: 30 }}>{song.artist_name}</Text>
-                  </Text>
-
-                  {/*test to make a touchable icon that opens options to features*/}
-                  <Icon
-                    name='bars'
-                    type='font-awesome'
-                    size={26}
-                    color='#000080'
-                    iconStyle={alignContext = 'center'} />
-
-                  {/* <Text style={styles.buttonText}>{song.key}</Text> */}
-                  {/* <Text style={styles.buttonText}>{song.song_uri}</Text> */}
-                  {/* {<Text style={styles.buttonText}>{song.album_artwork}</Text>} */}
-                </TouchableOpacity>
-              );
-            }
-          })}
-        </View>
-      </View>
+                );
+              }
+            })}
+          </View>
+        </ScrollView>
     );
+  }
+
+  _onRefresh = () => {
+    this.setState({refreshing: true});
+    this._getChannelSongs().then(() => {
+      this.setState({refreshing: false});
+    });
   }
 
 
@@ -152,6 +162,7 @@ export default class SongQueue extends React.Component {
       //console.log(this.state.songs);
       this.setState({ songs: this.state.songs.concat(json) });
     }
+    this.props.action([this.state.songs[0]])
     console.log(this.state.songs);
   };
 }

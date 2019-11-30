@@ -17,13 +17,24 @@ import { getChannelSongsByChannelId } from "../api/songs"
  *    options such as skip song, etc.
  */
 class HostQueueScreen extends React.Component {
+
+  constructor(props) {
+    super(props)
+
+    // Bind the this context to the handler function
+    this.handler = this.handler.bind(this);
+
+    // Set some state
+    this.state = {
+    playingSong: []
+  }
+  }
+
   static navigationOptions = {
     tabBarLabel: 'QUEUE',
   }
 
-  state = {
-    playingSong: []
-  }
+  
 
   _getChannelId = async () => {
     let channel_id = '';
@@ -46,6 +57,10 @@ class HostQueueScreen extends React.Component {
   parseSongs(responseJSON) {
     this.setState({ playingSong: [] });
 
+    if(responseJSON.length == 0){
+      return;
+    }
+
     var track_id = responseJSON[0].id;
     var artist_name = responseJSON[0].artist_name;
     var song_name = responseJSON[0].song_name;
@@ -65,19 +80,18 @@ class HostQueueScreen extends React.Component {
     //console.log(this.state.playingSong);
   }
 
+  handler(playingSong){
+    this.setState({playingSong: playingSong});
+  }
+
 
 
   render() {
     const { navigate } = this.props.navigation;
-    { this._getChannelSongs() }
+  //{ this._getChannelSongs() }
     return (
       <View style={styles.container}>
-        <ScrollView
-          style={styles.container}
-          contentContainerStyle={styles.contentContainer}
-        >
-          <SongQueue />
-        </ScrollView>
+        <SongQueue action={this.handler} />
 
         {/*play controls*/}
         {this.state.playingSong.map((song) => {
