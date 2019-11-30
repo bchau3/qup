@@ -21,6 +21,10 @@ export async function getCurrentSong(channel_id) {
   return responseJSON;
 }
 
+export async function playSong(channel_id) {
+  fetch(`${server_url}/play?channel_id=${channel_id}`);
+}
+
 /**
  * DELETE
  * @param {*} channel_id 

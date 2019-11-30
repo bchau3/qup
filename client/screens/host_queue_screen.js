@@ -7,8 +7,7 @@ import { createBottomTabNavigator } from 'react-navigation'
 import OptionScreen from "./option_screen";
 import SearchBarScreen from "./search_bar_screen";
 import SongQueue from "../components/song_queue";
-import CurrentlyPlaying from "../components/currently_playing";
-import { getChannelSongsByChannelId } from "../api/songs"
+import { getChannelSongsByChannelId, playSong } from "../api/songs"
 
 
 /* HostQueueScreen:
@@ -84,6 +83,13 @@ class HostQueueScreen extends React.Component {
     this.setState({playingSong: playingSong});
   }
 
+  _playSong = async () => {
+    channel_id = await this._getChannelId()
+    playSong(channel_id).then(() => {
+      // Refresh current playing song
+      this._getChannelSongs();
+    });
+  }
 
 
   render() {
@@ -119,7 +125,7 @@ class HostQueueScreen extends React.Component {
                 color='#000080'
                 iconStyle={alignContent = 'space-between'}
                 onPress={() => {
-                  //TODO
+                  this._playSong();
                 }} />
 
               <Icon
