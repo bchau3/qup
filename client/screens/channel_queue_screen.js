@@ -23,6 +23,19 @@ import TabBarIcon from "../components/TabBarIcon"; // for bar icons
  *    Each song tab should be able to be swipe to open options to up and down vote songs
  */
 class ChannelQueueScreen extends React.Component {
+
+  constructor(props) {
+    super(props)
+
+    // Bind the this context to the handler function
+    this.handler = this.handler.bind(this);
+
+    // Set some state
+    this.state = {
+      playingSong: []
+    }
+  }
+
   static navigationOptions = {
     tabBarLabel: "QUEUE",
     tabBarIcon: ({ focused }) => (
@@ -33,11 +46,94 @@ class ChannelQueueScreen extends React.Component {
     )
   };
 
+  
+
+  _getChannelId = async () => {
+    let channel_id = '';
+    try {
+      channel_id = await AsyncStorage.getItem('channel_id') || 'none';
+    } catch (error) {
+      // Error retrieving data
+      console.log(error.message);
+    }
+    return channel_id;
+  }
+
+  _getChannelSongs = async () => {
+    const channel_id = await this._getChannelId();
+    const songsJSON = await getChannelSongsByChannelId(channel_id);
+    //console.log(songsJSON);
+    this.parseSongs(songsJSON);
+  }
+
+  parseSongs(responseJSON) {
+    this.setState({ playingSong: [] });
+
+    if(responseJSON.length == 0){
+      return;
+    }
+
+    var track_id = responseJSON[0].id;
+    var artist_name = responseJSON[0].artist_name;
+    var song_name = responseJSON[0].song_name;
+    var song_uri = responseJSON[0].song_uri;
+    var album_artwork = responseJSON[0].album_artwork;
+    var priority = responseJSON[0].priority;
+
+    var json = JSON.parse(JSON.stringify({
+      track_id: track_id,
+      artist_name: artist_name,
+      song_name: song_name,
+      song_uri: song_uri,
+      album_artwork: album_artwork,
+      priority: priority
+    }));
+    this.setState({ playingSong: this.state.playingSong.concat(json) });
+    //console.log(this.state.playingSong);
+  }
+
+  handler(playingSong){
+    this.setState({playingSong: playingSong});
+  }
+
+  _playSong = async () => {
+    channel_id = await this._getChannelId()
+    playSong(channel_id).then(() => {
+      // Refresh current playing song
+      this._getChannelSongs();
+    });
+  }
+
   render() {
-    const { navigate } = this.props.navigation;
+ const { navigate } = this.props.navigation;
+  //{ this._getChannelSongs() }
     return (
       <View style={styles.container}>
-        <SongQueue/>
+        <SongQueue action={this.handler} />
+
+        {/*play controls*/}
+        {this.state.playingSong.map((song) => {
+          return (
+            <View style={styles.playbackControl}>
+              <View style={{ paddingRight: 10, paddingLeft: 10 }}>
+                <Image
+                  style={{ width: 50, height: 50, alignSelf: 'auto' }}
+                  source={{ uri: song.album_artwork }}
+                />
+              </View>
+              <Text>
+                <Text style={styles.songTitle}>
+                  {song.song_name}
+                  {"\n"}
+                </Text>
+                <Text style={{ paddingTop: 30 }}>{song.artist_name}</Text>
+              </Text>
+
+              {/* playback buttons */}
+              
+            </View>
+          );
+        })}
       </View>
     );
   }
@@ -132,5 +228,16 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     fontSize: 15,
     fontWeight: 'bold'
-  }
+  },
+    playbackControl: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 0,
+    borderWidth: 1,
+    borderColor: "#000000",
+    width: 350,
+    height: 60,
+    alignSelf: 'center',
+    bottom: 0,
+    flexDirection: 'row',
+  },
 });
