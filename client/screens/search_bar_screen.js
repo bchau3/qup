@@ -3,6 +3,7 @@ import { Image, Platform, ScrollView, StyleSheet, Text, View, TouchableOpacity, 
 
 // for screen switch
 import { SearchBar } from "react-native-elements";
+import { styles } from "../style/search_bar_screen_style";
 
 // Get server info from config file
 import { server_url } from "../config.js";
@@ -25,22 +26,26 @@ export default class SearchBarScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+                {/* <View style={styles.searchBarContainer}> */}
+                <Text style={{ color: "#36C3FF", fontSize: 40, paddingBottom: 20, fontWeight: "700" }}>SEARCH</Text>
                 <SearchBar
-                    inputStyle={{ backgroundColor: "#ffb6c1" }}
+                    inputStyle={{ backgroundColor: "#7C7C7C", color: "#c6c6c6" }}
                     containerStyle={{
-                        backgroundColor: "#DB7093",
-                        borderWidth: 1,
-                        borderRadius: 5
+                        backgroundColor: "#7C7C7C",
+                        borderRadius: 15,
                     }}
-                    inputContainerStyle={{ backgroundColor: "#ffb6c1" }}
-                    placeholderTextColor={"#436EEE"}
-                    placeholder={"Search for a song"}
+                    clearIcon={{color: "#c6c6c6"}}
+                    searchIcon={{color: "#c6c6c6"}}
+                    inputContainerStyle={{ backgroundColor: "#7C7C7C" }}
+                    placeholderTextColor={"#c6c6c6"}
+                    placeholder={"Search"}
                     onChangeText={this.updateSearch}
                     value={this.state.search}
                     showCancel={true}
                 />
+                {/* </View> */}
                 <ScrollView
-                    style={styles.container}
+                    style={styles.resultContainer}
                     contentContainerStyle={styles.contentContainer}
                 >
                     <View style={styles.getStartedContainer} >
@@ -53,7 +58,7 @@ export default class SearchBarScreen extends React.Component {
                                     }}
                                     underlayColor="#fff"
                                 >
-                                    <View style={{ paddingRight: 10 }}>
+                                    <View style={{ paddingLeft: 10, paddingRight: 10 }}>
                                         <Image
                                             style={{ width: 50, height: 50 }}
                                             source={{ uri: song.album_artwork }}
@@ -125,60 +130,3 @@ export default class SearchBarScreen extends React.Component {
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingTop: 15,
-        backgroundColor: "#89Cff0"
-    },
-    getStartedContainer: {
-        fontSize: 20,
-        backgroundColor: "#89Cff0",
-        alignItems: "center",
-        marginHorizontal: 0,
-        marginVertical: 90
-    },
-    getStartedText: {
-        fontSize: 17,
-        color: "rgba(96,100,109, 1)",
-        lineHeight: 24,
-        textAlign: "center"
-    },
-    todoText: {
-        fontSize: 14,
-        color: "#000000",
-        lineHeight: 24,
-        textAlign: "left",
-        paddingLeft: 30
-    },
-    buttonStyle: {
-        marginRight: 10,
-        marginLeft: 10,
-        marginTop: 10,
-        paddingTop: 10,
-        paddingBottom: 10,
-        backgroundColor: "#ffb6c1",
-        borderRadius: 0,
-        borderWidth: 1,
-        borderColor: "#000000",
-        width: 380,
-        height: 70,
-        flex: 1,
-        flexDirection: "row"
-    },
-    buttonText: {
-        color: "#000000",
-        textAlign: "center",
-        paddingLeft: 10,
-        paddingRight: 10,
-        fontSize: 12,
-    },
-    songTitle: {
-        color: "#000000",
-        textAlign: "left",
-        paddingLeft: 20,
-        paddingRight: 20,
-        fontSize: 15,
-        fontWeight: 'bold'
-    }
-});
