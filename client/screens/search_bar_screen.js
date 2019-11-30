@@ -55,7 +55,7 @@ export default class SearchBarScreen extends React.Component {
                                     }}
                                     underlayColor="#fff"
                                 >
-                                    <View style={{ paddingRight: 10, paddingLeft: 10 }}>
+                                    <View style={{ paddingRight: 10 }}>
                                         <Image
                                             style={{ width: 50, height: 50 }}
                                             source={{ uri: song.album_artwork }}

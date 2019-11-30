@@ -7,6 +7,7 @@ import { createBottomTabNavigator } from "react-navigation";
 import OptionScreen from "./option_screen";
 import SearchBarScreen from "./search_bar_screen";
 import SongQueue from "../components/song_queue";
+import CurrentlyPlaying from "../components/currently_playing";
 
 // Get server info from config file
 const queryString = require("query-string");
@@ -39,9 +40,9 @@ class ChannelQueueScreen extends React.Component {
           style={styles.container}
           contentContainerStyle={styles.contentContainer}
         >
-          <SongQueue/>
+        <SongQueue/>
         </ScrollView>
-        
+        <CurrentlyPlaying />  
       </View>
     );
   }

@@ -13,6 +13,14 @@ export async function getChannelSongsByChannelId(channel_id) {
     return responseJSON;
 }
 
+export async function getCurrentSong(channel_id) {
+  let response = await fetch(`${server_url}/currently-playing?channel_id=${channel_id}`);
+  let responseText = await response.text();
+  let responseJSON = await JSON.parse(responseText);
+  //console.log(responseJSON);
+  return responseJSON;
+}
+
 /**
  * DELETE
  * @param {*} channel_id 
