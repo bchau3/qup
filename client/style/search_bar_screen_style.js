@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#141414",
         //backgroundColor: "#7C7C7C",
         borderRadius:5,
-        width: 380,
+        width: 350,
         // marginHorizontal: 0,
         // marginVertical: 90
     },
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     buttonStyle: {
         marginRight: 10,
         marginLeft: 10,
-        marginTop: 10,
+        //marginTop: 10,
         paddingTop: 10,
         paddingBottom: 10,
         //backgroundColor: "#ffb6c1",

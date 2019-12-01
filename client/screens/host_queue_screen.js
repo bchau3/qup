@@ -122,14 +122,14 @@ class HostQueueScreen extends React.Component {
               start={{ x: 0.0, y: 0.0 }} end={{ x: 0.0, y: 3 }}
               style={styles.playbackControl}
             >
-              <View style={{ paddingRight: 10, paddingLeft: 15, paddingTop: 10}}>
+              <View style={{ paddingRight: 5, paddingLeft: 8, paddingTop: 10}}>
                 <Image
                   style={{ width: 90, height: 90, borderWidth: 3, borderColor: "white" }} //, borderColor: "white" 
                   source={{ uri: song.album_artwork }}
                 />
               </View>
 
-              <View style={{ paddingTop: 20, paddingRight: 10, width: 155}}>
+              <View style={{ paddingTop: 20, paddingRight: 4, width: 150}}>
                 <Text style={styles.songTitle}>
                   {fixedSongTitle}
                 </Text>
@@ -138,11 +138,11 @@ class HostQueueScreen extends React.Component {
 
               {/* playback buttons */}
 
-              <View style={{ paddingTop: 26, paddingRight: 13 }}>
+              <View style={{ paddingTop: 26, paddingRight: 10 }}>
                 <Icon
                   name='play'
                   type='font-awesome'
-                  size={45}
+                  size={40}
                   color="white"
                   iconStyle={alignContent = 'space-between'}
                   onPress={() => {
@@ -150,11 +150,11 @@ class HostQueueScreen extends React.Component {
                   }} />
               </View>
 
-              <View style={{ paddingTop: 26, paddingRight: 20 }}>
+              <View style={{ paddingTop: 26, paddingRight: 13 }}>
                 <Icon
                   name='pause'
                   type='font-awesome'
-                  size={45}
+                  size={40}
                   color="white"
                   iconStyle={alignContent = 'space-between'}
                   onPress={() => {
@@ -166,7 +166,7 @@ class HostQueueScreen extends React.Component {
                 <Icon
                   name='step-forward'
                   type='font-awesome'
-                  size={45}
+                  size={40}
                   color='white'
                   iconStyle={alignContent = 'space-between'}
                   onPress={() => {
