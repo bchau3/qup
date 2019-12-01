@@ -38,12 +38,12 @@ const styles = StyleSheet.create({
     },
     songTitle: {
       color: "white",
-      fontSize: 35,
-      fontWeight: "300",
+      fontSize: 21,
+      fontWeight: "600",
     },
     artistName: {
       color: "white",
-      fontSize: 20
+      fontSize: 16
     }
   });
 

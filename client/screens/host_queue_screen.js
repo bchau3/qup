@@ -105,29 +105,40 @@ class HostQueueScreen extends React.Component {
 
         {/*play controls*/}
         {this.state.playingSong.map((song) => {
+
+          fixedSongTitle = ""
+          if (song.song_name.length >= 13) {
+            for (var i = 0; i < 13; ++i) {
+              fixedSongTitle += song.song_name[i]
+            }
+            fixedSongTitle += "..."
+          }
+          else
+            fixedSongTitle = song.song_name
+
           return (
             <LinearGradient
-                        colors={['#101227', '#ff3fc9']}
-                        start={{ x: 0.0, y: 0.0 }} end={{ x: 0.0, y: 3 }}
-                        style={styles.playbackControl}
-          >
-              <View style={{ paddingRight: 30, paddingLeft: 20, paddingTop: 10}}>
+              colors={['#101227', '#ff3fc9']}
+              start={{ x: 0.0, y: 0.0 }} end={{ x: 0.0, y: 3 }}
+              style={styles.playbackControl}
+            >
+              <View style={{ paddingRight: 10, paddingLeft: 15, paddingTop: 10}}>
                 <Image
-                  style={{ width: 90, height: 90, borderWidth: 3, borderColor: "white"}} //, borderColor: "white" 
+                  style={{ width: 90, height: 90, borderWidth: 3, borderColor: "white" }} //, borderColor: "white" 
                   source={{ uri: song.album_artwork }}
                 />
               </View>
 
-              <View style={{ paddingTop: 20, paddingRight: 40}}>
+              <View style={{ paddingTop: 20, paddingRight: 10, width: 155}}>
                 <Text style={styles.songTitle}>
-                  {song.song_name}
+                  {fixedSongTitle}
                 </Text>
                 <Text style={styles.artistName}>{song.artist_name}</Text>
               </View>
 
               {/* playback buttons */}
-              
-              <View style={{paddingTop: 26, paddingRight: 10}}>
+
+              <View style={{ paddingTop: 26, paddingRight: 13 }}>
                 <Icon
                   name='play'
                   type='font-awesome'
@@ -139,7 +150,7 @@ class HostQueueScreen extends React.Component {
                   }} />
               </View>
 
-              <View style={{paddingTop: 26, paddingRight: 20}}>
+              <View style={{ paddingTop: 26, paddingRight: 20 }}>
                 <Icon
                   name='pause'
                   type='font-awesome'
@@ -149,9 +160,9 @@ class HostQueueScreen extends React.Component {
                   onPress={() => {
                     //TODO
                   }} />
-                </View>
+              </View>
 
-                <View style={{paddingTop: 26, paddingRight: 10}}>
+              <View style={{ paddingTop: 26, paddingRight: 10 }}>
                 <Icon
                   name='step-forward'
                   type='font-awesome'
@@ -161,10 +172,10 @@ class HostQueueScreen extends React.Component {
                   onPress={() => {
                     //TODO
                   }} />
-                </View>
+              </View>
 
-              </LinearGradient>
-            
+            </LinearGradient>
+
           );
         })}
       </ImageBackground>
