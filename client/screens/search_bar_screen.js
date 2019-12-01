@@ -36,20 +36,24 @@ export default class SearchBarScreen extends React.Component {
   };
   render() {
     return (
-      <ImageBackground source={require("../assets/images/search_background.png")} style={styles.container}>
+      <ImageBackground source={require("../assets/images/queue_background.png")} style={styles.container}>
         {/* <View style={styles.searchBarContainer}> */}
 
         <View style={{
           justifyContent: "center",
           alignItems: "center",
-          paddingTop: 40
+          paddingTop: 40,
         }}>
           <SearchBar
-            inputStyle={{ backgroundColor: '#7C7C7C', color: '#c6c6c6', fontSize: 24 }}
+            inputStyle={{ backgroundColor: '#7C7C7C', color: '#c6c6c6', fontSize: 24}}
             containerStyle={{
               backgroundColor: '#7C7C7C',
               borderRadius: 10,
               width: 360,
+              height: 50,
+              borderWidth:2,
+              justifyContent: "center",
+              alignItems: "center"
             }}
             clearIcon={{ color: '#c6c6c6' }}
             searchIcon={{ color: '#c6c6c6' }}
