@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     },
     songTitle: {
       color: "white",
-      fontSize: 21,
+      fontSize: 20,
       fontWeight: "600",
     },
     artistName: {

@@ -167,7 +167,7 @@ export default class SongQueue extends React.Component {
     if(this.state.songs.length != 0){
       this.props.action([this.state.songs[0]])
     }
-    console.log(this.state.songs);
+    //console.log(this.state.songs);
   };
 }
 
