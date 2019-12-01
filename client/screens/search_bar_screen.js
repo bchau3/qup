@@ -7,7 +7,8 @@ import {
   Text,
   View,
   TouchableOpacity,
-  AsyncStorage
+  AsyncStorage,
+  ImageBackground
 } from 'react-native';
 
 // for screen switch
@@ -33,70 +34,91 @@ export default class SearchBarScreen extends React.Component {
     this.setState({ search });
     this.songSearch(search);
   };
-
   render() {
     return (
-      <View style={styles.container}>
+      <ImageBackground source={require("../assets/images/search_background.png")} style={styles.container}>
         {/* <View style={styles.searchBarContainer}> */}
         <Text
           style={{
             color: '#36C3FF',
             fontSize: 40,
-            paddingBottom: 20,
-            fontWeight: '700'
+            paddingBottom: 10,
+            fontWeight: '700',
+            paddingLeft: 20
           }}
         >
           SEARCH
         </Text>
-        <SearchBar
-          inputStyle={{ backgroundColor: '#7C7C7C', color: '#c6c6c6' }}
-          containerStyle={{
-            backgroundColor: '#7C7C7C',
-            borderRadius: 15
-          }}
-          clearIcon={{ color: '#c6c6c6' }}
-          searchIcon={{ color: '#c6c6c6' }}
-          inputContainerStyle={{ backgroundColor: '#7C7C7C' }}
-          placeholderTextColor={'#c6c6c6'}
-          placeholder={'Search'}
-          onChangeText={this.updateSearch}
-          value={this.state.search}
-          showCancel={true}
-        />
-        {/* </View> */}
+        <View style={{
+          justifyContent: "center",
+          alignItems: "center"
+        }}>
+          <SearchBar
+            inputStyle={{ backgroundColor: '#7C7C7C', color: '#c6c6c6', fontSize: 24 }}
+            containerStyle={{
+              backgroundColor: '#7C7C7C',
+              borderRadius: 15,
+              width: 400
+            }}
+            clearIcon={{ color: '#c6c6c6' }}
+            searchIcon={{ color: '#c6c6c6' }}
+            inputContainerStyle={{ backgroundColor: '#7C7C7C' }}
+            placeholderTextColor={'#c6c6c6'}
+            placeholder={'Search'}
+            onChangeText={this.updateSearch}
+            value={this.state.search}
+            showCancel={true}
+          />
+        </View>
         <ScrollView
           style={styles.resultContainer}
-        >
-          <View style={styles.getStartedContainer}>
+          contentContainerStyle={{
+            justifyContent: "center",
+            alignItems: "center"
+          }}>
+
+          <View style={styles.songContainer}>
             {this.state.list.map(song => {
+
+              parsedTitle = ""
+              if (song.song_name.length >= 30) {
+                for (var i = 0; i < 30; i++) {
+                  parsedTitle += song.song_name[i]
+                }
+                parsedTitle += "..."
+              }
+              else
+                parsedTitle = song.song_name
+
               return (
                 <TouchableOpacity
-                  style={styles.buttonStyle}
-                  onPress={() => {
-                    this._addSong(song);
-                  }}
-                  underlayColor="#fff"
-                >
-                  <View style={{ paddingLeft: 10, paddingRight: 10 }}>
-                    <Image
-                      style={{ width: 50, height: 50 }}
-                      source={{ uri: song.album_artwork }}
-                    />
-                  </View>
+              style={styles.buttonStyle}
+              onPress={() => {
+                this._addSong(song);
+              }}
+              underlayColor="#fff"
+            >
+              <View style={{ paddingLeft: 2, paddingRight: 10 }}>
+                <Image
+                  style={{ width: 65, height: 65 }}
+                  source={{ uri: song.album_artwork }}
+                />
+              </View>
 
-                  <Text>
-                    <Text style={styles.songTitle}>
-                      {song.song_name}
-                      {'\n\n'}
-                    </Text>
-                    <Text>{song.artist_name}</Text>
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
+              <Text>
+                <Text style={styles.songTitle}>
+                  {/* {song.song_name} */}
+                  {parsedTitle}
+                  {'\n\n'}
+                </Text>
+                <Text style={{ color: "#c6c6c6", fontSize: 13 }}>{song.artist_name}</Text>
+              </Text>
+            </TouchableOpacity>
+            );
+          })}
           </View>
         </ScrollView>
-      </View>
+      </ImageBackground>
     );
   }
 
@@ -127,6 +149,16 @@ export default class SearchBarScreen extends React.Component {
       var album_artwork = responseJSON.body.tracks.items[i].album.images[2].url;
       var duration_ms = responseJSON.body.tracks.items[i].duration_ms;
 
+      // var song_name = ""
+      // if (responseJSON.body.tracks.items[i].name.length >= 25){
+      //   for (var i = 0; i < 25; i++ ){
+      //     song_name += responseJSON.body.tracks.items[i].name[i]
+      //   }
+      //   song_name += "..."
+      // } else {
+      //   song_name = responseJSON.body.tracks.items[i].name;
+      // }
+
       var json = JSON.parse(
         JSON.stringify({
           track_id: track_id,
@@ -137,6 +169,8 @@ export default class SearchBarScreen extends React.Component {
           duration_ms: duration_ms
         })
       );
+
+
       console.log(this.state.list);
       this.setState({ list: this.state.list.concat(json) });
     }
