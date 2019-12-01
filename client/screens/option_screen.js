@@ -14,10 +14,8 @@ export default class OptionScreen extends React.Component {
     return (
       <ImageBackground source={require("../assets/images/option_background.png")} style={styles.container}>
         
-        <Text style={styles.titleText}>MENU</Text>
-
         <View style={styles.buttonContainer}>
-          
+        <Text style={styles.titleText}>MENU</Text>
           <TouchableOpacity
             onPress={
               this._alertJoinCode
@@ -45,22 +43,6 @@ export default class OptionScreen extends React.Component {
             }}
           >
             <Text style={styles.buttonText}>LEAVE THE CHANNEL</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => {
-              this._closeChannel()
-            }}
-          >
-            <Text style={styles.buttonText}>CLOSE THE CHANNEL</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => {
-              this._closeChannel()
-            }}
-          >
-            <Text style={styles.buttonText}>UNLINK MY ACCOUNT</Text>
           </TouchableOpacity>
         </View>
       </ImageBackground>

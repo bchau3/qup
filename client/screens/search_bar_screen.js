@@ -48,8 +48,8 @@ export default class SearchBarScreen extends React.Component {
             inputStyle={{ backgroundColor: '#7C7C7C', color: '#c6c6c6', fontSize: 24 }}
             containerStyle={{
               backgroundColor: '#7C7C7C',
-              borderRadius: 15,
-              width: 400
+              borderRadius: 10,
+              width: 360,
             }}
             clearIcon={{ color: '#c6c6c6' }}
             searchIcon={{ color: '#c6c6c6' }}
@@ -72,8 +72,8 @@ export default class SearchBarScreen extends React.Component {
             {this.state.list.map(song => {
 
               parsedTitle = ""
-              if (song.song_name.length >= 30) {
-                for (var i = 0; i < 30; i++) {
+              if (song.song_name.length >= 25) {
+                for (var i = 0; i < 25; i++) {
                   parsedTitle += song.song_name[i]
                 }
                 parsedTitle += "..."
@@ -91,7 +91,7 @@ export default class SearchBarScreen extends React.Component {
                 >
                   <View style={{ paddingLeft: 2, paddingRight: 10 }}>
                     <Image
-                      style={{ width: 65, height: 65 }}
+                      style={{ width: 60, height: 60 }}
                       source={{ uri: song.album_artwork }}
                     />
                   </View>
@@ -100,7 +100,7 @@ export default class SearchBarScreen extends React.Component {
                     <Text style={styles.songTitle}>
                       {/* {song.song_name} */}
                       {parsedTitle}
-                      {'\n\n'}
+                      {'\n'}
                     </Text>
                     <Text style={{ color: "#c6c6c6", fontSize: 13 }}>{song.artist_name}</Text>
                   </Text>

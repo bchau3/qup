@@ -8,6 +8,8 @@ import {
   Button,
   Alert,
   Animated,
+  Keyboard,
+  TouchableWithoutFeedback,
   AsyncStorage
 } from "react-native";
 
@@ -139,6 +141,7 @@ class JoinChannelScreen extends React.Component {
 
   render() {
     return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.initContainer}>
         {/* <View style={styles.inputWrapper}> */}
         <LinearGradient
@@ -185,6 +188,7 @@ class JoinChannelScreen extends React.Component {
           </LinearGradient>
         {/* </View> */}
       </View>
+      </TouchableWithoutFeedback>
     );
   }
 }

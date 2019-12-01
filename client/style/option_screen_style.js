@@ -21,26 +21,26 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   buttonText: {
-    fontSize: 30,
+    fontSize: 25,
     color: "white",
     textAlign: "center",
     fontWeight: "600",
-    paddingBottom: 20
+    paddingBottom: 40
   },
   titleText: {
-    paddingTop: 100,
-    paddingLeft: 40,
-    fontSize: 60,
+     paddingTop: 100,
+    // paddingLeft: 40,
+    paddingBottom: 40,
+    fontSize: 55,
     color: "#36C3FF",
-    textAlign: "left",
     fontWeight: "700"
   },
   hostTitleText: {
-    paddingTop: 100,
-    paddingLeft: 40,
-    fontSize: 60,
+     paddingTop: 100,
+    // paddingLeft: 40,
+    paddingBottom: 40,
+    fontSize: 55,
     color: "#ff3fc9",
-    textAlign: "left",
     fontWeight: "700"
   },
   buttonContainer: {

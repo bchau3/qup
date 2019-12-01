@@ -14,10 +14,8 @@ export default class OptionScreen extends React.Component {
     return (
       <ImageBackground source={require("../assets/images/option_background.png")} style={styles.container}>
         
-        <Text style={styles.hostTitleText}>MENU</Text>
-
         <View style={styles.buttonContainer}>
-          
+        <Text style={styles.hostTitleText}>MENU</Text>
           <TouchableOpacity
             onPress={
               this._alertJoinCode
@@ -25,28 +23,7 @@ export default class OptionScreen extends React.Component {
           >
             <Text style={styles.buttonText}>GET JOIN CODE</Text>
           </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => {
-              alert("Successfully Leaving the Channel"),
-                this.props.navigation.goBack(
-                  this.props.navigation.goBack(
-                    this.props.navigation.goBack(
-                      this.props.navigation.goBack(
-                        this.props.navigation.goBack(
-                          this.props.navigation.goBack(
-                            this.props.navigation.goBack(null)
-                          )
-                        )
-                      )
-                    )
-                  )
-                );
-            }}
-          >
-            <Text style={styles.buttonText}>LEAVE THE CHANNEL</Text>
-          </TouchableOpacity>
-
+          
           <TouchableOpacity
             onPress={() => {
               this._closeChannel()
