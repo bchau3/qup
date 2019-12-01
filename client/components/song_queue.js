@@ -173,26 +173,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 15,
-    backgroundColor: "#89Cff0"
+    backgroundColor: '#89Cff0'
   },
   getStartedContainer: {
     fontSize: 20,
-    backgroundColor: "#89Cff0",
-    alignItems: "center",
+    backgroundColor: '#89Cff0',
+    alignItems: 'center',
     marginHorizontal: 0,
     marginVertical: 90
   },
   getStartedText: {
     fontSize: 17,
-    color: "rgba(96,100,109, 1)",
+    color: 'rgba(96,100,109, 1)',
     lineHeight: 24,
-    textAlign: "center"
+    textAlign: 'center'
   },
   todoText: {
     fontSize: 14,
-    color: "#000000",
+    color: '#000000',
     lineHeight: 24,
-    textAlign: "left",
+    textAlign: 'left',
     paddingLeft: 30
   },
   buttonStyle: {
@@ -201,24 +201,24 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingTop: 10,
     paddingBottom: 10,
-    backgroundColor: "#ffb6c1",
+    backgroundColor: '#ffb6c1',
     borderRadius: 0,
     borderWidth: 1,
-    borderColor: "#000000",
+    borderColor: '#000000',
     width: 380,
     height: 70,
-    flexDirection: "row"
+    flexDirection: 'row'
   },
   buttonText: {
-    color: "#000000",
-    textAlign: "center",
+    color: '#000000',
+    textAlign: 'center',
     paddingLeft: 10,
     paddingRight: 10,
-    fontSize: 12,
+    fontSize: 12
   },
   songTitle: {
-    color: "#000000",
-    textAlign: "left",
+    color: '#000000',
+    textAlign: 'left',
     paddingLeft: 20,
     paddingRight: 20,
     fontSize: 15,
@@ -230,14 +230,14 @@ const styles = StyleSheet.create({
     marginTop: 0,
     paddingTop: 0,
     paddingBottom: 0,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF',
     borderRadius: 0,
     borderWidth: 1,
-    borderColor: "#000000",
+    borderColor: '#000000',
     width: 500,
     height: 100,
     //justifyContent: "space-between",
     alignSelf: 'flex-end',
-    bottom: 0,
+    bottom: 0
   }
 });

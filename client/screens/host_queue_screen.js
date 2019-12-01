@@ -10,6 +10,8 @@ import SongQueue from "../components/song_queue";
 import { getChannelSongsByChannelId, getCurrentSong } from "../api/songs"
 import { playSong } from "../api/queue";
 
+var Slider = require('react-native-slider');
+
 /* HostQueueScreen:
  *    Screen shows the song queue that are made for the host only
  *    It has all functionality of a Channelmate Queue, but with more
@@ -70,7 +72,6 @@ class HostQueueScreen extends React.Component {
     var album_artwork = responseJSON.item.album.images[2].url;
     var total_duration = (responseJSON.item.duration_ms / (1000 * 60)); // make it into minutes
     var current_duration = (responseJSON.progress_ms / (1000 * 60));
-    //var priority = responseJSON[0].priority;  maybe this isn't needed since we're playing it rn?
 
     var json = JSON.parse(JSON.stringify({
       track_id: track_id,
@@ -80,7 +81,6 @@ class HostQueueScreen extends React.Component {
       album_artwork: album_artwork,
       total_duration: total_duration,
       current_duration: current_duration,
-      //priority: priority
     }));
     this.setState({ playingSong: this.state.playingSong.concat(json) });
     console.log(json)
