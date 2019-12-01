@@ -107,8 +107,8 @@ class HostQueueScreen extends React.Component {
         {this.state.playingSong.map((song) => {
 
           fixedSongTitle = ""
-          if (song.song_name.length >= 13) {
-            for (var i = 0; i < 13; ++i) {
+          if (song.song_name.length >= 25) {
+            for (var i = 0; i < 25; ++i) {
               fixedSongTitle += song.song_name[i]
             }
             fixedSongTitle += "..."
