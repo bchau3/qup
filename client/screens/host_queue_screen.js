@@ -127,7 +127,7 @@ class HostQueueScreen extends React.Component {
           else
             fixedSongTitle = song.song_name
           
-          var secondsTotal = ""
+          var secondsTotal = ''
           if (song.tDurSec < 10) {
             secondsTotal += "0"
             secondsTotal += song.tDurSec
@@ -135,7 +135,7 @@ class HostQueueScreen extends React.Component {
           else
             secondsTotal = song.tDurSec
 
-          var secondsElapse = ""
+          var secondsElapse = ''
           if (song.currSec < 10) {
             secondsElapse += "0"
             secondsElapse += song.currSec
@@ -241,14 +241,10 @@ const styles = StyleSheet.create({
   },
   playbackControl: {
     backgroundColor: "#FFFFFF",
-    borderRadius: 0,
-    borderWidth: 1,
-    borderColor: "#000000",
-    width: 350,
+    width: 415,
     height: 60,
-    alignSelf: 'center',
-    bottom: 0,
     flexDirection: 'row',
+    justifyContent: 'space-evenly',
   },
   songTitle: {
     color: "#000000",
