@@ -44,22 +44,6 @@ export default class OptionScreen extends React.Component {
           >
             <Text style={styles.buttonText}>LEAVE THE CHANNEL</Text>
           </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => {
-              this._closeChannel()
-            }}
-          >
-            <Text style={styles.buttonText}>CLOSE THE CHANNEL</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => {
-              this._closeChannel()
-            }}
-          >
-            <Text style={styles.buttonText}>UNLINK MY ACCOUNT</Text>
-          </TouchableOpacity>
         </View>
       </ImageBackground>
     );

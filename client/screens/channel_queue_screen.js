@@ -1,7 +1,8 @@
 import * as WebBrowser from "expo-web-browser";
 import * as React from "react";
-import { Image, Button, Platform, ScrollView, StyleSheet, Text, View, TouchableOpacity, AsyncStorage } from "react-native";
+import { Image, Button, Platform, ScrollView, StyleSheet, Text, View, TouchableOpacity, AsyncStorage, ImageBackground } from "react-native";
 import {playSong, getChannelSongURI} from '../api/queue';
+import { Icon } from "react-native-elements";
 
 
 // for screen switch
@@ -10,6 +11,8 @@ import OptionScreen from "./option_screen";
 import SearchBarScreen from "./search_bar_screen";
 import SongQueue from "../components/song_queue";
 import CurrentlyPlaying from "../components/currently_playing";
+import { styles } from "../style/channelmate_queue_style"
+import { LinearGradient } from 'expo-linear-gradient';
 
 // Get server info from config file
 const queryString = require("query-string");
@@ -106,35 +109,63 @@ class ChannelQueueScreen extends React.Component {
 
   render() {
  const { navigate } = this.props.navigation;
-  //{ this._getChannelSongs() }
     return (
-      <View style={styles.container}>
+      <ImageBackground source={require("../assets/images/queue_background.png")} style={styles.container}>
+
         <SongQueue action={this.handler} />
 
         {/*play controls*/}
         {this.state.playingSong.map((song) => {
+
+          fixedSongTitle = ""
+          if (song.song_name.length >= 13) {
+            for (var i = 0; i < 13; ++i) {
+              fixedSongTitle += song.song_name[i]
+            }
+            fixedSongTitle += "..."
+          }
+          else
+            fixedSongTitle = song.song_name
+
           return (
-            <View style={styles.playbackControl}>
-              <View style={{ paddingRight: 10, paddingLeft: 10 }}>
+            <LinearGradient
+              colors={['#101227', '#36C3FF']}
+              start={{ x: 0.0, y: 0.0 }} end={{ x: 0.0, y: 3 }}
+              style={styles.playbackControl}
+            >
+              <View style={{ paddingRight: 5, paddingLeft: 8, paddingTop: 10}}>
                 <Image
-                  style={{ width: 50, height: 50, alignSelf: 'auto' }}
+                  style={{ width: 90, height: 90, borderWidth: 3, borderColor: "white" }} //, borderColor: "white" 
                   source={{ uri: song.album_artwork }}
                 />
               </View>
-              <Text>
+
+              <View style={{ paddingTop: 20, paddingRight: 4, width: 150}}>
                 <Text style={styles.songTitle}>
-                  {song.song_name}
-                  {"\n"}
+                  {fixedSongTitle}
                 </Text>
-                <Text style={{ paddingTop: 30 }}>{song.artist_name}</Text>
-              </Text>
+                <Text style={styles.artistName}>{song.artist_name}</Text>
+              </View>
 
               {/* playback buttons */}
-              
-            </View>
+
+              <View style={{ paddingLeft: 80, paddingTop: 26, paddingRight: 10 }}>
+                <Icon
+                  name='step-forward'
+                  type='font-awesome'
+                  size={40}
+                  color='white'
+                  iconStyle={alignContent = 'space-between'}
+                  onPress={() => {
+                    //TODO
+                  }} />
+              </View>
+
+            </LinearGradient>
+
           );
         })}
-      </View>
+      </ImageBackground>
     );
   }
 
@@ -159,8 +190,6 @@ class ChannelQueueScreen extends React.Component {
 
 }
 
-
-
 // create bottom tabs to switch screens
 export default createBottomTabNavigator(
   {
@@ -173,71 +202,3 @@ export default createBottomTabNavigator(
   }
 );
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 15,
-    backgroundColor: "#89Cff0"
-  },
-  getStartedContainer: {
-    fontSize: 20,
-    backgroundColor: "#89Cff0",
-    alignItems: "center",
-    marginHorizontal: 0,
-    marginVertical: 90
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: "rgba(96,100,109, 1)",
-    lineHeight: 24,
-    textAlign: "center"
-  },
-  todoText: {
-    fontSize: 14,
-    color: "#000000",
-    lineHeight: 24,
-    textAlign: "left",
-    paddingLeft: 30
-  },
-  buttonStyle: {
-    marginRight: 10,
-    marginLeft: 10,
-    marginTop: 10,
-    paddingTop: 10,
-    paddingBottom: 10,
-    backgroundColor: "#ffb6c1",
-    borderRadius: 0,
-    borderWidth: 1,
-    borderColor: "#000000",
-    width: 380,
-    height: 70,
-    flex: 1,
-    flexDirection: "row"
-  },
-  buttonText: {
-    color: "#000000",
-    textAlign: "center",
-    paddingLeft: 10,
-    paddingRight: 10,
-    fontSize: 12,
-  },
-  songTitle: {
-    color: "#000000",
-    textAlign: "left",
-    paddingLeft: 20,
-    paddingRight: 20,
-    fontSize: 15,
-    fontWeight: 'bold'
-  },
-    playbackControl: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 0,
-    borderWidth: 1,
-    borderColor: "#000000",
-    width: 350,
-    height: 60,
-    alignSelf: 'center',
-    bottom: 0,
-    flexDirection: 'row',
-  },
-});
