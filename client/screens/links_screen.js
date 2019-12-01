@@ -174,7 +174,9 @@ class LoginScreen extends React.Component {
     }
 
     // Store ifnormation in AsyncStorage
-    this._storeUserInfo(this.state.username, this.state.email, join_code, channel_id);
+    this._storeUserInfo(this.state.username, this.state.email, join_code, channel_id).then(() => {
+      this._alertJoinCode();
+    })
   };
 
   _storeUserInfo = async (username, email, join_code, channel_id) => {
@@ -187,6 +189,17 @@ class LoginScreen extends React.Component {
       // Error storing data
       console.log(error.message);
     }
+  }
+
+  _alertJoinCode = async () => {
+    let join_code = "";
+    try{
+      join_code = (await AsyncStorage.getItem("join_code")) || "none";
+    } catch(error){
+      // Error retrieving data
+      console.log(error.message);
+    }
+    return alert("Your channels add code: " + join_code);
   }
 
   // Clear userInfo to restart auth process
