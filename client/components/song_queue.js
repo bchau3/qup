@@ -30,8 +30,8 @@ export default class SongQueue extends React.Component {
             {this.state.songs.map((song) => {
               // song title might be too large to fit
               fixedSongTitle = ""
-              if (song.song_name.length >= 30) {
-                for (var i = 0; i < 30; ++i) {
+              if (song.song_name.length >= 25) {
+                for (var i = 0; i < 25; ++i) {
                   fixedSongTitle += song.song_name[i]
                 }
                 fixedSongTitle += "..."
