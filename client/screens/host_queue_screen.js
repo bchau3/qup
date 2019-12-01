@@ -4,7 +4,7 @@ import { Button, Icon } from "react-native-elements";
 
 // for screen switch 
 import { createBottomTabNavigator } from 'react-navigation'
-import OptionScreen from "./option_screen";
+import OptionScreen from "./host_option_screen";
 import SearchBarScreen from "./search_bar_screen";
 import SongQueue from "../components/song_queue";
 import { getChannelSongsByChannelId} from "../api/songs"
