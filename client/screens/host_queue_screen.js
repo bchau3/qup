@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ScrollView, StyleSheet, Text, View, AsyncStorage, Image } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, AsyncStorage, Image, ImageBackground } from 'react-native';
 import { Button, Icon } from "react-native-elements";
 
 // for screen switch 
@@ -7,8 +7,11 @@ import { createBottomTabNavigator } from 'react-navigation'
 import OptionScreen from "./host_option_screen";
 import SearchBarScreen from "./search_bar_screen";
 import SongQueue from "../components/song_queue";
-import { getChannelSongsByChannelId} from "../api/songs"
+import { getChannelSongsByChannelId } from "../api/songs"
 import { playSong } from "../api/queue";
+import { styles } from "../style/host_queue_style"
+import { LinearGradient } from 'expo-linear-gradient';
+
 
 /* HostQueueScreen:
  *    Screen shows the song queue that are made for the host only
@@ -25,15 +28,15 @@ class HostQueueScreen extends React.Component {
 
     // Set some state
     this.state = {
-    playingSong: []
-  }
+      playingSong: []
+    }
   }
 
   static navigationOptions = {
     tabBarLabel: 'QUEUE',
   }
 
-  
+
 
   _getChannelId = async () => {
     let channel_id = '';
@@ -56,7 +59,7 @@ class HostQueueScreen extends React.Component {
   parseSongs(responseJSON) {
     this.setState({ playingSong: [] });
 
-    if(responseJSON.length == 0){
+    if (responseJSON.length == 0) {
       return;
     }
 
@@ -79,8 +82,8 @@ class HostQueueScreen extends React.Component {
     //console.log(this.state.playingSong);
   }
 
-  handler(playingSong){
-    this.setState({playingSong: playingSong});
+  handler(playingSong) {
+    this.setState({ playingSong: playingSong });
   }
 
   _playSong = async () => {
@@ -94,63 +97,77 @@ class HostQueueScreen extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
-  //{ this._getChannelSongs() }
+    //{ this._getChannelSongs() }
     return (
-      <View style={styles.container}>
+      <ImageBackground source={require("../assets/images/queue_background.png")} style={styles.container}>
+
         <SongQueue action={this.handler} />
 
         {/*play controls*/}
         {this.state.playingSong.map((song) => {
           return (
-            <View style={styles.playbackControl}>
-              <View style={{ paddingRight: 10, paddingLeft: 10 }}>
+            <LinearGradient
+                        colors={['#101227', '#ff3fc9']}
+                        start={{ x: 0.0, y: 0.0 }} end={{ x: 0.0, y: 3 }}
+                        style={styles.playbackControl}
+          >
+              <View style={{ paddingRight: 30, paddingLeft: 20, paddingTop: 10}}>
                 <Image
-                  style={{ width: 50, height: 50, alignSelf: 'auto' }}
+                  style={{ width: 90, height: 90, borderWidth: 3, borderColor: "white"}} //, borderColor: "white" 
                   source={{ uri: song.album_artwork }}
                 />
               </View>
-              <Text>
+
+              <View style={{ paddingTop: 20, paddingRight: 40}}>
                 <Text style={styles.songTitle}>
                   {song.song_name}
-                  {"\n"}
                 </Text>
-                <Text style={{ paddingTop: 30 }}>{song.artist_name}</Text>
-              </Text>
+                <Text style={styles.artistName}>{song.artist_name}</Text>
+              </View>
 
               {/* playback buttons */}
-              <Icon
-                name='play'
-                type='font-awesome'
-                size={26}
-                color='#000080'
-                iconStyle={alignContent = 'space-between'}
-                onPress={() => {
-                  this._playSong();
-                }} />
+              
+              <View style={{paddingTop: 26, paddingRight: 10}}>
+                <Icon
+                  name='play'
+                  type='font-awesome'
+                  size={45}
+                  color="white"
+                  iconStyle={alignContent = 'space-between'}
+                  onPress={() => {
+                    this._playSong();
+                  }} />
+              </View>
 
-              <Icon
-                name='pause'
-                type='font-awesome'
-                size={26}
-                color='#000080'
-                iconStyle={alignContent = 'space-between'}
-                onPress={() => {
-                  //TODO
-                }} />
+              <View style={{paddingTop: 26, paddingRight: 20}}>
+                <Icon
+                  name='pause'
+                  type='font-awesome'
+                  size={45}
+                  color="white"
+                  iconStyle={alignContent = 'space-between'}
+                  onPress={() => {
+                    //TODO
+                  }} />
+                </View>
 
-              <Icon
-                name='step-forward'
-                type='font-awesome'
-                size={26}
-                color='#000080'
-                iconStyle={alignContent = 'space-between'}
-                onPress={() => {
-                  //TODO
-                }} />
-            </View>
+                <View style={{paddingTop: 26, paddingRight: 10}}>
+                <Icon
+                  name='step-forward'
+                  type='font-awesome'
+                  size={45}
+                  color='white'
+                  iconStyle={alignContent = 'space-between'}
+                  onPress={() => {
+                    //TODO
+                  }} />
+                </View>
+
+              </LinearGradient>
+            
           );
         })}
-      </View>
+      </ImageBackground>
     );
   }
 
@@ -168,48 +185,3 @@ export default createBottomTabNavigator(
   }
 )
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 15,
-    backgroundColor: "#89Cff0"
-  },
-  getStartedContainer: {
-    fontSize: 20,
-    backgroundColor: "#89Cff0",
-    alignItems: "flex-start",
-    marginHorizontal: 20,
-    marginVertical: 60
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: "rgba(96,100,109, 1)",
-    lineHeight: 24,
-    textAlign: "center"
-  },
-  todoText: {
-    fontSize: 17,
-    color: "rgba(96,100,109, 1)",
-    lineHeight: 24,
-    textAlign: "left"
-  },
-  playbackControl: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 0,
-    borderWidth: 1,
-    borderColor: "#000000",
-    width: 350,
-    height: 60,
-    alignSelf: 'center',
-    bottom: 0,
-    flexDirection: 'row',
-  },
-  songTitle: {
-    color: "#000000",
-    textAlign: "left",
-    paddingLeft: 20,
-    paddingRight: 20,
-    fontSize: 15,
-    fontWeight: 'bold'
-  }
-});
