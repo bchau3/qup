@@ -7,7 +7,7 @@ import { createBottomTabNavigator } from 'react-navigation'
 import OptionScreen from "./option_screen";
 import SearchBarScreen from "./search_bar_screen";
 import SongQueue from "../components/song_queue";
-import { getChannelSongsByChannelId} from "../api/songs"
+import { getChannelSongsByChannelId, getCurrentSong } from "../api/songs"
 import { playSong } from "../api/queue";
 
 /* HostQueueScreen:
@@ -25,15 +25,15 @@ class HostQueueScreen extends React.Component {
 
     // Set some state
     this.state = {
-    playingSong: []
-  }
+      playingSong: []
+    }
   }
 
   static navigationOptions = {
     tabBarLabel: 'QUEUE',
   }
 
-  
+
 
   _getChannelId = async () => {
     let channel_id = '';
@@ -46,26 +46,31 @@ class HostQueueScreen extends React.Component {
     return channel_id;
   }
 
-  _getChannelSongs = async () => {
+  _getCurrentSong = async () => {
     const channel_id = await this._getChannelId();
-    const songsJSON = await getChannelSongsByChannelId(channel_id);
-    //console.log(songsJSON);
-    this.parseSongs(songsJSON);
+    const songJSON = await getCurrentSong(channel_id);
+    //console.log(songJSON);
+    this.parseCurrentSong(songJSON);
   }
 
-  parseSongs(responseJSON) {
+  // why is the track not the same as the first song in our list
+  // our responseJSON when retrieving the real time song being played on that account
+  // is an object
+  parseCurrentSong(responseJSON) {
     this.setState({ playingSong: [] });
 
-    if(responseJSON.length == 0){
+    if (responseJSON.length == 0) {
       return;
     }
 
-    var track_id = responseJSON[0].id;
-    var artist_name = responseJSON[0].artist_name;
-    var song_name = responseJSON[0].song_name;
-    var song_uri = responseJSON[0].song_uri;
-    var album_artwork = responseJSON[0].album_artwork;
-    var priority = responseJSON[0].priority;
+    var track_id = responseJSON.item.id;
+    var artist_name = responseJSON.item.album.artists[0].name;
+    var song_name = responseJSON.item.name;
+    var song_uri = responseJSON.item.uri;
+    var album_artwork = responseJSON.item.album.images[2].url;
+    var total_duration = (responseJSON.item.duration_ms / (1000 * 60)); // make it into minutes
+    var current_duration = (responseJSON.progress_ms / (1000 * 60));
+    //var priority = responseJSON[0].priority;  maybe this isn't needed since we're playing it rn?
 
     var json = JSON.parse(JSON.stringify({
       track_id: track_id,
@@ -73,45 +78,57 @@ class HostQueueScreen extends React.Component {
       song_name: song_name,
       song_uri: song_uri,
       album_artwork: album_artwork,
-      priority: priority
+      total_duration: total_duration,
+      current_duration: current_duration,
+      //priority: priority
     }));
     this.setState({ playingSong: this.state.playingSong.concat(json) });
-    //console.log(this.state.playingSong);
+    console.log(json)
   }
 
-  handler(playingSong){
-    this.setState({playingSong: playingSong});
+  handler(playingSong) {
+    this.setState({ playingSong: playingSong });
   }
 
   _playSong = async () => {
     channel_id = await this._getChannelId()
     playSong(channel_id).then(() => {
       // Refresh current playing song
-      this._getChannelSongs();
+      this._getCurrentSong();
     });
   }
 
 
   render() {
     const { navigate } = this.props.navigation;
-  //{ this._getChannelSongs() }
+    //{ this._getChannelSongs() }
     return (
       <View style={styles.container}>
         <SongQueue action={this.handler} />
 
         {/*play controls*/}
         {this.state.playingSong.map((song) => {
+          // song title might be too large to fit
+          var fixedSongTitle = ""
+          if (song.song_name.length >= 20) {
+            for (var i = 0; i < 20; ++i) {
+              fixedSongTitle += song.song_name[i]
+            }
+            fixedSongTitle += "..."
+          }
+          else
+            fixedSongTitle = song.song_name
           return (
             <View style={styles.playbackControl}>
               <View style={{ paddingRight: 10, paddingLeft: 10 }}>
                 <Image
-                  style={{ width: 50, height: 50, alignSelf: 'auto' }}
+                  style={{ width: 50, height: 50, alignSelf: 'auto', marginTop: 4 }}
                   source={{ uri: song.album_artwork }}
                 />
               </View>
               <Text>
                 <Text style={styles.songTitle}>
-                  {song.song_name}
+                  {fixedSongTitle}
                   {"\n"}
                 </Text>
                 <Text style={{ paddingTop: 30 }}>{song.artist_name}</Text>
@@ -125,7 +142,7 @@ class HostQueueScreen extends React.Component {
                 color='#000080'
                 iconStyle={alignContent = 'space-between'}
                 onPress={() => {
-                  this._playSong();
+                  this._getCurrentSong();
                 }} />
 
               <Icon
