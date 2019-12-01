@@ -68,8 +68,14 @@ class HostQueueScreen extends React.Component {
     var song_name = responseJSON.item.name;
     var song_uri = responseJSON.item.uri;
     var album_artwork = responseJSON.item.album.images[2].url;
-    var total_duration = (responseJSON.item.duration_ms / (1000 * 60)); // make it into minutes
-    var current_duration = (responseJSON.progress_ms / (1000 * 60));
+    var total_duration_minutes = Math.floor(responseJSON.item.duration_ms / (1000 * 60));
+    var tDurMin = total_duration_minutes.toFixed(0);
+    var total_duration_seconds = Math.floor(((responseJSON.item.duration_ms / (1000 * 60)) - tDurMin) * 60);
+    var tDurSec = total_duration_seconds.toFixed(0);
+    var current_duration_minutes = Math.floor(responseJSON.progress_ms / (1000 * 60));
+    var currMin = current_duration_minutes.toFixed(0);
+    var current_duration_seconds = Math.floor(((responseJSON.progress_ms / (1000 * 60)) - currMin) * 60);
+    var currSec = current_duration_seconds.toFixed(0);
     //var priority = responseJSON[0].priority;  maybe this isn't needed since we're playing it rn?
 
     var json = JSON.parse(JSON.stringify({
@@ -78,12 +84,14 @@ class HostQueueScreen extends React.Component {
       song_name: song_name,
       song_uri: song_uri,
       album_artwork: album_artwork,
-      total_duration: total_duration,
-      current_duration: current_duration,
+      tDurMin: tDurMin,
+      tDurSec: tDurSec,
+      currMin: currMin,
+      currSec: currSec,
       //priority: priority
     }));
     this.setState({ playingSong: this.state.playingSong.concat(json) });
-    console.log(json)
+    //console.log(json)
   }
 
   handler(playingSong) {
@@ -118,6 +126,23 @@ class HostQueueScreen extends React.Component {
           }
           else
             fixedSongTitle = song.song_name
+          
+          var secondsTotal = ""
+          if (song.tDurSec < 10) {
+            secondsTotal += "0"
+            secondsTotal += song.tDurSec
+          }
+          else
+            secondsTotal = song.tDurSec
+
+          var secondsElapse = ""
+          if (song.currSec < 10) {
+            secondsElapse += "0"
+            secondsElapse += song.currSec
+          }
+          else
+            secondsElapse = song.currSec
+
           return (
             <View style={styles.playbackControl}>
               <View style={{ paddingRight: 10, paddingLeft: 10 }}>
@@ -164,6 +189,10 @@ class HostQueueScreen extends React.Component {
                 onPress={() => {
                   //TODO
                 }} />
+
+              <Text style={{fontSize: 12, paddingLeft: 10}}>
+                {song.currMin}:{secondsElapse} / {song.tDurMin}:{secondsTotal}
+              </Text>
             </View>
           );
         })}
