@@ -14,7 +14,7 @@ export default class OptionScreen extends React.Component {
     return (
       <ImageBackground source={require("../assets/images/option_background.png")} style={styles.container}>
         
-        <Text style={styles.titleText}>MENU</Text>
+        <Text style={styles.hostTitleText}>MENU</Text>
 
         <View style={styles.buttonContainer}>
           

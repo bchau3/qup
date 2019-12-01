@@ -38,20 +38,11 @@ export default class SearchBarScreen extends React.Component {
     return (
       <ImageBackground source={require("../assets/images/search_background.png")} style={styles.container}>
         {/* <View style={styles.searchBarContainer}> */}
-        <Text
-          style={{
-            color: '#36C3FF',
-            fontSize: 40,
-            paddingBottom: 10,
-            fontWeight: '700',
-            paddingLeft: 20
-          }}
-        >
-          SEARCH
-        </Text>
+
         <View style={{
           justifyContent: "center",
-          alignItems: "center"
+          alignItems: "center",
+          paddingTop: 40
         }}>
           <SearchBar
             inputStyle={{ backgroundColor: '#7C7C7C', color: '#c6c6c6', fontSize: 24 }}
@@ -92,30 +83,30 @@ export default class SearchBarScreen extends React.Component {
 
               return (
                 <TouchableOpacity
-              style={styles.buttonStyle}
-              onPress={() => {
-                this._addSong(song);
-              }}
-              underlayColor="#fff"
-            >
-              <View style={{ paddingLeft: 2, paddingRight: 10 }}>
-                <Image
-                  style={{ width: 65, height: 65 }}
-                  source={{ uri: song.album_artwork }}
-                />
-              </View>
+                  style={styles.buttonStyle}
+                  onPress={() => {
+                    this._addSong(song);
+                  }}
+                  underlayColor="#fff"
+                >
+                  <View style={{ paddingLeft: 2, paddingRight: 10 }}>
+                    <Image
+                      style={{ width: 65, height: 65 }}
+                      source={{ uri: song.album_artwork }}
+                    />
+                  </View>
 
-              <Text>
-                <Text style={styles.songTitle}>
-                  {/* {song.song_name} */}
-                  {parsedTitle}
-                  {'\n\n'}
-                </Text>
-                <Text style={{ color: "#c6c6c6", fontSize: 13 }}>{song.artist_name}</Text>
-              </Text>
-            </TouchableOpacity>
-            );
-          })}
+                  <Text>
+                    <Text style={styles.songTitle}>
+                      {/* {song.song_name} */}
+                      {parsedTitle}
+                      {'\n\n'}
+                    </Text>
+                    <Text style={{ color: "#c6c6c6", fontSize: 13 }}>{song.artist_name}</Text>
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
           </View>
         </ScrollView>
       </ImageBackground>
@@ -148,16 +139,6 @@ export default class SearchBarScreen extends React.Component {
       var song_uri = responseJSON.body.tracks.items[i].uri;
       var album_artwork = responseJSON.body.tracks.items[i].album.images[2].url;
       var duration_ms = responseJSON.body.tracks.items[i].duration_ms;
-
-      // var song_name = ""
-      // if (responseJSON.body.tracks.items[i].name.length >= 25){
-      //   for (var i = 0; i < 25; i++ ){
-      //     song_name += responseJSON.body.tracks.items[i].name[i]
-      //   }
-      //   song_name += "..."
-      // } else {
-      //   song_name = responseJSON.body.tracks.items[i].name;
-      // }
 
       var json = JSON.parse(
         JSON.stringify({
