@@ -298,3 +298,44 @@ const getCurrentSong = (req, res) => {
 };
 
 app.get('/currently-playing', getCurrentSong);
+
+
+const skipCurrentSong = (req, res) => {
+  const channel_id = req.query.channel_id;
+  
+  // Get all songs given channel id
+  pool.query(
+    `SELECT * FROM songs WHERE channel_id = $1 ORDER BY priority ASC`, [channel_id], (error, results) => {
+     if (error) {
+       throw error
+     }
+     let track_id = results.rows[0].track_id;
+     pool.query('DELETE FROM songs WHERE channel_id = $1 AND track_id = $2', [channel_id, track_id]);
+
+
+    json = {
+      uris: [],
+      offset: {"position": 0},
+    }
+    console.log(results.rows);
+    for(i = 0; i < results.rows.length; i++){
+      json.uris.push(results.rows[i].song_uri);
+    }
+
+    getHostAccessToken(channel_id, function(access_token) {
+      var options = {
+        url: `https://api.spotify.com/v1/me/player/next`,
+        headers: { Authorization: "Bearer " + access_token },
+        json: true,
+        body: json
+      };
+      // use the access token to access the Spotify Web API
+      request.post(options, function(error, response, body) {
+        console.log(response.body);
+        res.send(response);
+      });
+    });
+  });
+};
+
+app.post("/skip", skipCurrentSong);
