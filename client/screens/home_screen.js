@@ -32,7 +32,7 @@ class HomeScreen extends React.Component {
         };
     }
 
-    
+
     render() {
         const { navigate } = this.props.navigation;
         return (
@@ -63,8 +63,18 @@ class HomeScreen extends React.Component {
 const ScreenStack = createStackNavigator(
     {
         HOME: HomeScreen,
-        LINKFLOW: LinksScreen,
-        CHANNELFLOW: ChannelScreen,
+        LINKFLOW: { 
+            screen: LinksScreen,
+            navigationOptions: {
+                gesturesEnabled: false,
+            }
+        },
+        CHANNELFLOW: {
+            screen: ChannelScreen,
+            navigationOptions: {
+                gesturesEnabled: false,
+            }
+        },
     },
     {
         initialRouteName: 'HOME',

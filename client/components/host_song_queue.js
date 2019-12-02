@@ -13,7 +13,25 @@ var fixedSongTitle;
 
 const leftContent = <Text>Pull to activate</Text>;
 
+shouldRemove = () => {
+  this.alert("WILL REMOVE SONG")
+}
+
+shouldUpvote = () => {
+  this.alert("WILL UPVOTE SONG")
+}
+
+shouldDownVote = () => {
+  this.alert("WILL DOWNVOTE SONG")
+}
+
 const rightButtons = [
+  <TouchableOpacity
+    onPress={shouldRemove}
+  >
+    <Text style={{ color: '#D55EFF', paddingLeft: 10, paddingTop: 5 }}>Remove</Text>
+    <Ionicons name={`ios-trash`} size={35} color={'#D55EFF'} style={{ paddingLeft: 25 }} />
+  </TouchableOpacity>,
 
   <TouchableOpacity
     onPress={shouldUpvote}
@@ -179,7 +197,6 @@ export default class SongQueue extends React.Component {
 
     // get the currently playing song info
     var curr_song_name = currSong.item.name;
-    console.log(curr_song_name);
 
     // find the first song of the queue list
     for (var i = 0; i < queueList.length; ++i) {

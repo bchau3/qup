@@ -6,11 +6,14 @@ import { Button, Icon } from "react-native-elements";
 import { createBottomTabNavigator } from 'react-navigation'
 import OptionScreen from "./host_option_screen";
 import SearchBarScreen from "./search_bar_screen";
-import SongQueue from "../components/song_queue";
+import SongQueue from "../components/host_song_queue";
 import { getChannelSongsByChannelId, getCurrentSong } from "../api/songs"
 import { playSong } from "../api/queue";
 import { styles } from "../style/host_queue_style"
 import { LinearGradient } from 'expo-linear-gradient';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+import { skipSongUpdateQueue } from "../api/queue"
 
 
 var Slider = require('react-native-slider');
@@ -40,6 +43,7 @@ class HostQueueScreen extends React.Component {
 
   componentDidMount() {
     this.timer = setInterval(() => this._getTimer(), 1000);
+    this._playSong();
   }  
 
   componentWillUnmount() {
@@ -62,6 +66,14 @@ class HostQueueScreen extends React.Component {
     const songJSON = await getCurrentSong(channel_id);
     //console.log(songJSON);
     this.parseCurrentSong(songJSON);
+  }
+
+  _skipCurrentSongUpdateQueue = async () => {
+    const channel_id = await this._getChannelId();
+    await skipSongUpdateQueue(channel_id);
+    //const songs = await getChannelSongsByChannelId(channel_id);
+    //this.parseSongs(songs);
+
   }
 
   // why is the track not the same as the first song in our list
@@ -249,7 +261,7 @@ class HostQueueScreen extends React.Component {
                   color='white'
                   iconStyle={alignContent = 'space-between'}
                   onPress={() => {
-                    //TODO
+                    this._skipCurrentSongUpdateQueue();
                   }} />
               </View>
             </LinearGradient>
@@ -263,14 +275,40 @@ class HostQueueScreen extends React.Component {
 }
 
 // using createBottomTabNavigator, we can create tabs on the bottom of the page to switch screens
-export default createBottomTabNavigator(
+export default createBottomTabNavigator( 
   {
-    OPTION: { screen: OptionScreen },
+    OPTIONS: {
+       screen: OptionScreen, 
+       TabBarIcon: <ion-icon name="search"></ion-icon>
+      },
     SEARCH: { screen: SearchBarScreen },
-    HOME: { screen: HostQueueScreen },
+    QUEUE: { screen: HostQueueScreen },
   },
-  {
-    initialRouteName: 'SEARCH'
+  { 
+    initialRouteName: 'SEARCH',
+    defaultNavigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ focused, horizontal, tintColor }) => {
+        const { routeName } = navigation.state;
+        let IconComponent = Ionicons;
+        let iconName;
+        if (routeName === 'QUEUE') {
+          iconName = `ios-albums`;
+        } else if (routeName === 'SEARCH') {
+          iconName = `ios-search`;
+        } else if (routeName === 'OPTIONS') {
+          iconName = `ios-cog`;
+        }
+
+        // You can return any component that you like here!
+        return <IconComponent name={iconName} size={25} color={tintColor} />;
+      },
+    }),
+    tabBarOptions: {
+      activeTintColor: '#EE86E7',
+      inactiveTintColor: '#545454',
+      activeBackgroundColor: '#292929'
+    },
+    
   }
 )
 

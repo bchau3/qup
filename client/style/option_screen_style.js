@@ -21,24 +21,24 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   buttonText: {
-    fontSize: 25,
+    fontSize: 24,
     color: "white",
     textAlign: "center",
     fontWeight: "600",
     paddingBottom: 40
   },
   titleText: {
-     paddingTop: 100,
+     paddingTop: 70,
     // paddingLeft: 40,
-    paddingBottom: 40,
+    paddingBottom: 70,
     fontSize: 55,
     color: "#36C3FF",
     fontWeight: "700"
   },
   hostTitleText: {
-     paddingTop: 100,
+     paddingTop: 70,
     // paddingLeft: 40,
-    paddingBottom: 40,
+    paddingBottom: 70,
     fontSize: 55,
     color: "#ff3fc9",
     fontWeight: "700"

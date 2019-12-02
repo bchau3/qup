@@ -1,15 +1,15 @@
 import React from 'react';
 import {
-    AppRegistry,    // change background color
-    Image,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-    Button,
-    AsyncStorage
+  AppRegistry,    // change background color
+  Image,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Button,
+  AsyncStorage
 } from 'react-native';
 
 import { createAppContainer, createSwitchNavigator, NavigationActions } from 'react-navigation';
@@ -21,7 +21,7 @@ import { AuthSession, apisAreAvailable } from "expo";
 // Authentication APIs
 import { storeCodeAtId, getAuthToken } from "../api/auth.js";
 
-import {createChannel} from "../api/channel";
+import { createChannel } from "../api/channel";
 import { styles } from '../style/link_screen_style';
 // Get server info from config file
 import { server_url } from "../config.js";
@@ -35,10 +35,10 @@ import { LinearGradient } from 'expo-linear-gradient';
  */
 class LinksScreen extends React.Component {
 
-    static navigationOptions = {
-        title: 'Link Account',
-        header: null,
-    }
+  static navigationOptions = {
+    title: 'Link Account',
+    header: null,
+  }
 }
 
 class LoginScreen extends React.Component {
@@ -61,48 +61,48 @@ class LoginScreen extends React.Component {
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.scrollViewContainer}>
-          {/* <View style={styles.LinkScreenContainer}> */}
-          <LinearGradient
-                        colors={['#101227', '#ff3fc9']}
-                        start={{ x: 0.0, y: 0.0 }} end={{ x: 0.0, y: 6.5 }}
-                        style={styles.LinkScreenContainer}
-          >
-            {/* Import Image */}
-            <View style={{paddingBottom: 25}}>
+        {/* <View style={styles.LinkScreenContainer}> */}
+        <LinearGradient
+          colors={['#101227', '#ff3fc9']}
+          start={{ x: 0.0, y: 0.0 }} end={{ x: 0.0, y: 6.5 }}
+          style={styles.LinkScreenContainer}
+        >
+          {/* Import Image */}
+          <View style={{ paddingBottom: 25 }}>
             <Image
               source={require("../assets/images/spotifyLogo.png")}
               style={styles.imageStyle} />
-            </View>
-            <Text style={styles.textStyleLink}>Link to your</Text>
-            <View styel={{paddingBottom:15}}>
-              <Text style={styles.textStyleLink}>Spotify premium account</Text>
-            </View>
+          </View>
+          <Text style={styles.textStyleLink}>Link to your</Text>
+          <View styel={{ paddingBottom: 15 }}>
+            <Text style={styles.textStyleLink}>Spotify premium account</Text>
+          </View>
 
-            {/* Conditional Operator */}
-            {!this.state.code ? (
-              <TouchableOpacity
-                style={styles.buttonStyle}
-                onPress={
-                  this._handlePressAsync
-                }
-                underlayColor="#fff"
-              >
-                <Text style={styles.buttonText}>Link Account</Text>
-              </TouchableOpacity>
-            ) : (
-                navigate("HOST")
-              )}
+          {/* Conditional Operator */}
+          {!this.state.code ? (
             <TouchableOpacity
-              style={styles.buttonStyle2}
-              onPress={() => {
-                this.props.navigation.goBack(null);
-              }}
+              style={styles.buttonStyle}
+              onPress={
+                this._handlePressAsync
+              }
               underlayColor="#fff"
             >
-              <Text style={styles.buttonText2}>Cancel</Text>
+              <Text style={styles.buttonText}>Link Account</Text>
             </TouchableOpacity>
-          </LinearGradient>
-          {/* </View> */}
+          ) : (
+              navigate("HOST")
+            )}
+          <TouchableOpacity
+            style={styles.buttonStyle2}
+            onPress={() => {
+              this.props.navigation.goBack(null);
+            }}
+            underlayColor="#fff"
+          >
+            <Text style={styles.buttonText2}>Cancel</Text>
+          </TouchableOpacity>
+        </LinearGradient>
+        {/* </View> */}
       </View>
     );
   }
@@ -180,7 +180,7 @@ class LoginScreen extends React.Component {
   };
 
   _storeUserInfo = async (username, email, join_code, channel_id) => {
-    try{
+    try {
       await AsyncStorage.setItem('username', username);
       await AsyncStorage.setItem('email', email);
       await AsyncStorage.setItem('join_code', join_code);
@@ -193,9 +193,9 @@ class LoginScreen extends React.Component {
 
   _alertJoinCode = async () => {
     let join_code = "";
-    try{
+    try {
       join_code = (await AsyncStorage.getItem("join_code")) || "none";
-    } catch(error){
+    } catch (error) {
       // Error retrieving data
       console.log(error.message);
     }
@@ -220,13 +220,18 @@ function shareCodeGenerator() {
 
 
 const HostFlow = createStackNavigator(
-    {
-        LOGIN: LoginScreen,
-        HOST: HostQueueScreen,
+  {
+    LOGIN: LoginScreen,
+    HOST: {
+      screen: HostQueueScreen,
+      navigationOptions: {
+        gesturesEnabled: false,
+      }
     },
-    {
-        headerMode: 'none'
-    }
+  },
+  {
+    headerMode: 'none'
+  }
 );
 
 const AppContainer = createAppContainer(HostFlow);
