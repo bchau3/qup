@@ -336,8 +336,6 @@ const searchSong = (req, res) => {
   const query = req.query.q;
   const channel_id = req.query.channel_id;
 
-  console.log(`query: ${query}`);
-  console.log(`channel_id: ${channel_id}`);
   getHostAccessToken(channel_id, function(access_token) {
     var options = {
       url: `https://api.spotify.com/v1/search?q=${query}&type=track&limit=15`,
@@ -345,11 +343,11 @@ const searchSong = (req, res) => {
       json: true
     };
     // use the access token to access the Spotify Web API
-    request.put(options, function(error, response, body) {
+    request.get(options, function(error, response, body) {
       if (error) {
         console.error(error);
       } else {
-        res.send(response.body);
+        res.send(response);
       }
     });
   });
