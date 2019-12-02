@@ -1,14 +1,19 @@
 import * as React from 'react';
-import { ScrollView, StyleSheet, Text, View, AsyncStorage, Image } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, AsyncStorage, Image, ImageBackground } from 'react-native';
 import { Button, Icon } from "react-native-elements";
 
 // for screen switch 
 import { createBottomTabNavigator } from 'react-navigation'
-import OptionScreen from "./option_screen";
+import OptionScreen from "./host_option_screen";
 import SearchBarScreen from "./search_bar_screen";
 import SongQueue from "../components/song_queue";
-import { getChannelSongsByChannelId} from "../api/songs"
+import { getChannelSongsByChannelId, getCurrentSong } from "../api/songs"
 import { playSong } from "../api/queue";
+import { styles } from "../style/host_queue_style"
+import { LinearGradient } from 'expo-linear-gradient';
+
+
+var Slider = require('react-native-slider');
 
 /* HostQueueScreen:
  *    Screen shows the song queue that are made for the host only
@@ -25,15 +30,15 @@ class HostQueueScreen extends React.Component {
 
     // Set some state
     this.state = {
-    playingSong: []
-  }
+      playingSong: []
+    }
   }
 
   static navigationOptions = {
     tabBarLabel: 'QUEUE',
   }
 
-  
+
 
   _getChannelId = async () => {
     let channel_id = '';
@@ -46,26 +51,37 @@ class HostQueueScreen extends React.Component {
     return channel_id;
   }
 
-  _getChannelSongs = async () => {
+  _getCurrentSong = async () => {
     const channel_id = await this._getChannelId();
-    const songsJSON = await getChannelSongsByChannelId(channel_id);
-    //console.log(songsJSON);
-    this.parseSongs(songsJSON);
+    const songJSON = await getCurrentSong(channel_id);
+    //console.log(songJSON);
+    this.parseCurrentSong(songJSON);
   }
 
-  parseSongs(responseJSON) {
+  // why is the track not the same as the first song in our list
+  // our responseJSON when retrieving the real time song being played on that account
+  // is an object
+  parseCurrentSong(responseJSON) {
     this.setState({ playingSong: [] });
 
-    if(responseJSON.length == 0){
+    if (responseJSON.length == 0) {
       return;
     }
 
-    var track_id = responseJSON[0].id;
-    var artist_name = responseJSON[0].artist_name;
-    var song_name = responseJSON[0].song_name;
-    var song_uri = responseJSON[0].song_uri;
-    var album_artwork = responseJSON[0].album_artwork;
-    var priority = responseJSON[0].priority;
+    var track_id = responseJSON.item.id;
+    var artist_name = responseJSON.item.album.artists[0].name;
+    var song_name = responseJSON.item.name;
+    var song_uri = responseJSON.item.uri;
+    var album_artwork = responseJSON.item.album.images[2].url;
+    var total_duration_minutes = Math.floor(responseJSON.item.duration_ms / (1000 * 60));
+    var tDurMin = total_duration_minutes.toFixed(0);
+    var total_duration_seconds = Math.floor(((responseJSON.item.duration_ms / (1000 * 60)) - tDurMin) * 60);
+    var tDurSec = total_duration_seconds.toFixed(0);
+    var current_duration_minutes = Math.floor(responseJSON.progress_ms / (1000 * 60));
+    var currMin = current_duration_minutes.toFixed(0);
+    var current_duration_seconds = Math.floor(((responseJSON.progress_ms / (1000 * 60)) - currMin) * 60);
+    var currSec = current_duration_seconds.toFixed(0);
+    //var priority = responseJSON[0].priority;  maybe this isn't needed since we're playing it rn?
 
     var json = JSON.parse(JSON.stringify({
       track_id: track_id,
@@ -73,84 +89,169 @@ class HostQueueScreen extends React.Component {
       song_name: song_name,
       song_uri: song_uri,
       album_artwork: album_artwork,
-      priority: priority
+      tDurMin: tDurMin,
+      tDurSec: tDurSec,
+      currMin: currMin,
+      currSec: currSec,
+      //priority: priority
     }));
     this.setState({ playingSong: this.state.playingSong.concat(json) });
-    //console.log(this.state.playingSong);
+    //console.log(json)
   }
 
-  handler(playingSong){
-    this.setState({playingSong: playingSong});
+  handler(playingSong) {
+    this.setState({ playingSong: playingSong });
   }
 
   _playSong = async () => {
     channel_id = await this._getChannelId()
     playSong(channel_id).then(() => {
       // Refresh current playing song
-      this._getChannelSongs();
+      this._getCurrentSong();
     });
   }
+
+  _getTimer = async () => {
+    channel_id = await this._getChannelId()
+    const songJSON = await getCurrentSong(channel_id);
+    //console.log(songJSON);
+
+    var track_id = songJSON.item.id;
+    var artist_name = songJSON.item.album.artists[0].name;
+    var song_name = songJSON.item.name;
+    var song_uri = songJSON.item.uri;
+    var album_artwork = songJSON.item.album.images[2].url;
+    var total_duration_minutes = Math.floor(songJSON.item.duration_ms / (1000 * 60));
+    var tDurMin = total_duration_minutes.toFixed(0);
+    var total_duration_seconds = Math.floor(((songJSON.item.duration_ms / (1000 * 60)) - tDurMin) * 60);
+    var tDurSec = total_duration_seconds.toFixed(0);
+    var current_duration_minutes = Math.floor(songJSON.progress_ms / (1000 * 60));
+    var currMin = current_duration_minutes.toFixed(0);
+    var current_duration_seconds = Math.floor(((songJSON.progress_ms / (1000 * 60)) - currMin) * 60);
+    var currSec = current_duration_seconds.toFixed(0);
+
+    var json = JSON.parse(JSON.stringify({
+      track_id: track_id,
+      artist_name: artist_name,
+      song_name: song_name,
+      song_uri: song_uri,
+      album_artwork: album_artwork,
+      tDurMin: tDurMin,
+      tDurSec: tDurSec,
+      currMin: currMin,
+      currSec: currSec,
+    }));
+
+    let temp = [this.state.playingSong];
+    temp[0] = json;
+    this.setState({ playingSong: temp });
+  }
+
 
 
   render() {
     const { navigate } = this.props.navigation;
-  //{ this._getChannelSongs() }
+    //{ this._getChannelSongs() }
     return (
-      <View style={styles.container}>
+      <ImageBackground source={require("../assets/images/queue_background.png")} style={styles.container}>
+
         <SongQueue action={this.handler} />
 
         {/*play controls*/}
         {this.state.playingSong.map((song) => {
+
+          fixedSongTitle = ""
+          if (song.song_name.length >= 25) {
+            for (var i = 0; i < 25; ++i) {
+              fixedSongTitle += song.song_name[i]
+            }
+            fixedSongTitle += "..."
+          }
+          else
+            fixedSongTitle = song.song_name
+
+          var secondsTotal = ''
+          if (song.tDurSec < 10) {
+            secondsTotal += "0"
+            secondsTotal += song.tDurSec
+          }
+          else
+            secondsTotal = song.tDurSec
+
+          var secondsElapse = ''
+          if (song.currSec < 10) {
+            secondsElapse += "0"
+            secondsElapse += song.currSec
+          }
+          else
+            secondsElapse = song.currSec
+
           return (
-            <View style={styles.playbackControl}>
-              <View style={{ paddingRight: 10, paddingLeft: 10 }}>
+            <LinearGradient
+              colors={['#101227', '#ff3fc9']}
+              start={{ x: 0.0, y: 0.0 }} end={{ x: 0.0, y: 3 }}
+              style={styles.playbackControl}
+            >
+              <View style={{ paddingRight: 5, paddingLeft: 8, paddingTop: 10}}>
                 <Image
-                  style={{ width: 50, height: 50, alignSelf: 'auto' }}
+                  style={{ width: 90, height: 90, borderWidth: 3, borderColor: "white" }} //, borderColor: "white" 
                   source={{ uri: song.album_artwork }}
                 />
               </View>
-              <Text>
+
+              <View style={{ paddingTop: 20, paddingRight: 4, width: 150}}>
                 <Text style={styles.songTitle}>
-                  {song.song_name}
-                  {"\n"}
+                  {fixedSongTitle}
                 </Text>
-                <Text style={{ paddingTop: 30 }}>{song.artist_name}</Text>
-              </Text>
+                <Text style={styles.artistName}>{song.artist_name}</Text>
+                <Text style={{ fontSize: 12, color: "white"}}>
+                {song.currMin}:{secondsElapse} / {song.tDurMin}:{secondsTotal}
+                </Text>
+              </View>
 
               {/* playback buttons */}
-              <Icon
-                name='play'
-                type='font-awesome'
-                size={26}
-                color='#000080'
-                iconStyle={alignContent = 'space-between'}
-                onPress={() => {
-                  this._playSong();
-                }} />
 
-              <Icon
-                name='pause'
-                type='font-awesome'
-                size={26}
-                color='#000080'
-                iconStyle={alignContent = 'space-between'}
-                onPress={() => {
-                  //TODO
-                }} />
+              <View style={{ paddingTop: 26, paddingRight: 10 }}>
+                <Icon
+                  name='play'
+                  type='font-awesome'
+                  size={40}
+                  color="white"
+                  iconStyle={alignContent = 'space-between'}
+                  onPress={() => {
+                    this._getCurrentSong();
+                    this.timer = setInterval(() => this._getTimer(), 1000);
+                  }} />
+              </View>
 
-              <Icon
-                name='step-forward'
-                type='font-awesome'
-                size={26}
-                color='#000080'
-                iconStyle={alignContent = 'space-between'}
-                onPress={() => {
-                  //TODO
-                }} />
-            </View>
+              <View style={{ paddingTop: 26, paddingRight: 13 }}>
+                <Icon
+                  name='pause'
+                  type='font-awesome'
+                  size={40}
+                  color="white"
+                  iconStyle={alignContent = 'space-between'}
+                  onPress={() => {
+                    //TODO
+                  }} />
+              </View>
+
+              <View style={{ paddingTop: 26, paddingRight: 10 }}>
+                <Icon
+                  name='step-forward'
+                  type='font-awesome'
+                  size={40}
+                  color='white'
+                  iconStyle={alignContent = 'space-between'}
+                  onPress={() => {
+                    //TODO
+                  }} />
+              </View>
+            </LinearGradient>
+
           );
         })}
-      </View>
+      </ImageBackground>
     );
   }
 
@@ -168,48 +269,3 @@ export default createBottomTabNavigator(
   }
 )
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 15,
-    backgroundColor: "#89Cff0"
-  },
-  getStartedContainer: {
-    fontSize: 20,
-    backgroundColor: "#89Cff0",
-    alignItems: "flex-start",
-    marginHorizontal: 20,
-    marginVertical: 60
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: "rgba(96,100,109, 1)",
-    lineHeight: 24,
-    textAlign: "center"
-  },
-  todoText: {
-    fontSize: 17,
-    color: "rgba(96,100,109, 1)",
-    lineHeight: 24,
-    textAlign: "left"
-  },
-  playbackControl: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 0,
-    borderWidth: 1,
-    borderColor: "#000000",
-    width: 350,
-    height: 60,
-    alignSelf: 'center',
-    bottom: 0,
-    flexDirection: 'row',
-  },
-  songTitle: {
-    color: "#000000",
-    textAlign: "left",
-    paddingLeft: 20,
-    paddingRight: 20,
-    fontSize: 15,
-    fontWeight: 'bold'
-  }
-});

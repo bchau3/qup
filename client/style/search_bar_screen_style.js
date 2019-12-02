@@ -4,14 +4,16 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: 50,
-        backgroundColor: "#101227",
+        backgroundColor: "#070C3C",
+        //backgroundColor: "#101227",
         //backgroundColor: "#89Cff0"
     },
     resultContainer: {
-        backgroundColor: "#101227",
+        //backgroundColor: "#070C3C",
+        flex: 1,
+        //backgroundColor: "#101227",
     },
     contentContainer: {
-
         backgroundColor: "white"
     },
     searchBarContainer: {
@@ -19,12 +21,13 @@ const styles = StyleSheet.create({
         backgroundColor: "pink",
         marginTop: 40
     },
-    getStartedContainer: {
-        fontSize: 20,
-        backgroundColor: "#c6c6c6",
-        alignItems: "center",
-        marginHorizontal: 0,
-        marginVertical: 90
+    songContainer: {
+        backgroundColor: "#141414",
+        //backgroundColor: "#7C7C7C",
+        borderRadius:5,
+        width: 350,
+        // marginHorizontal: 0,
+        // marginVertical: 90
     },
     getStartedText: {
         fontSize: 17,
@@ -42,17 +45,17 @@ const styles = StyleSheet.create({
     buttonStyle: {
         marginRight: 10,
         marginLeft: 10,
-        marginTop: 10,
+        //marginTop: 10,
         paddingTop: 10,
         paddingBottom: 10,
-        backgroundColor: "#ffb6c1",
-        borderRadius: 0,
-        borderWidth: 1,
-        borderColor: "#000000",
+        //backgroundColor: "#ffb6c1",
+        // borderRadius: 0,
+        // borderWidth: 1,
+        // borderColor: "#000000",
         width: 380,
-        height: 70,
+        height: 80,
         flex: 1,
-        flexDirection: "row"
+        flexDirection: "row",
     },
     buttonText: {
         color: "#000000",
@@ -62,12 +65,12 @@ const styles = StyleSheet.create({
         fontSize: 12,
     },
     songTitle: {
-        color: "#000000",
+        color: "white",
         textAlign: "left",
         paddingLeft: 20,
         paddingRight: 20,
-        fontSize: 15,
-        fontWeight: 'bold'
+        fontSize: 17,
+        fontWeight: 'bold',
     }
 });
 

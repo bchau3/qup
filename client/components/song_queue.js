@@ -2,7 +2,11 @@ import * as React from "react";
 import { Text, Image, View, StyleSheet, ScrollView, AsyncStorage, TouchableOpacity, RefreshControl } from "react-native";
 import { Button, Icon } from "react-native-elements";
 import { getChannelSongsByChannelId } from "../api/songs"
+<<<<<<< HEAD
 import { skipSongUpdateQueue } from "../api/queue"
+=======
+import {styles} from "../style/song_queue_style";
+>>>>>>> master
 
 var fixedSongTitle;
 
@@ -30,8 +34,8 @@ export default class SongQueue extends React.Component {
             {this.state.songs.map((song) => {
               // song title might be too large to fit
               fixedSongTitle = ""
-              if (song.song_name.length >= 20) {
-                for (var i = 0; i < 20; ++i) {
+              if (song.song_name.length >= 25) {
+                for (var i = 0; i < 25; ++i) {
                   fixedSongTitle += song.song_name[i]
                 }
                 fixedSongTitle += "..."
@@ -44,12 +48,12 @@ export default class SongQueue extends React.Component {
               if (song.priority === 1) {
                 return (
                   <View>
-                    <Text style={styles.songTitle}>
-                      Now Playing
+                    <Text style={styles.title}>
+                      Now Playing:
                     </Text>
 
                     <TouchableOpacity
-                      style={styles.buttonStyle}
+                      style={styles.buttonStyleOnPlaying}
                       activeOpacity={1}>
                       <View style={{ paddingRight: 10, paddingLeft: 10 }}>
                         <Image
@@ -67,8 +71,8 @@ export default class SongQueue extends React.Component {
                       </Text>
                     </TouchableOpacity>
 
-                    <Text style={{ paddingTop: 10, paddingBottom: 5, fontWeight: 'bold', textAlign: "left", paddingLeft: 20, paddingRight: 20, fontSize: 15, }}>
-                      Queue
+                    <Text style={{ color: "white", paddingTop: 20, paddingBottom: 3, fontWeight: 'bold', textAlign: "left", paddingLeft: 20, paddingRight: 20, fontSize: 15, }}>
+                      Queue:
                     </Text>
                   </View>
                 );
@@ -88,7 +92,7 @@ export default class SongQueue extends React.Component {
                       />
                     </View>
 
-                    <Text>
+                    <Text style={{width: 235}}>
                       <Text style={styles.songTitle}>
                         {fixedSongTitle}
                         {"\n"}
@@ -97,13 +101,14 @@ export default class SongQueue extends React.Component {
                     </Text>
 
                     {/*test to make a touchable icon that opens options to features*/}
+                    <View style={{paddingTop: 10}}>
                     <Icon
                       name='bars'
                       type='font-awesome'
-                      size={26}
-                      color='#000080'
+                      size={30}
+                      color="black"
                       iconStyle={alignContext = 'center'} />
-
+                    </View>
                     {/* <Text style={styles.buttonText}>{song.key}</Text> */}
                     {/* <Text style={styles.buttonText}>{song.song_uri}</Text> */}
                     {/* {<Text style={styles.buttonText}>{song.album_artwork}</Text>} */}
@@ -173,10 +178,11 @@ export default class SongQueue extends React.Component {
     if(this.state.songs.length != 0){
       this.props.action([this.state.songs[0]])
     }
-    console.log(this.state.songs);
+    //console.log(this.state.songs);
   };
 }
 
+<<<<<<< HEAD
 
 
 const styles = StyleSheet.create({
@@ -251,3 +257,5 @@ const styles = StyleSheet.create({
     bottom: 0,
   }
 });
+=======
+>>>>>>> master
