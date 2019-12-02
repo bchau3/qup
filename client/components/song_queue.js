@@ -51,12 +51,16 @@ const rightButtons = [
 
 export default class SongQueue extends React.Component {
 
-  //this.state.dataSource.cloneWithRows(responseJson.map(item => item.name))
-  state = {
-    songs: [],
-    refreshing: false,
-    dummmy: false
-  };
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      songs: [],
+      refreshing: false
+    };
+    
+    this._onRefresh();
+  }
 
 
   swipeable = null;
