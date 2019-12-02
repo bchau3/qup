@@ -39,11 +39,23 @@ export default class App extends React.Component {
         <SplashScreen />
       );
     } else {
-      return (
-          < HomeScreen />
-      );
+      return <HomeScreen startAsync={loadBackgroundAsyn} />;
     }
-
-
   }
+}
+
+async function loadBackgroundAsyn() {
+  await Promise.all([
+    Asset.loadAsync([
+      require('./assets/images/general_background.png'),
+      require('./assets/images/home_background.png'),
+      require('./assets/images/option_background.png'),
+      require('./assets/images/queue_background.png'),
+      require('./assets/images/search_background.png'),
+      require('./assets/images/splash_screen_background.png'),
+      require('./assets/images/spotifyLogo.png'),
+      require('./assets/images/qup_logo.png'),
+      require('./assets/images/qup_text_logo.png')
+    ])
+  ]);
 }

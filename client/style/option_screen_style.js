@@ -3,8 +3,10 @@ import { Platform, StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //paddingTop: 70,
-    backgroundColor: "#89CFF0"
+    //paddingTop: 70
+    // backgroundColor: "#89CFF0"
+    backgroundColor: "#070C3C"
+
   },
   getStartedContainer: {
     fontSize: 20,

@@ -56,6 +56,8 @@ export default class SongQueue extends React.Component {
       songs: [],
       refreshing: false,
     };
+
+    this._onRefresh();
     this.nowPlaying();
   }
 
