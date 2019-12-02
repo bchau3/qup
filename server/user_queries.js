@@ -124,6 +124,9 @@ function getHostRefreshToken(channel_id, callback){
       if (error) {
         throw error;
       }
+      if (results.rows.length == 0) {
+        return;
+      }
       let refresh_token = results.rows[0].refresh_token
       //console.log(`Got refresh_token ${refresh_token} from Channel_id ${channel_id}`);
       callback(refresh_token);

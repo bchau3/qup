@@ -258,6 +258,27 @@ const playSong = (req, res) => {
 
 app.put("/play", playSong);
 
+
+const pauseSong = (req, res) => {
+  const channel_id = req.query.channel_id;
+    getHostAccessToken(channel_id, function(access_token) {
+      var options = {
+        url: `https://api.spotify.com/v1/me/player/pause`,
+        headers: { Authorization: "Bearer " + access_token },
+        json: true,
+        body: json
+      };
+      // use the access token to access the Spotify Web API
+      request.put(options, function(error, response, body) {
+        console.log(response.body);
+        res.send(response);
+      });
+    });
+}
+
+app.put("/pause", pauseSong);
+
+
 const searchSong = (req, res) => {
   const query = req.query.q;
   const channel_id = req.query.channel_id;
@@ -271,7 +292,7 @@ const searchSong = (req, res) => {
       json: true
     };
     // use the access token to access the Spotify Web API
-    request.get(options, function(error, response, body) {
+    request.put(options, function(error, response, body) {
       console.log(response);
       res.send(response);
     });
@@ -308,13 +329,12 @@ const skipCurrentSong = (req, res) => {
      if (error) {
        throw error
      }
-     // No songs in channel
-     if(results.rows.length == 0){
-       return;
-     }
-
-    let track_id = results.rows[0].track_id;
-    pool.query('DELETE FROM songs WHERE channel_id = $1 AND track_id = $2', [channel_id, track_id]);
+     if (results.rows.length == 0) {
+      return;
+    }
+     let track_id = results.rows[0].track_id;
+     pool.query('DELETE FROM songs WHERE channel_id = $1 AND track_id = $2', [channel_id, track_id]);
+     pool.query('UPDATE songs set priority = priority - 1 where channel_id = $1', [channel_id]);
 
     getHostAccessToken(channel_id, function(access_token) {
       var options = {

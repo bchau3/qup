@@ -8,7 +8,7 @@ import OptionScreen from "./host_option_screen";
 import SearchBarScreen from "./search_bar_screen";
 import SongQueue from "../components/song_queue";
 import { getChannelSongsByChannelId, getCurrentSong } from "../api/songs"
-import { playSong } from "../api/queue";
+import { playSong, pauseSong } from "../api/queue";
 import { styles } from "../style/host_queue_style"
 import { LinearGradient } from 'expo-linear-gradient';
 import { skipSongUpdateQueue } from "../api/queue"
@@ -120,10 +120,19 @@ class HostQueueScreen extends React.Component {
     });
   }
 
+  _pauseSong = async () => {
+    channel_id = await this._getChannelId();
+    pauseSong(channel_id);
+    
+  }
+
   _getTimer = async () => {
     channel_id = await this._getChannelId()
     const songJSON = await getCurrentSong(channel_id);
     //console.log(songJSON);
+    if (responseJSON.length == 0) {
+      return;
+    }
 
     var track_id = songJSON.item.id;
     var artist_name = songJSON.item.album.artists[0].name;
@@ -242,7 +251,7 @@ class HostQueueScreen extends React.Component {
                   color="white"
                   iconStyle={alignContent = 'space-between'}
                   onPress={() => {
-                    //TODO
+                    this._pauseSong();
                   }} />
               </View>
 
