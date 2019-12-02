@@ -27,22 +27,22 @@ const rightButtons = [
     <TouchableOpacity
       onPress={shouldRemove}
     >
-      <Text style={{ color: '#FFF', paddingLeft: 10 }}>Remove</Text>
-      <Ionicons name={`ios-trash`} size={35} color={'white'} textAlign={'center'} style={{ paddingLeft: 20 }} />
+      <Text style={{ color: '#D55EFF', paddingLeft: 10, paddingTop: 5 }}>Remove</Text>
+      <Ionicons name={`ios-trash`} size={35} color={'#D55EFF'} style={{ paddingLeft: 25 }} />
     </TouchableOpacity>,
   
   <TouchableOpacity
       onPress={shouldUpvote}
     >
-      <Text style={{ color: '#FFF' }}>Upvote</Text>
-      <Ionicons name={`ios-thumbs-up`} size={35} color={'#36C3FF'} textAlign={'center'} />
+      <Text style={{ color: '#36C3FF', paddingLeft: 10, paddingTop: 5  }}>Upvote</Text>
+      <Ionicons name={`ios-thumbs-up`} size={35} color={'#36C3FF'} style={{ paddingLeft: 20 }} />
     </TouchableOpacity>,
   
   <TouchableOpacity
       onPress={shouldDownVote}
     >
-      <Text style={{ color: '#FFF' }}>Downvote</Text>
-      <Ionicons name={`ios-thumbs-down`} size={35} color={'#ff3fc9'} textAlign={'center'} />
+      <Text style={{ color: '#ff3fc9',paddingLeft: 5, paddingTop: 5  }}>Downvote</Text>
+      <Ionicons name={`ios-thumbs-down`} size={35} color={'#ff3fc9'} style={{ paddingLeft: 22 }} />
     </TouchableOpacity>
 ];
 
