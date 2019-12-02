@@ -6,7 +6,7 @@ import { Button, Icon } from "react-native-elements";
 import { createBottomTabNavigator } from 'react-navigation'
 import OptionScreen from "./host_option_screen";
 import SearchBarScreen from "./search_bar_screen";
-import SongQueue from "../components/song_queue";
+import SongQueue from "../components/host_song_queue";
 import { getChannelSongsByChannelId, getCurrentSong } from "../api/songs"
 import { playSong } from "../api/queue";
 import { styles } from "../style/host_queue_style"

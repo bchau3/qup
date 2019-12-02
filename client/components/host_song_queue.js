@@ -24,7 +24,13 @@ shouldDownVote = () => {
 }
 
 const rightButtons = [
-    
+    <TouchableOpacity
+      onPress={shouldRemove}
+    >
+      <Text style={{ color: '#D55EFF', paddingLeft: 10, paddingTop: 5 }}>Remove</Text>
+      <Ionicons name={`ios-trash`} size={35} color={'#D55EFF'} style={{ paddingLeft: 25 }} />
+    </TouchableOpacity>,
+  
   <TouchableOpacity
       onPress={shouldUpvote}
     >
