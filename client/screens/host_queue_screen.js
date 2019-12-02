@@ -11,6 +11,8 @@ import { getChannelSongsByChannelId, getCurrentSong } from "../api/songs"
 import { playSong } from "../api/queue";
 import { styles } from "../style/host_queue_style"
 import { LinearGradient } from 'expo-linear-gradient';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 
 var Slider = require('react-native-slider');
@@ -258,14 +260,41 @@ class HostQueueScreen extends React.Component {
 }
 
 // using createBottomTabNavigator, we can create tabs on the bottom of the page to switch screens
-export default createBottomTabNavigator(
+export default createBottomTabNavigator( 
   {
-    OPTION: { screen: OptionScreen },
+    OPTIONS: {
+       screen: OptionScreen, 
+       TabBarIcon: <ion-icon name="search"></ion-icon>
+      },
     SEARCH: { screen: SearchBarScreen },
-    HOME: { screen: HostQueueScreen },
+    QUEUE: { screen: HostQueueScreen },
   },
-  {
-    initialRouteName: 'SEARCH'
+  { 
+    initialRouteName: 'SEARCH',
+    defaultNavigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ focused, horizontal, tintColor }) => {
+        const { routeName } = navigation.state;
+        console.log(routeName)
+        let IconComponent = Ionicons;
+        let iconName;
+        if (routeName === 'QUEUE') {
+          iconName = `ios-albums`;
+        } else if (routeName === 'SEARCH') {
+          iconName = `ios-search`;
+        } else if (routeName === 'OPTIONS') {
+          iconName = `ios-cog`;
+        }
+
+        // You can return any component that you like here!
+        return <IconComponent name={iconName} size={25} color={tintColor} />;
+      },
+    }),
+    tabBarOptions: {
+      activeTintColor: '#EE86E7',
+      inactiveTintColor: '#545454',
+      activeBackgroundColor: '#292929'
+    },
+    
   }
 )
 
