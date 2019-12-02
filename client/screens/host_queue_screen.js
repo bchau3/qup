@@ -38,7 +38,13 @@ class HostQueueScreen extends React.Component {
     tabBarLabel: 'QUEUE',
   }
 
+  componentDidMount() {
+    this.timer = setInterval(() => this._getTimer(), 1000);
+  }  
 
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
 
   _getChannelId = async () => {
     let channel_id = '';
@@ -154,15 +160,15 @@ class HostQueueScreen extends React.Component {
     //{ this._getChannelSongs() }
     return (
       <ImageBackground source={require("../assets/images/queue_background.png")} style={styles.container}>
-
+        
         <SongQueue action={this.handler} />
 
         {/*play controls*/}
         {this.state.playingSong.map((song) => {
-
-          fixedSongTitle = ""
-          if (song.song_name.length >= 25) {
-            for (var i = 0; i < 25; ++i) {
+          // song title might be too large to fit
+          var fixedSongTitle = ""
+          if (song.song_name.length >= 13) {
+            for (var i = 0; i < 13; ++i) {
               fixedSongTitle += song.song_name[i]
             }
             fixedSongTitle += "..."
@@ -219,8 +225,7 @@ class HostQueueScreen extends React.Component {
                   color="white"
                   iconStyle={alignContent = 'space-between'}
                   onPress={() => {
-                    this._getCurrentSong();
-                    this.timer = setInterval(() => this._getTimer(), 1000);
+                    this._playSong();
                   }} />
               </View>
 
