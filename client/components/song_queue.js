@@ -2,11 +2,8 @@ import * as React from "react";
 import { Text, Image, View, StyleSheet, ScrollView, AsyncStorage, TouchableOpacity, RefreshControl } from "react-native";
 import { Button, Icon } from "react-native-elements";
 import { getChannelSongsByChannelId } from "../api/songs"
-<<<<<<< HEAD
 import { skipSongUpdateQueue } from "../api/queue"
-=======
 import {styles} from "../style/song_queue_style";
->>>>>>> master
 
 var fixedSongTitle;
 
@@ -182,80 +179,3 @@ export default class SongQueue extends React.Component {
   };
 }
 
-<<<<<<< HEAD
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 15,
-    backgroundColor: "#89Cff0"
-  },
-  getStartedContainer: {
-    fontSize: 20,
-    backgroundColor: "#89Cff0",
-    alignItems: "center",
-    marginHorizontal: 0,
-    marginVertical: 90
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: "rgba(96,100,109, 1)",
-    lineHeight: 24,
-    textAlign: "center"
-  },
-  todoText: {
-    fontSize: 14,
-    color: "#000000",
-    lineHeight: 24,
-    textAlign: "left",
-    paddingLeft: 30
-  },
-  buttonStyle: {
-    marginRight: 10,
-    marginLeft: 10,
-    marginTop: 10,
-    paddingTop: 10,
-    paddingBottom: 10,
-    backgroundColor: "#ffb6c1",
-    borderRadius: 0,
-    borderWidth: 1,
-    borderColor: "#000000",
-    width: 380,
-    height: 70,
-    flexDirection: "row"
-  },
-  buttonText: {
-    color: "#000000",
-    textAlign: "center",
-    paddingLeft: 10,
-    paddingRight: 10,
-    fontSize: 12,
-  },
-  songTitle: {
-    color: "#000000",
-    textAlign: "left",
-    paddingLeft: 20,
-    paddingRight: 20,
-    fontSize: 15,
-    fontWeight: 'bold'
-  },
-  playbackControl: {
-    marginRight: 0,
-    marginLeft: 0,
-    marginTop: 0,
-    paddingTop: 0,
-    paddingBottom: 0,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 0,
-    borderWidth: 1,
-    borderColor: "#000000",
-    width: 500,
-    height: 100,
-    //justifyContent: "space-between",
-    alignSelf: 'flex-end',
-    bottom: 0,
-  }
-});
-=======
->>>>>>> master

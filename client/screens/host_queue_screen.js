@@ -11,6 +11,7 @@ import { getChannelSongsByChannelId, getCurrentSong } from "../api/songs"
 import { playSong } from "../api/queue";
 import { styles } from "../style/host_queue_style"
 import { LinearGradient } from 'expo-linear-gradient';
+import { skipSongUpdateQueue } from "../api/queue"
 
 
 var Slider = require('react-native-slider');
@@ -56,6 +57,14 @@ class HostQueueScreen extends React.Component {
     const songJSON = await getCurrentSong(channel_id);
     //console.log(songJSON);
     this.parseCurrentSong(songJSON);
+  }
+
+  _skipCurrentSongUpdateQueue = async () => {
+    const channel_id = await this._getChannelId;
+    const skip = await skipSongUpdateQueue(channel_id);
+    const songs = await getChannelSongsByChannelId(channel_id);
+    this.parseSongs(songs);
+
   }
 
   // why is the track not the same as the first song in our list
@@ -221,6 +230,7 @@ class HostQueueScreen extends React.Component {
                   onPress={() => {
                     this._getCurrentSong();
                     this.timer = setInterval(() => this._getTimer(), 1000);
+                    this._playSong();
                   }} />
               </View>
 
@@ -244,7 +254,7 @@ class HostQueueScreen extends React.Component {
                   color='white'
                   iconStyle={alignContent = 'space-between'}
                   onPress={() => {
-                    //TODO
+                    this._skipCurrentSongUpdateQueue();
                   }} />
               </View>
             </LinearGradient>
