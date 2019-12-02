@@ -23,6 +23,12 @@ export async function playSong(channel_id) {
     )
 }
 
+export async function resumeSong(channel_id, progress_ms) {
+  const response = await fetch(`${server_url}/resume?progress_ms=${progress_ms}&channel_id=${channel_id}`, {
+    method: 'PUT'
+  });
+}
+
 export async function pauseSong(channel_id) {
     const response = await fetch(
         `${server_url}/pause?channel_id=${channel_id}`,

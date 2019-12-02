@@ -8,7 +8,7 @@ import OptionScreen from "./host_option_screen";
 import SearchBarScreen from "./search_bar_screen";
 import SongQueue from "../components/host_song_queue";
 import { getChannelSongsByChannelId, getCurrentSong } from "../api/songs"
-import { playSong, pauseSong } from "../api/queue";
+import { playSong, pauseSong, resumeSong } from "../api/queue";
 import { styles } from "../style/host_queue_style"
 import { LinearGradient } from 'expo-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -33,8 +33,9 @@ class HostQueueScreen extends React.Component {
 
     // Set some state
     this.state = {
-      playingSong: []
-    }
+      playingSong: [],
+      isPaused: false
+    };
   }
 
   static navigationOptions = {
@@ -116,23 +117,32 @@ class HostQueueScreen extends React.Component {
 
   _playSong = async () => {
     channel_id = await this._getChannelId()
-    playSong(channel_id).then(() => {
-      // Refresh current playing song
-      this._getCurrentSong();
-    });
+    if(this.state.isPaused){
+      console.log(this.state.playingSong[0].curr_ms);
+      resumeSong(channel_id, this.state.playingSong[0].curr_ms).then(() => {
+        this._getCurrentSong();
+      })
+      this.setState({isPaused: false});
+    }
+    else{
+      playSong(channel_id).then(() => {
+        // Refresh current playing song
+        this._getCurrentSong();
+      });
+    }
   }
 
   _pauseSong = async () => {
     channel_id = await this._getChannelId();
     pauseSong(channel_id);
-    
+    this.setState({isPaused: true});
   }
 
   _getTimer = async () => {
     channel_id = await this._getChannelId()
     const songJSON = await getCurrentSong(channel_id);
     //console.log(songJSON);
-    if (responseJSON.length == 0) {
+    if (songJSON.length == 0) {
       return;
     }
 
@@ -160,6 +170,7 @@ class HostQueueScreen extends React.Component {
       tDurSec: tDurSec,
       currMin: currMin,
       currSec: currSec,
+      curr_ms: songJSON.progress_ms,
     }));
 
     let temp = [this.state.playingSong];

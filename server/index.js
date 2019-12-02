@@ -215,6 +215,9 @@ function getHostAccessToken(channel_id, callback) {
         var access_token = body.access_token;
         callback(access_token);
       }
+      else{
+        console.error(error);
+      }
     });
   });
 }
@@ -259,6 +262,53 @@ const playSong = (req, res) => {
 app.put("/play", playSong);
 
 
+//resume SONG
+const resumeSong = (req, res) => {
+  const channel_id = req.query.channel_id;
+  const progress_ms = req.query.progress_ms;
+
+  // Get all songs given channel id
+  pool.query(
+    `SELECT song_uri FROM songs WHERE channel_id = $1 ORDER BY priority ASC`, [channel_id], (error, results) => {
+      if(error){
+        throw error;
+      }
+      // Put results into json array
+      json = {
+        uris: [],
+        offset: {"position": 0},
+        position_ms: parseInt(progress_ms),
+      }
+      console.log(results.rows);
+      for(i = 0; i < results.rows.length; i++){
+        json.uris.push(results.rows[i].song_uri);
+      }
+
+      console.log(json);
+
+    getHostAccessToken(channel_id, function(access_token) {
+      var options = {
+        url: `https://api.spotify.com/v1/me/player/play`,
+        headers: { Authorization: "Bearer " + access_token },
+        json: true,
+        body: json
+      };
+      // use the access token to access the Spotify Web API
+      request.put(options, function(error, response, body) {
+        if (error) {
+          console.error(error);
+        } else {
+          res.send(response.body);
+       }
+      });
+    });
+  });
+}
+
+app.put("/resume", resumeSong);
+
+
+
 const pauseSong = (req, res) => {
   const channel_id = req.query.channel_id;
     getHostAccessToken(channel_id, function(access_token) {
@@ -270,8 +320,11 @@ const pauseSong = (req, res) => {
       };
       // use the access token to access the Spotify Web API
       request.put(options, function(error, response, body) {
-        console.log(response.body);
-        res.send(response);
+        if (error) {
+          console.error(error);
+        } else {
+          res.send(response.body);
+        }
       });
     });
 }
@@ -293,8 +346,11 @@ const searchSong = (req, res) => {
     };
     // use the access token to access the Spotify Web API
     request.put(options, function(error, response, body) {
-      console.log(response);
-      res.send(response);
+      if (error) {
+        console.error(error);
+      } else {
+        res.send(response.body);
+      }
     });
   });
 };
@@ -312,7 +368,12 @@ const getCurrentSong = (req, res) => {
     };
     // use the access token to access the Spotify Web API
     request.get(options, function(error, response, body) {
-      res.send(response.body);
+      if(error){
+        console.error(error);
+      }
+      else{
+        res.send(response.body);
+      }
     });
   });
 };
