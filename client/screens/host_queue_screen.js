@@ -125,7 +125,6 @@ class HostQueueScreen extends React.Component {
   _playSong = async () => {
     channel_id = await this._getChannelId()
     if(this.state.isPaused){
-      console.log(this.state.playingSong[0].curr_ms);
       resumeSong(channel_id, this.state.playingSong[0].curr_ms).then(() => {
         this._getCurrentSong();
       })

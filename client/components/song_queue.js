@@ -179,7 +179,6 @@ export default class SongQueue extends React.Component {
 
     // get the currently playing song info
     var curr_song_name = currSong.item.name;
-    console.log(curr_song_name);
 
     // find the first song of the queue list
     for (var i = 0; i < queueList.length; ++i) {

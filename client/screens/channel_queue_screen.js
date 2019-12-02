@@ -266,7 +266,6 @@ export default createBottomTabNavigator(
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
-        console.log(routeName)
         let IconComponent = Ionicons;
         let iconName;
         if (routeName === 'QUEUE') {
