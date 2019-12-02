@@ -6,6 +6,8 @@ import React, { useState } from 'react';
 import SplashScreen from './screens/splash_screen';
 import HomeScreen from './screens/home_screen';
 
+console.disableYellowBox = true;
+
 export default class App extends React.Component {
 
   constructor(props) {
