@@ -78,6 +78,7 @@ class JoinChannelScreen extends React.Component {
     // channel_id returned
     // Set Asyncstorage to channel_id
     this._storeChannelId(channel_id);
+    this._storeJoinId(code);
     // Go to queue page for channel
     Alert.alert("Confirmation Code", "Successful!", [{ text: "OK" }], {
       cancelable: false
@@ -88,6 +89,15 @@ class JoinChannelScreen extends React.Component {
   _storeChannelId = async (channel_id) => {
     try {
       await AsyncStorage.setItem("channel_id", channel_id.toString());
+    } catch (error) {
+      // Error storing data
+      console.log(error.message);
+
+    }
+  };
+  _storeJoinId = async (code) => {
+    try {
+      await AsyncStorage.setItem("join_code", code.toString());
     } catch (error) {
       // Error storing data
       console.log(error.message);
