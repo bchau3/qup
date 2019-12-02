@@ -60,10 +60,10 @@ class HostQueueScreen extends React.Component {
   }
 
   _skipCurrentSongUpdateQueue = async () => {
-    const channel_id = await this._getChannelId;
-    const skip = await skipSongUpdateQueue(channel_id);
-    const songs = await getChannelSongsByChannelId(channel_id);
-    this.parseSongs(songs);
+    const channel_id = await this._getChannelId();
+    await skipSongUpdateQueue(channel_id);
+    //const songs = await getChannelSongsByChannelId(channel_id);
+    //this.parseSongs(songs);
 
   }
 

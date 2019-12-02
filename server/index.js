@@ -291,7 +291,6 @@ const getCurrentSong = (req, res) => {
     };
     // use the access token to access the Spotify Web API
     request.get(options, function(error, response, body) {
-      console.log(response.body);
       res.send(response.body);
     });
   });
@@ -302,25 +301,20 @@ app.get('/currently-playing', getCurrentSong);
 
 const skipCurrentSong = (req, res) => {
   const channel_id = req.query.channel_id;
-  
+
   // Get all songs given channel id
   pool.query(
     `SELECT * FROM songs WHERE channel_id = $1 ORDER BY priority ASC`, [channel_id], (error, results) => {
      if (error) {
        throw error
      }
-     let track_id = results.rows[0].track_id;
-     pool.query('DELETE FROM songs WHERE channel_id = $1 AND track_id = $2', [channel_id, track_id]);
+     // No songs in channel
+     if(results.rows.length == 0){
+       return;
+     }
 
-
-    json = {
-      uris: [],
-      offset: {"position": 0},
-    }
-    console.log(results.rows);
-    for(i = 0; i < results.rows.length; i++){
-      json.uris.push(results.rows[i].song_uri);
-    }
+    let track_id = results.rows[0].track_id;
+    pool.query('DELETE FROM songs WHERE channel_id = $1 AND track_id = $2', [channel_id, track_id]);
 
     getHostAccessToken(channel_id, function(access_token) {
       var options = {
