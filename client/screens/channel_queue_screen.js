@@ -100,7 +100,6 @@ class ChannelQueueScreen extends React.Component {
       priority: priority
     }));
     this.setState({ playingSong: this.state.playingSong.concat(json) });
-    //console.log(this.state.playingSong);
   }
 
   handler(playingSong) {

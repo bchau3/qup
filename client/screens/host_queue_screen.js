@@ -36,6 +36,7 @@ class HostQueueScreen extends React.Component {
       playingSong: [],
       isPaused: false
     };
+    this._playSong();
   }
 
   static navigationOptions = {
@@ -44,7 +45,6 @@ class HostQueueScreen extends React.Component {
 
   componentDidMount() {
     this.timer = setInterval(() => this._getTimer(), 1000);
-    this._playSong();
   }  
 
   componentWillUnmount() {
