@@ -19,7 +19,7 @@ const getChannelSongsByChannelId = (request, response) => {
     const channel_id = request.query.channel_id;
     pool.query('SELECT * FROM songs WHERE channel_id = $1 ORDER BY priority ASC', [channel_id], (error, results) => {
         if (error) {
-            throw error
+            throw error;
         }
         response.status(200).json(results.rows)
 
