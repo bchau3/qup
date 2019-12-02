@@ -35,14 +35,14 @@ const rightButtons = [
       onPress={shouldUpvote}
     >
       <Text style={{ color: '#FFF' }}>Upvote</Text>
-      <Ionicons name={`ios-thumbs-up`} size={35} color={'white'} textAlign={'center'} />
+      <Ionicons name={`ios-thumbs-up`} size={35} color={'#36C3FF'} textAlign={'center'} />
     </TouchableOpacity>,
   
   <TouchableOpacity
       onPress={shouldDownVote}
     >
       <Text style={{ color: '#FFF' }}>Downvote</Text>
-      <Ionicons name={`ios-thumbs-down`} size={35} color={'white'} textAlign={'center'} />
+      <Ionicons name={`ios-thumbs-down`} size={35} color={'#ff3fc9'} textAlign={'center'} />
     </TouchableOpacity>
 ];
 

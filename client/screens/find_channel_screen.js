@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createRef } from "react";
 import {
   AppRegistry, // change background color
   Image,
@@ -48,6 +48,8 @@ class JoinChannelScreen extends React.Component {
     title: "Join Channel"
   });
 
+  inputRef = createRef();
+
   _animationsColor = [...new Array(codeLength)].map(
     () => new Animated.Value(0)
   );
@@ -60,6 +62,11 @@ class JoinChannelScreen extends React.Component {
     channel_id = await joinChannel(code);
     // If channel_id not returned
     if (channel_id == null) {
+      const { current } = this.inputRef;
+      if (current) {
+        current.clear();
+        current.focus();
+      }
       return Alert.alert(
         "Channel Code",
         "No channel exists with code",
@@ -106,7 +113,7 @@ class JoinChannelScreen extends React.Component {
       backgroundColor: hasValue
         ? this._animationsScale[index].interpolate({
           inputRange: [0, 1],
-          outputRange: [NOT_EMPTY_CELL_BG_COLOR, ACTIVE_CELL_BG_COLOR]
+          outputRange: [DEFAULT_CELL_BG_COLOR, ACTIVE_CELL_BG_COLOR]
         })
         : this._animationsColor[index].interpolate({
           inputRange: [0, 1],
@@ -120,7 +127,7 @@ class JoinChannelScreen extends React.Component {
         {
           scale: this._animationsScale[index].interpolate({
             inputRange: [0, 1],
-            outputRange: [0.2, 1]
+            outputRange: [1, .8]
           })
         }
       ]
@@ -142,52 +149,53 @@ class JoinChannelScreen extends React.Component {
   render() {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={styles.initContainer}>
-        {/* <View style={styles.inputWrapper}> */}
-        <LinearGradient
-                        colors={['#101227', '#36C3FF']}
-                        start={{ x: 0.0, y: 0.0 }} end={{ x: 0.0, y: 6.5 }}
-                        style={styles.container}
-        >
+        <View style={styles.initContainer}>
+          {/* <View style={styles.inputWrapper}> */}
+          <LinearGradient
+            colors={['#101227', '#36C3FF']}
+            start={{ x: 0.0, y: 0.0 }} end={{ x: 0.0, y: 6.5 }}
+            style={styles.container}
+          >
 
-          <Text style={styles.inputLabel}>Verification</Text>
+            <Text style={styles.inputLabel}>Verification</Text>
 
-          <View style={{ paddingBottom: 25 }}>
-            <Image
-              style={styles.icon}
-              source={require("../assets/images/qup_logo.png")}
-            />
-          </View>
+            <View style={{ paddingBottom: 25 }}>
+              <Image
+                style={styles.icon}
+                source={require("../assets/images/qup_logo.png")}
+              />
+            </View>
 
-          <Text style={styles.inputSubLabel}>
-            Please enter the channel code
+            <Text style={styles.inputSubLabel}>
+              Please enter the channel code
           </Text>
 
-          <View style={{paddingBottom: 50}}>
-            <CodeFiled
-              maskSymbol=" "
-              variant="clear"
-              codeLength={codeLength}
-              keyboardType="numeric"
-              cellProps={this.cellProps}
-              containerProps={this.containerProps}
-              onFulfill={this.onFinishCheckingCode}
-              CellComponent={Animated.Text}
-            />
-          </View>
+            <View style={{ paddingBottom: 50 }}>
+              <CodeFiled
+                ref={this.inputRef}
+                autoFocus={true}
+                variant="clear"
+                codeLength={codeLength}
+                keyboardType="numeric"
+                cellProps={this.cellProps}
+                containerProps={this.containerProps}
+                onFulfill={this.onFinishCheckingCode}
+                CellComponent={Animated.Text}
+              />
+            </View>
 
-          <TouchableOpacity
-            style={styles.nextButton}
-            onPress={() => {
-              this.props.navigation.goBack(null);
-            }}
-            underlayColor="#fff"
-          >
-            <Text style={styles.nextButtonText}>Cancel</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.nextButton}
+              onPress={() => {
+                this.props.navigation.goBack(null);
+              }}
+              underlayColor="#fff"
+            >
+              <Text style={styles.nextButtonText}>Cancel</Text>
+            </TouchableOpacity>
           </LinearGradient>
-        {/* </View> */}
-      </View>
+          {/* </View> */}
+        </View>
       </TouchableWithoutFeedback>
     );
   }
