@@ -204,7 +204,12 @@ class JoinChannelScreen extends React.Component {
 const ChannelmateFlow = createStackNavigator(
   {
     JOINCHANNEL: JoinChannelScreen,
-    QUEUE: ChannelQueueScreen
+    QUEUE: {
+      screen: ChannelQueueScreen,
+      navigationOptions: {
+        gesturesEnabled: false,
+      }
+    }
   },
   {
     headerMode: "none"
