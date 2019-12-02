@@ -1,20 +1,36 @@
 import * as React from "react";
 import { Text, Image, View, StyleSheet, ScrollView, AsyncStorage, TouchableOpacity, RefreshControl, Alert, TouchableHighlight } from "react-native";
 import { Button, Icon } from "react-native-elements";
-import { skipSongUpdateQueue } from "../api/queue"
 import { getChannelSongsByChannelId } from "../api/songs";
-
 //import Swipeout from "react-native-swipeout";
 import Swipeable from 'react-native-swipeable';
 import { Ionicons } from "@expo/vector-icons";
-import { styles } from '../style/song_queue_style';
+import { styles } from "../style/song_queue_style";
 
 var fixedSongTitle;
 
 const leftContent = <Text>Pull to activate</Text>;
 
+shouldRemove = () => {
+  this.alert("WILL REMOVE SONG")
+}
+
+shouldUpvote = () => {
+  this.alert("WILL UPVOTE SONG")
+}
+
+shouldDownVote = () => {
+  this.alert("WILL DOWNVOTE SONG")
+}
+
 const rightButtons = [
-    
+    <TouchableOpacity
+      onPress={shouldRemove}
+    >
+      <Text style={{ color: '#D55EFF', paddingLeft: 10, paddingTop: 5 }}>Remove</Text>
+      <Ionicons name={`ios-trash`} size={35} color={'#D55EFF'} style={{ paddingLeft: 25 }} />
+    </TouchableOpacity>,
+  
   <TouchableOpacity
       onPress={shouldUpvote}
     >
@@ -33,20 +49,7 @@ const rightButtons = [
 
 export default class SongQueue extends React.Component {
 
-shouldRemove = () => {
-  this.alert("WILL REMOVE SONG")
-}
-
-shouldUpvote = () => {
-  this.alert("WILL UPVOTE SONG")
-}
-
-shouldDownVote = () => {
-  this.alert("WILL DOWNVOTE SONG")
-}
-
-
-constructor(props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -57,12 +60,12 @@ constructor(props) {
     this._onRefresh();
   }
 
-
   swipeable = null;
 
   handleUserBeganScrollingParentView() {
     this.swipeable.recenter();
   }
+
 
   render() {
 
@@ -189,13 +192,6 @@ constructor(props) {
       console.log(error.message);
     }
     return username;
-  }
-
-  _skipCurrentSongUpdateQueue = async () => {
-    const channel_id = await this._getChannelId;
-    const skip = await skipSongUpdateQueue(channel_id);
-    const songs = await getChannelSongsByChannelId(channel_id);
-    this.parseSongs(songs);
   }
 
   _getChannelId = async () => {

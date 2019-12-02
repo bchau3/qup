@@ -180,6 +180,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
         paddingLeft: 20,
         paddingRight: 20,
+        paddingTop: 3,
         fontSize: 25
     },
     imageStyle: {

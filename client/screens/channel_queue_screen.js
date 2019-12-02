@@ -3,6 +3,8 @@ import * as React from "react";
 import { Image, Button, Platform, ScrollView, StyleSheet, Text, View, TouchableOpacity, AsyncStorage, ImageBackground } from "react-native";
 import {playSong, getChannelSongURI} from '../api/queue';
 import { Icon } from "react-native-elements";
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 
 // for screen switch
@@ -39,15 +41,15 @@ class ChannelQueueScreen extends React.Component {
     }
   }
 
-  static navigationOptions = {
-    tabBarLabel: "QUEUE",
-    tabBarIcon: ({ focused }) => (
-      <TabBarIcon
-        focused={focused}
-        name={Platform.OS === "ios" ? "ios-link" : "md-link"}
-      />
-    )
-  };
+  // static navigationOptions = {
+  //   tabBarLabel: "QUEUE",
+  //   tabBarIcon: ({ focused }) => (
+  //     <TabBarIcon
+  //       focused={focused}
+  //       name={Platform.OS === "ios" ? "ios-link" : "md-link"}
+  //     />
+  //   )
+  // };
 
   
 
@@ -191,14 +193,38 @@ class ChannelQueueScreen extends React.Component {
 }
 
 // create bottom tabs to switch screens
-export default createBottomTabNavigator(
+export default createBottomTabNavigator( 
   {
-    OPTION: { screen: OptionScreen },
+    OPTIONS: { screen: OptionScreen },
     SEARCH: { screen: SearchBarScreen },
-    HOME: { screen: ChannelQueueScreen }
+    QUEUE: { screen: ChannelQueueScreen },
   },
-  {
-    initialRouteName: "SEARCH"
+  { 
+    initialRouteName: 'SEARCH',
+    defaultNavigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ focused, horizontal, tintColor }) => {
+        const { routeName } = navigation.state;
+        console.log(routeName)
+        let IconComponent = Ionicons;
+        let iconName;
+        if (routeName === 'QUEUE') {
+          iconName = `ios-albums`;
+        } else if (routeName === 'SEARCH') {
+          iconName = `ios-search`;
+        } else if (routeName === 'OPTIONS') {
+          iconName = `ios-cog`;
+        }
+
+        // You can return any component that you like here!
+        return <IconComponent name={iconName} size={25} color={tintColor} />;
+      },
+    }),
+    tabBarOptions: {
+      activeTintColor: '#73CFEE',
+      inactiveTintColor: '#545454',
+      activeBackgroundColor: '#292929'
+    },
+    
   }
-);
+)
 

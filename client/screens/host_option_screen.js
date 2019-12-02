@@ -13,32 +13,36 @@ export default class OptionScreen extends React.Component {
   render() {
     return (
       <ImageBackground source={require("../assets/images/option_background.png")} style={styles.container}>
-        
-        <View style={styles.buttonContainer}>
-        <Text style={styles.hostTitleText}>MENU</Text>
-          <TouchableOpacity
-            onPress={
-              this._alertJoinCode
-            }
-          >
-            <Text style={styles.buttonText}>GET JOIN CODE</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity
-            onPress={() => {
-              this._closeChannel()
-            }}
-          >
-            <Text style={styles.buttonText}>CLOSE THE CHANNEL</Text>
-          </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => {
-              this._closeChannel()
-            }}
-          >
-            <Text style={styles.buttonText}>UNLINK MY ACCOUNT</Text>
-          </TouchableOpacity>
+        <View style={styles.buttonContainer}>
+          <View style={{alignItems: "flex-start"}}>
+
+          <Text style={styles.hostTitleText}>MENU</Text>
+
+            <TouchableOpacity
+              onPress={
+                this._alertJoinCode
+              }
+            >
+              <Text style={styles.buttonText}>GET JOIN CODE</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                this._closeChannel()
+              }}
+            >
+              <Text style={styles.buttonText}>CLOSE THE CHANNEL</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                this._closeChannel()
+              }}
+            >
+              <Text style={styles.buttonText}>UNLINK MY ACCOUNT</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </ImageBackground>
     );
