@@ -15,6 +15,8 @@ export default class OptionScreen extends React.Component {
       <ImageBackground source={require("../assets/images/option_background.png")} style={styles.container}>
         
         <View style={styles.buttonContainer}>
+        <View style={{alignItems: "flex-start"}}>
+
         <Text style={styles.titleText}>MENU</Text>
           <TouchableOpacity
             onPress={
@@ -44,7 +46,7 @@ export default class OptionScreen extends React.Component {
           >
             <Text style={styles.buttonText}>LEAVE THE CHANNEL</Text>
           </TouchableOpacity>
-        </View>
+        </View></View>
       </ImageBackground>
     );
   }

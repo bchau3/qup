@@ -41,15 +41,15 @@ class ChannelQueueScreen extends React.Component {
     }
   }
 
-  static navigationOptions = {
-    tabBarLabel: "QUEUE",
-    tabBarIcon: ({ focused }) => (
-      <TabBarIcon
-        focused={focused}
-        name={Platform.OS === "ios" ? "ios-link" : "md-link"}
-      />
-    )
-  };
+  // static navigationOptions = {
+  //   tabBarLabel: "QUEUE",
+  //   tabBarIcon: ({ focused }) => (
+  //     <TabBarIcon
+  //       focused={focused}
+  //       name={Platform.OS === "ios" ? "ios-link" : "md-link"}
+  //     />
+  //   )
+  // };
 
   
 
