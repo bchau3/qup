@@ -42,4 +42,5 @@ Server (local):
 Bug 1: Closing channel with members present. The server crashes. To resolve relaunch server after leaving channel from member. This bug will be resolved before final submission hopefully.
 Bug 2: Remote server (Aws ebs) may crash. To resolve simply '$cd server' in second terminal, '$node index.js' to launch server and update client/config.js to use localhost instead of aws.
 Bug 3: Too many spotify api requests. To resolve wait before continuing. (This bug will be resolved by lowering calls to spotify's  get current song info and calculating song time locally.
+Bug 4: Have to pause/resume song on application to update queue.
 
