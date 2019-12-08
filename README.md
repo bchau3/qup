@@ -32,6 +32,8 @@ Client:
 3. Sign in to expo with credentials above
 4. press 'i' to open simulator
 
+Note: in order to play songs need to log into Spotify on some device and start playing. Our application looks for current active device and plays music on there.
+
 Server (local):
 1. $cd client
 2. edit config.js to use localhost url instead of aws
