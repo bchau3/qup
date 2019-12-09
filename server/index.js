@@ -19,8 +19,8 @@ var cors = require("cors");
 var querystring = require("querystring");
 var cookieParser = require("cookie-parser");
 
-var client_id = "77522dbfae304f42a78be67daf372fb7"; // Your client id
-var client_secret = "e2ecf0a74a3a4b4a9f29a338e4a4a898"; // Your secret
+var client_id = ""; // Your client id
+var client_secret = ""; // Your secret
 
 process.env.NODE_ENV = "development";
 
