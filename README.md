@@ -5,13 +5,7 @@ Not everyone has the same interests when it comes to their hobbies, their goals,
 
 # Login Credentials
 
-Expo: 
-username: figgledoodle
-password: redd0g
-
-Spotify (Premium):
-username: kianalucin
-password: queueup2019
+...
 
 # Requirements
 - Node/npm
