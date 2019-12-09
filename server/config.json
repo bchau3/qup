@@ -7,7 +7,7 @@
     "json_indentation": 4,
     "database": {
       "user": "postgres",
-      "host": "qup-test-1.chvizj59wle9.us-west-2.rds.amazonaws.com",
+      "host": [database],
       "database": "qup",
       "password": "queueup2019",
       "port": 5432
